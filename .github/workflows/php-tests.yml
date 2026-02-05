@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.3','8.4','8.5']
+        # Añadimos 8.1 y 8.2 para cumplir con el contrato del composer.json
+        php-version: ['8.1', '8.2', '8.3', '8.4', '8.5']
 
     name: PHP ${{ matrix.php-version }} Tests
 
@@ -27,10 +28,24 @@ jobs:
         php-version: ${{ matrix.php-version }}
         extensions: mbstring, dom, curl, libxml, simplexml
         coverage: none
+        # Herramientas útiles para debugging si algo falla
+        tools: composer:v2
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
 
     - name: Install dependencies
       run: |
-        composer update --prefer-dist --no-progress --ignore-platform-reqs
+        # Usamos --ignore-platform-req=php+ para las versiones de desarrollo (8.5)
+        composer update --prefer-dist --no-progress --ignore-platform-req=php+
 
     - name: Run Tests
       run: ./vendor/bin/phpunit tests

@@ -1,35 +1,24 @@
-# Symmetrical Octo: Robust Statistics for PHP 🚀
-
+# 🐙 Symmetrical Octo: Robust Stats Suite for PHP
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/symmetrical-octo.svg?style=flat-square)](https://packagist.org/packages/cjuol/symmetrical-octo)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![PHP Tests](https://github.com/cjuol/symmetrical-octo/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/symmetrical-octo/actions)
 
-**Symmetrical Octo** es una biblioteca de PHP especializada en **Estadística Robusta**. A diferencia de la estadística clásica, este paquete implementa métodos basados en el **Rango Intercuartílico (IQR)** y la **Desviación Robusta ($S^*$)**, diseñados específicamente para mitigar el impacto de valores atípicos (*outliers*) y errores de medición.
-
----
+Symmetrical Octo es una suite avanzada de análisis estadístico. Su propósito es permitir a los desarrolladores enfrentar la Estadística Clásica contra la Estadística Robusta para identificar sesgos, ruido y errores de medición de forma automatizada.
 
 ## 💡 Motivación y Origen
 
-Esta biblioteca nació de una necesidad técnica real. En entornos como el **seguimiento deportivo (diarios de entreno)** o la **gestión de hostelería**, los datos suelen contener "ruido": errores de registro, días excepcionales o fallos en sensores. Las librerías estándar de PHP se centran en la estadística clásica (Media/Desviación Estándar), que falla al procesar estas muestras.
+En entornos como el seguimiento deportivo o la telemetría, los datos suelen contener "ruido" (fallos de sensores, días excepcionales). La estadística clásica (Media) es un "cristal" que se rompe ante un solo valor extremo.
 
-**Symmetrical Octo** ofrece una alternativa fiable para proyectos donde la precisión del "centro" de los datos es crítica y no puede verse comprometida por fluctuaciones extremas.
+Symmetrical Octo actúa como un filtro de calidad, permitiéndote saber cuándo puedes confiar en la media y cuándo debes recurrir a la robustez de la mediana y el MAD.
 
----
+## 🚀 Nuevas Funcionalidades (v1.1.0)
 
-## 📊 ¿Por qué Estadística Robusta?
+Esta versión transforma la biblioteca en una herramienta integral con arquitectura SOLID:
 
-La estadística tradicional es extremadamente sensible a valores extremos. Esta librería utiliza la **Mediana** y el factor de escala **$S^*$** para ofrecer una visión real del comportamiento habitual de tus datos.
-
-### Comparativa: Clásica vs. Robusta
-Datos de ejemplo (N=10) con ruido: `[87.3, 84, 85.4, 78, 85, 89, 79, 89, 76, 86.5]`
-
-| Métrica | Estadística Clásica | **Symmetrical Octo (Robusta)** |
-| :--- | :--- | :--- |
-| **Centro** | Media: 83.92 | **Mediana: 85.20** |
-| **Dispersión** | Desv. Estándar: 4.67 | **$S^*$ (Robusta): 2.01** |
-| **Variabilidad** | CV: 5.57% | **CVr%: 2.35%** |
-
----
+- **ClassicStats**: Implementación completa de estadística descriptiva tradicional.
+- **StatsComparator**: El "cerebro" que analiza la fidelidad de tus datos y emite veredictos.
+- **ExportableTrait**: Exportación nativa a CSV y JSON integrada en todas las clases.
+- **Arquitectura de Traits e Interfaces**: Validación automática de datos y extensibilidad garantizada.
 
 ## 🛠 Instalación
 
@@ -37,79 +26,71 @@ Datos de ejemplo (N=10) con ruido: `[87.3, 84, 85.4, 78, 85, 89, 79, 89, 76, 86.
 composer require cjuol/symmetrical-octo
 ```
 
----
+## 📖 Guía de Uso
 
-## 🚀 Uso Rápido
+### 1. El Comparador (Detección de Sesgos)
+
+Es la herramienta más potente de la suite. Analiza si la media clásica está "muriendo" por culpa de los outliers.
 
 ```php
-use Cjuol\SymmetricalOcto\RobustStats;
+use Cjuol\SymmetricalOcto\StatsComparator;
 
-$stats = new RobustStats();
-$datos = [87.3, 84, 85.4, 78, 85, 89, 79, 89, 76, 86.5];
+$comparator = new StatsComparator();
+$datos = [10, 12, 11, 15, 10, 1000]; // El 1000 es ruido
 
-// Obtener un informe completo de una sola vez (Recomendado para Dashboards)
-$resumen = $stats->obtenerResumen($datos, ordenar: true, decimales: 2);
+$analisis = $comparator->analizar($datos);
 
-print_r($resumen);
-/*
-Array(
-    [media] => 83.92
-    [mediana] => 85.2
-    [desviacionRobusta] => 2.01
-    [CVr] => 2.35
-    [outliers] => Array()
-    ...
-)
-*/
-
-// O acceder a métodos individuales
-$mediana = $stats->getMediana($datos);
-$outliers = $stats->getOutliers($datos);
+echo $analisis['veredicto'];
+// ALERTA: Datos altamente influenciados por outliers. Se recomienda usar métricas Robustas.
 ```
 
----
+### 2. Exportación Instantánea
 
-## 📖 Métodos Disponibles
+Cualquier clase estadística puede generar informes listos para descargar o enviar por API:
 
-La clase RobustStats ofrece una interfaz limpia y eficiente:
+```php
+$robust = new \Cjuol\SymmetricalOcto\RobustStats();
 
-| Función | Descripción | Resultado |
-| :--- | :--- | :--- |
-| getMedia() | Promedio aritmético clásico. | float |
-| getMediana() | Valor central resistente a outliers. | float |
-| getDesviacionRobusta() | Calcula $S^*$, la alternativa robusta a la Desv. Estándar. | float |
-| getCVr() | Coeficiente de Variación Robusto (en %). | float |
-| getIQR() | Rango Intercuartílico ($Q3 - Q1$). | float |
-| getMAD() | Desviación Absoluta de la Mediana. | float |
-| getOutliers() | Identifica valores "extraños" (Método de Tukey). | array |
-| getIntervalosConfianza() | Límites superior e inferior al 95%. | array |
-| obtenerResumen() | Métrica completa optimizada en rendimiento. | array |
+// Generar un CSV para abrir en Excel
+file_put_contents('informe.csv', $robust->toCsv($datos));
 
----
+// O un JSON para tu Frontend
+echo $robust->toJson($datos);
+```
+
+## 📊 Comparativa de Métricas
+
+| Métrica | ClassicStats | RobustStats | Impacto de Outliers |
+| :--- | :--- | :--- | :--- |
+| Centro | Media | Mediana | Alta en Clásica |
+| Dispersión | Desv. Estándar | MAD (Escalado) | Extremo en Clásica |
+| Variabilidad | CV% | CVr% | Muy alto en Clásica |
+| Exportable | ✅ Si | ✅ Si | - |
 
 ## 🧪 Fundamento Matemático
 
-Esta librería implementa la estimación de escala consistente para datos normales:
+### Desviación Robusta Escalada
 
-$$S^* = \left( \frac{1.25}{1.35} \right) \times \left( \frac{IQR}{\sqrt{n}} \right)$$
+Para que el comparador sea justo, escalamos el MAD para hacerlo comparable a la desviación estándar en distribuciones normales:
 
-- **Ajuste de Consistencia**: El factor $1.25/1.35$ permite que $S^*$ sea comparable a la desviación estándar en distribuciones normales, pero manteniendo la resistencia del IQR.
-- **Intervalos**: Se utiliza un factor de cobertura $k=1.96$ para el 95% de confianza.
+$$\sigma_{robust} = MAD \times 1.4826$$
 
----
+### Coeficiente de Variación Robusto ($CV_r$)
 
-## 🚦 Tests
+Calculado sobre la mediana para evitar que un solo valor extremo infle la percepción de volatilidad:
 
-Validación completa mediante PHPUnit asegurando precisión matemática.
+$$CV_r = \left( \frac{\sigma_{robust}}{|\tilde{x}|} \right) \times 100$$
+
+## 🚦 Tests y Calidad
+
+Validación completa mediante PHPUnit asegurando una cobertura total en cálculos y validaciones de datos.
 
 ```bash
 ./vendor/bin/phpunit tests
 ```
 
----
-
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
 
-Desarrollado con ❤️ por **cjuol**.
+Desarrollado con ❤️ por cjuol.
