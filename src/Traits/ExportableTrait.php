@@ -45,6 +45,10 @@ trait ExportableTrait
         $csv = stream_get_contents($handle);
         fclose($handle);
 
-        return $csv ?: '';
+        if ($csv === false) {
+            throw new \RuntimeException('Failed to read CSV content from temporary stream');
+        }
+
+        return $csv;
     }
 }
