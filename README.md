@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/symmetrical-octo.svg?style=flat-square)](https://packagist.org/packages/cjuol/symmetrical-octo)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/badge/tests-passing-brightgreen.svg?style=flat-square)](tests/)
+[![PHP Tests](https://github.com/cjuol/symmetrical-octo/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/symmetrical-octo/actions)
 
 **Symmetrical Octo** es una biblioteca de PHP especializada en **Estadística Robusta**. A diferencia de la estadística clásica, este paquete implementa métodos basados en el **Rango Intercuartílico (IQR)** y la **Desviación Robusta ($S^*$)**, diseñados específicamente para mitigar el impacto de valores atípicos (*outliers*) y errores de medición.
 
