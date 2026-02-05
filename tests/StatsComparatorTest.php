@@ -59,7 +59,7 @@ class StatsComparatorTest extends TestCase
         $this->assertArrayHasKey('metodo_zscore', $analisis['deteccion_outliers']);
     }
 
-    public function testAnalisisRatioDispersionBasico(): void
+    public function testAnalysisBasicDispersionRatio(): void
     {
         $comparator = new StatsComparator();
         $analisis = $comparator->analizar([10, 10, 11, 12, 10, 500]);
