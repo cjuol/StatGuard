@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Cjuol\SymmetricalOcto\Tests;
+namespace Cjuol\StatGuard\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Cjuol\SymmetricalOcto\StatsComparator;
+use Cjuol\StatGuard\StatsComparator;
 
 class StatsComparatorTest extends TestCase
 {

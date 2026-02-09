@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cjuol\SymmetricalOcto;
+namespace Cjuol\StatGuard;
 
-use Cjuol\SymmetricalOcto\Traits\DataProcessorTrait;
+use Cjuol\StatGuard\Traits\DataProcessorTrait;
 
 /**
  * StatsComparator - Servicio de análisis comparativo.

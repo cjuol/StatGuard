@@ -67,6 +67,44 @@ echo $robust->toJson($datos);
 | Variabilidad | CV% | CVr% | Muy alto en Clásica |
 | Exportable | ✅ Si | ✅ Si | - |
 
+## 📌 Metodos Implementados
+
+### ClassicStats
+
+- `getMedia(array $datos): float`
+- `getMediana(array $datos): float`
+- `getDesviacion(array $datos): float`
+- `getDesviacionEstandar(array $datos): float`
+- `getCV(array $datos): float`
+- `getVarianzaMuestral(array $datos): float`
+- `getVarianzaPoblacional(array $datos): float`
+- `getOutliers(array $datos): array`
+- `obtenerResumen(array $datos, bool $ordenar = true, int $decimales = 2): array`
+- `toJson(array $datos, int $options = JSON_PRETTY_PRINT): string`
+- `toCsv(array $datos, string $delimiter = ","): string`
+
+### RobustStats
+
+- `getMedia(array $datos): float`
+- `getMediana(array $datos): float`
+- `getDesviacion(array $datos): float`
+- `getCV(array $datos): float`
+- `getDesviacionRobusta(array $datos): float`
+- `getCVr(array $datos): float`
+- `getVarianzaRobusta(array $datos): float`
+- `getIQR(array $datos): float`
+- `getMAD(array $datos): float`
+- `getOutliers(array $datos): array`
+- `getIntervalosConfianza(array $datos): array`
+- `obtenerResumen(array $datos, bool $ordenar = true, int $decimales = 2): array`
+- `toJson(array $datos, int $options = JSON_PRETTY_PRINT): string`
+- `toCsv(array $datos, string $delimiter = ","): string`
+
+### StatsComparator
+
+- `__construct(?RobustStats $robust = null, ?ClassicStats $classic = null)`
+- `analizar(array $datos, int $decimales = 2): array`
+
 ## 🧪 Fundamento Matemático
 
 ### Desviación Robusta Escalada

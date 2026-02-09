@@ -1,5 +1,5 @@
 {
-    "name": "cjuol/symmetrical-octo",
+    "name": "cjuol/stat-guard",
     "description": "Suite de estadística avanzada para PHP: cálculos robustos (IQR, S*, MAD) vs clásicos, detección de sesgos y exportación CSV/JSON.",
     "type": "library",
     "license": "MIT",
@@ -11,10 +11,12 @@
     ],
     "keywords": [
         "statistics",
+        "stat-guard",
         "robust-statistics",
         "outliers",
         "php",
         "data-analysis",
+        "data-integrity",
         "comparative-stats",
         "csv-export"
     ],
@@ -26,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Cjuol\\SymmetricalOcto\\": "src/"
+            "Cjuol\\StatGuard\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Cjuol\\SymmetricalOcto\\Tests\\": "tests/"
+            "Cjuol\\StatGuard\\Tests\\": "tests/"
         }
     },
     "config": {

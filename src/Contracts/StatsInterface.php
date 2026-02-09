@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cjuol\SymmetricalOcto\Contracts;
+namespace Cjuol\StatGuard\Contracts;
 
 interface StatsInterface
 {

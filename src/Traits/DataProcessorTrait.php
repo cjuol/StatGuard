@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cjuol\SymmetricalOcto\Traits;
+namespace Cjuol\StatGuard\Traits;
 
 trait DataProcessorTrait
 {

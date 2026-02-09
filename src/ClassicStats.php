@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Cjuol\SymmetricalOcto;
+namespace Cjuol\StatGuard;
 
-use Cjuol\SymmetricalOcto\Contracts\StatsInterface;
-use Cjuol\SymmetricalOcto\Traits\DataProcessorTrait;
-use Cjuol\SymmetricalOcto\Traits\ExportableTrait;
+use Cjuol\StatGuard\Contracts\StatsInterface;
+use Cjuol\StatGuard\Traits\DataProcessorTrait;
+use Cjuol\StatGuard\Traits\ExportableTrait;
 
 /**
  * ClassicStats - Biblioteca de Estadística Descriptiva Clásica
