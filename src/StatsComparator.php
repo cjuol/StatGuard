@@ -7,8 +7,8 @@ namespace Cjuol\StatGuard;
 use Cjuol\StatGuard\Traits\DataProcessorTrait;
 
 /**
- * StatsComparator - Servicio de análisis comparativo.
- * Enfrenta la estadística clásica contra la robusta para detectar sesgos y ruido.
+ * StatsComparator - Comparative analysis service.
+ * Compares classic statistics against robust statistics to detect bias and noise.
  */
 class StatsComparator
 {
@@ -24,66 +24,66 @@ class StatsComparator
     }
 
     /**
-     * Compara las métricas y devuelve un informe de fidelidad de los datos.
+     * Compare metrics and return a data fidelity report.
      */
-    public function analizar(array $datos, int $decimales = 2): array
+    public function analyze(array $data, int $decimals = 2): array
     {
-        $d = $this->prepararDatos($datos, true);
+        $prepared = $this->prepareData($data, true);
 
-        $media = $this->classic->getMedia($d);
-        $mediana = $this->robust->getMediana($d);
-        $desvEst = $this->classic->getDesviacionEstandar($d);
-        // getDesviacion() usa el MAD * 1.4826 para una comparativa justa
-        $desvRob = $this->robust->getDesviacion($d);
+        $mean = $this->classic->getMean($prepared);
+        $median = $this->robust->getMedian($prepared);
+        $stdDev = $this->classic->getStandardDeviation($prepared);
+        // getDeviation() uses MAD * 1.4826 for a fair comparison
+        $robustDeviation = $this->robust->getDeviation($prepared);
 
-        // 1. Cálculo del Sesgo (Bias) entre Media y Mediana
-        // Usamos un umbral de seguridad (1e-9) en lugar de != 0
-        // Formula: $$Sesgo = \frac{\text{media} - \text{mediana}}{|\text{mediana}|} \times 100$$
-        $sesgo = (abs($mediana) > 1e-9) ? (($media - $mediana) / abs($mediana)) * 100 : 0.0;
+        // 1. Bias between mean and median
+        // Use a safety threshold (1e-9) instead of != 0
+        // Formula: $$Bias = \frac{\text{mean} - \text{median}}{|\text{median}|} \times 100$$
+        $bias = (abs($median) > 1e-9) ? (($mean - $median) / abs($median)) * 100 : 0.0;
 
-        // 2. Ratio de Dispersión
-        // Formula: $$Ratio = \frac{\sigma_{\text{clásica}}}{\sigma_{\text{robusta}}}$$
-        if (abs($desvRob) > 1e-9) {
-            $ratioDispersion = $desvEst / $desvRob;
+        // 2. Dispersion ratio
+        // Formula: $$Ratio = \frac{\sigma_{\text{classic}}}{\sigma_{\text{robust}}}$$
+        if (abs($robustDeviation) > 1e-9) {
+            $dispersionRatio = $stdDev / $robustDeviation;
         } else {
-            // Si la robusta es 0 pero la clásica no, hay un ruido infinito (outliers extremos)
-            $ratioDispersion = (abs($desvEst) > 1e-9) ? 2.0 : 1.0; 
+            // If robust is 0 but classic is not, there is extreme noise (outliers)
+            $dispersionRatio = (abs($stdDev) > 1e-9) ? 2.0 : 1.0; 
         }
 
         return [
-            'comparativa_central' => [
-                'media_clasica' => round($media, $decimales),
-                'mediana_robusta' => round($mediana, $decimales),
-                'diferencia_abs' => round(abs($media - $mediana), $decimales),
-                'sesgo_porcentaje' => round($sesgo, $decimales) . '%',
+            'centralComparison' => [
+                'classicMean' => round($mean, $decimals),
+                'robustMedian' => round($median, $decimals),
+                'absoluteDifference' => round(abs($mean - $median), $decimals),
+                'biasPercent' => round($bias, $decimals) . '%',
             ],
-            'comparativa_dispersion' => [
-                'desv_estandar' => round($desvEst, $decimales),
-                'desv_robusta' => round($desvRob, $decimales),
-                'ratio_ruido' => round($ratioDispersion, $decimales),
+            'dispersionComparison' => [
+                'stdDev' => round($stdDev, $decimals),
+                'robustDeviation' => round($robustDeviation, $decimals),
+                'noiseRatio' => round($dispersionRatio, $decimals),
             ],
-            'deteccion_outliers' => [
-                'metodo_tukey' => count($this->robust->getOutliers($d)),
-                'metodo_zscore' => count($this->classic->getOutliers($d)),
+            'outlierDetection' => [
+                'tukeyMethod' => count($this->robust->getOutliers($prepared)),
+                'zScoreMethod' => count($this->classic->getOutliers($prepared)),
             ],
-            'veredicto' => $this->generarVeredicto($sesgo, $ratioDispersion)
+            'verdict' => $this->generateVerdict($bias, $dispersionRatio)
         ];
     }
 
     /**
-     * Genera una conclusión humana basada en los datos.
+     * Generate a human-readable conclusion based on the data.
      */
-    private function generarVeredicto(float $sesgo, float $ratio): string
+    private function generateVerdict(float $bias, float $ratio): string
     {
-        // Umbrales basados en experimentación estadística
-        if (abs($sesgo) > 10 || $ratio > 1.5) {
-            return "ALERTA: Datos altamente influenciados por outliers. Se recomienda usar métricas Robustas.";
+        // Thresholds based on statistical experimentation
+        if (abs($bias) > 10 || $ratio > 1.5) {
+            return 'ALERT: Data is highly influenced by outliers. Use robust metrics.';
         }
 
-        if (abs($sesgo) > 5 || $ratio > 1.2) {
-            return "PRECAUCIÓN: Existe un sesgo moderado. Compare ambas métricas antes de decidir.";
+        if (abs($bias) > 5 || $ratio > 1.2) {
+            return 'CAUTION: There is moderate bias. Compare both metrics before deciding.';
         }
 
-        return "ESTABLE: Los datos siguen una distribución limpia. La estadística clásica es fiable.";
+        return 'STABLE: Data follows a clean distribution. Classic statistics are reliable.';
     }
 }

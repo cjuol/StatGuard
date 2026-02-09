@@ -20,43 +20,43 @@ class ClassicStatsTest extends TestCase
         $this->stats = new ClassicStats();
     }
 
-    public function testCalculoMedia(): void
+    public function testMeanCalculation(): void
     {
-        $resultado = $this->stats->getMedia($this->datosReferencia);
-        $this->assertEqualsWithDelta(83.92, $resultado, self::DELTA);
+        $result = $this->stats->getMean($this->datosReferencia);
+        $this->assertEqualsWithDelta(83.92, $result, self::DELTA);
     }
 
-    public function testCalculoMediana(): void
+    public function testMedianCalculation(): void
     {
-        $this->assertEquals(85.2, $this->stats->getMediana($this->datosReferencia));
+        $this->assertEquals(85.2, $this->stats->getMedian($this->datosReferencia));
     }
 
-    public function testCalculoDesviacionEstandar(): void
+    public function testStandardDeviationCalculation(): void
     {
-        $resultado = $this->stats->getDesviacionEstandar($this->datosReferencia);
-        $this->assertEqualsWithDelta(4.655176330351694, $resultado, self::DELTA);
+        $result = $this->stats->getStandardDeviation($this->datosReferencia);
+        $this->assertEqualsWithDelta(4.655176330351694, $result, self::DELTA);
     }
 
-    public function testCalculoVarianzaMuestral(): void
+    public function testSampleVarianceCalculation(): void
     {
-        $resultado = $this->stats->getVarianzaMuestral($this->datosReferencia);
-        $this->assertEqualsWithDelta(21.67, $resultado, self::DELTA);
+        $result = $this->stats->getSampleVariance($this->datosReferencia);
+        $this->assertEqualsWithDelta(21.67, $result, self::DELTA);
     }
 
-    public function testCalculoVarianzaPoblacional(): void
+    public function testPopulationVarianceCalculation(): void
     {
-        $resultado = $this->stats->getVarianzaPoblacional($this->datosReferencia);
-        $this->assertEqualsWithDelta(19.5036, $resultado, self::DELTA);
+        $result = $this->stats->getPopulationVariance($this->datosReferencia);
+        $this->assertEqualsWithDelta(19.5036, $result, self::DELTA);
     }
 
     #[DataProvider('cvProvider')]
-    public function testCalculoCV(array $datos, float $esperado): void
+    public function testCoefficientOfVariationCalculation(array $datos, float $esperado): void
     {
-        $resultado = $this->stats->getCV($datos);
-        $this->assertEqualsWithDelta($esperado, $resultado, self::DELTA);
+        $result = $this->stats->getCoefficientOfVariation($datos);
+        $this->assertEqualsWithDelta($esperado, $result, self::DELTA);
     }
 
-    public function testDeteccionOutliers(): void
+    public function testOutlierDetection(): void
     {
         $outliers = $this->stats->getOutliers($this->datosReferencia);
         $this->assertEmpty($outliers);
@@ -67,37 +67,37 @@ class ClassicStatsTest extends TestCase
         $this->assertContains(1000, $outliersDetectados);
     }
 
-    public function testObtenerResumen(): void
+    public function testGetSummary(): void
     {
-        $resumen = $this->stats->obtenerResumen($this->datosReferencia, true, 2);
+        $summary = $this->stats->getSummary($this->datosReferencia, true, 2);
 
-        $this->assertArrayHasKey('media', $resumen);
-        $this->assertArrayHasKey('mediana', $resumen);
-        $this->assertArrayHasKey('desviacionEstandar', $resumen);
-        $this->assertArrayHasKey('varianzaMuestral', $resumen);
-        $this->assertArrayHasKey('CV', $resumen);
-        $this->assertArrayHasKey('outliers_zscore', $resumen);
-        $this->assertArrayHasKey('count', $resumen);
+        $this->assertArrayHasKey('mean', $summary);
+        $this->assertArrayHasKey('median', $summary);
+        $this->assertArrayHasKey('stdDev', $summary);
+        $this->assertArrayHasKey('sampleVariance', $summary);
+        $this->assertArrayHasKey('cv', $summary);
+        $this->assertArrayHasKey('outliersZScore', $summary);
+        $this->assertArrayHasKey('count', $summary);
 
-        $this->assertEqualsWithDelta(83.92, $resumen['media'], self::DELTA);
-        $this->assertEquals(85.2, $resumen['mediana']);
-        $this->assertEqualsWithDelta(4.66, $resumen['desviacionEstandar'], self::DELTA);
-        $this->assertEqualsWithDelta(21.67, $resumen['varianzaMuestral'], self::DELTA);
-        $this->assertEqualsWithDelta(5.55, $resumen['CV'], self::DELTA);
-        $this->assertIsArray($resumen['outliers_zscore']);
-        $this->assertEquals(10, $resumen['count']);
+        $this->assertEqualsWithDelta(83.92, $summary['mean'], self::DELTA);
+        $this->assertEquals(85.2, $summary['median']);
+        $this->assertEqualsWithDelta(4.66, $summary['stdDev'], self::DELTA);
+        $this->assertEqualsWithDelta(21.67, $summary['sampleVariance'], self::DELTA);
+        $this->assertEqualsWithDelta(5.55, $summary['cv'], self::DELTA);
+        $this->assertIsArray($summary['outliersZScore']);
+        $this->assertEquals(10, $summary['count']);
     }
 
-    public function testExportJsonCoincideConResumen(): void
+    public function testExportJsonMatchesSummary(): void
     {
         $json = $this->stats->toJson($this->datosReferencia);
         $this->assertJson($json);
 
         $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        $this->assertEquals($this->stats->obtenerResumen($this->datosReferencia), $decoded);
+        $this->assertEquals($this->stats->getSummary($this->datosReferencia), $decoded);
     }
 
-    public function testExportCsvCoincideConResumen(): void
+    public function testExportCsvMatchesSummary(): void
     {
         $csv = $this->stats->toCsv($this->datosReferencia);
         $lineas = preg_split('/\r?\n/', trim($csv));
@@ -107,7 +107,7 @@ class ClassicStatsTest extends TestCase
         $cabeceras = str_getcsv($lineas[0], ',');
         $valores = str_getcsv($lineas[1], ',');
 
-        $resumen = $this->stats->obtenerResumen($this->datosReferencia);
+        $resumen = $this->stats->getSummary($this->datosReferencia);
         $esperado = [];
         foreach ($resumen as $key => $value) {
             if (is_array($value)) {
@@ -122,10 +122,10 @@ class ClassicStatsTest extends TestCase
     }
 
     #[DataProvider('validacionProvider')]
-    public function testValidacionDatos(array $datos): void
+    public function testDataValidation(array $datos): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->stats->getMedia($datos);
+        $this->stats->getMean($datos);
     }
 
     public static function cvProvider(): array

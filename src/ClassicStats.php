@@ -9,140 +9,140 @@ use Cjuol\StatGuard\Traits\DataProcessorTrait;
 use Cjuol\StatGuard\Traits\ExportableTrait;
 
 /**
- * ClassicStats - Biblioteca de Estadística Descriptiva Clásica
- * * Implementa cálculos basados en la media y desviación estándar tradicional.
- * * Útil para comparativas de sesgo frente a estadística robusta.
+ * ClassicStats - Classical descriptive statistics library.
+ * * Implements calculations based on mean and traditional standard deviation.
+ * * Useful for bias comparisons against robust statistics.
  */
 class ClassicStats implements StatsInterface
 {
     use DataProcessorTrait;
     use ExportableTrait;
 
-    // ========== FUNCIONES PÚBLICAS - INTERFAZ Y CONTRATOS ==========
+    // ========== PUBLIC METHODS - INTERFACE AND CONTRACTS ==========
 
     /**
-     * Calcula la media aritmética simple.
+     * Calculate the simple arithmetic mean.
      */
-    public function getMedia(array $datos): float
+    public function getMean(array $data): float
     {
-        return $this->calcularMedia($this->prepararDatos($datos, false));
+        return $this->calculateMean($this->prepareData($data, false));
     }
 
     /**
-     * Calcula la mediana (ordenando los datos).
+     * Calculate the median (sorting data first).
      */
-    public function getMediana(array $datos): float
+    public function getMedian(array $data): float
     {
-        return $this->calcularMediana($this->prepararDatos($datos, true));
+        return $this->calculateMedian($this->prepareData($data, true));
     }
 
     /**
-     * Implementación del contrato: Devuelve la Desviación Estándar Muestral.
+     * Contract implementation: returns the sample standard deviation.
      */
-    public function getDesviacion(array $datos): float
+    public function getDeviation(array $data): float
     {
-        return $this->getDesviacionEstandar($datos);
+        return $this->getStandardDeviation($data);
     }
 
     /**
-     * Calcula la Desviación Estándar Muestral (Raíz cuadrada de la varianza muestral).
+     * Calculate the sample standard deviation (square root of sample variance).
      */
-    public function getDesviacionEstandar(array $datos): float
+    public function getStandardDeviation(array $data): float
     {
-        return sqrt($this->getVarianzaMuestral($datos));
+        return sqrt($this->getSampleVariance($data));
     }
 
     /**
-     * Implementación del contrato: Devuelve el Coeficiente de Variación (CV%).
+     * Contract implementation: returns the coefficient of variation (CV%).
      */
-    public function getCV(array $datos): float
+    public function getCoefficientOfVariation(array $data): float
     {
-        $d = $this->prepararDatos($datos, false);
-        $media = $this->calcularMedia($d);
+        $prepared = $this->prepareData($data, false);
+        $mean = $this->calculateMean($prepared);
 
-        if (abs($media) < 1e-9) return 0.0;
+        if (abs($mean) < 1e-9) return 0.0;
 
-        return ($this->getDesviacionEstandar($d) / abs($media)) * 100;
+        return ($this->getStandardDeviation($prepared) / abs($mean)) * 100;
     }
 
     /**
-     * Calcula la Varianza Muestral (Corrección de Bessel: divide por n-1).
+     * Calculate the sample variance (Bessel correction: divide by n-1).
      */
-    public function getVarianzaMuestral(array $datos): float
+    public function getSampleVariance(array $data): float
     {
-        return $this->calcularVarianza($this->prepararDatos($datos, false), true);
+        return $this->calculateVariance($this->prepareData($data, false), true);
     }
 
     /**
-     * Calcula la Varianza Poblacional (Divide por n).
+     * Calculate the population variance (divide by n).
      */
-    public function getVarianzaPoblacional(array $datos): float
+    public function getPopulationVariance(array $data): float
     {
-        return $this->calcularVarianza($this->prepararDatos($datos, false), false);
+        return $this->calculateVariance($this->prepareData($data, false), false);
     }
 
     /**
-     * Detecta outliers usando el método Z-Score tradicional (|Z| > 3).
+     * Detect outliers using the traditional Z-Score method (|Z| > 3).
      */
-    public function getOutliers(array $datos): array
+    public function getOutliers(array $data): array
     {
-        $d = $this->prepararDatos($datos, false);
-        $media = $this->calcularMedia($d);
-        $desviacion = $this->getDesviacionEstandar($d);
+        $prepared = $this->prepareData($data, false);
+        $mean = $this->calculateMean($prepared);
+        $stdDev = $this->getStandardDeviation($prepared);
 
-        if ($desviacion < 1e-9) return [];
+        if ($stdDev < 1e-9) return [];
 
-        return array_values(array_filter($d, function ($x) use ($media, $desviacion) {
-            return abs(($x - $media) / $desviacion) > 3;
+        return array_values(array_filter($prepared, function ($x) use ($mean, $stdDev) {
+            return abs(($x - $mean) / $stdDev) > 3;
         }));
     }
 
     /**
-     * Obtiene un resumen completo de las métricas clásicas.
+     * Get a complete summary of classic metrics.
      */
-    public function obtenerResumen(array $datos, bool $ordenar = true, int $decimales = 2): array
+    public function getSummary(array $data, bool $sort = true, int $decimals = 2): array
     {
-        $d = $this->prepararDatos($datos, $ordenar);
+        $prepared = $this->prepareData($data, $sort);
 
         return [
-            'media'              => round($this->calcularMedia($d), $decimales),
-            'mediana'            => round($this->calcularMediana($d), $decimales),
-            'desviacionEstandar' => round($this->getDesviacionEstandar($d), $decimales),
-            'varianzaMuestral'   => round($this->getVarianzaMuestral($d), $decimales),
-            // USAMOS EL MÉTODO SEGURO getCV($d) para evitar división por cero
-            'CV'                 => round($this->getCV($d), $decimales),
-            'outliers_zscore'    => $this->getOutliers($d),
-            'count'              => count($d)
+            'mean'           => round($this->calculateMean($prepared), $decimals),
+            'median'         => round($this->calculateMedian($prepared), $decimals),
+            'stdDev'         => round($this->getStandardDeviation($prepared), $decimals),
+            'sampleVariance' => round($this->getSampleVariance($prepared), $decimals),
+            // Use the safe method to avoid division by zero
+            'cv'             => round($this->getCoefficientOfVariation($prepared), $decimals),
+            'outliersZScore' => $this->getOutliers($prepared),
+            'count'          => count($prepared)
         ];
     }
 
-    // ========== FUNCIONES PRIVADAS - MOTOR DE CÁLCULO PURO ==========
+    // ========== PRIVATE METHODS - PURE CALCULATION ENGINE ==========
 
-    private function calcularMedia(array $datos): float
+    private function calculateMean(array $data): float
     {
-        return array_sum($datos) / count($datos);
+        return array_sum($data) / count($data);
     }
 
-    private function calcularMediana(array $datos): float
+    private function calculateMedian(array $data): float
     {
-        $n = count($datos);
+        $n = count($data);
         $m = intdiv($n, 2);
 
         if ($n % 2 === 0) {
-            return ($datos[$m - 1] + $datos[$m]) / 2.0;
+            return ($data[$m - 1] + $data[$m]) / 2.0;
         }
-        return (float) $datos[$m];
+        return (float) $data[$m];
     }
 
-    private function calcularVarianza(array $datos, bool $muestral = true): float
+    private function calculateVariance(array $data, bool $sample = true): float
     {
-        $n = count($datos);
-        $media = $this->calcularMedia($datos);
-        
-        $sumatorio = array_reduce($datos, fn($acc, $x) => $acc + pow($x - $media, 2), 0.0);
-        
-        $divisor = $muestral ? ($n - 1) : $n;
-        
-        return $sumatorio / $divisor;
+        $n = count($data);
+        $mean = $this->calculateMean($data);
+
+        $sumOfSquares = array_reduce($data, fn($acc, $x) => $acc + pow($x - $mean, 2), 0.0);
+
+        $denominator = $sample ? ($n - 1) : $n;
+
+        return $sumOfSquares / $denominator;
     }
 }

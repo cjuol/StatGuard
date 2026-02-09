@@ -6,27 +6,27 @@ namespace Cjuol\StatGuard\Traits;
 
 trait DataProcessorTrait
 {
-    private function validarDatos(array $datos): array
+    private function validateData(array $data): array
     {
-        if (count($datos) < 2) {
-            throw new \InvalidArgumentException("Se necesitan al menos 2 valores numéricos.");
+        if (count($data) < 2) {
+            throw new \InvalidArgumentException('At least 2 numeric values are required.');
         }
 
-        $datosLimpios = array_values(array_filter($datos, 'is_numeric'));
-        
-        if (count($datosLimpios) !== count($datos)) {
-            throw new \InvalidArgumentException("Todos los valores de la muestra deben ser numéricos.");
+        $cleanData = array_values(array_filter($data, 'is_numeric'));
+
+        if (count($cleanData) !== count($data)) {
+            throw new \InvalidArgumentException('All sample values must be numeric.');
         }
 
-        return $datosLimpios;
+        return $cleanData;
     }
 
-    private function prepararDatos(array $datos, bool $ordenar = true): array
+    private function prepareData(array $data, bool $sort = true): array
     {
-        $datosProcesados = $this->validarDatos($datos);
-        if ($ordenar) {
-            sort($datosProcesados);
+        $processedData = $this->validateData($data);
+        if ($sort) {
+            sort($processedData);
         }
-        return $datosProcesados;
+        return $processedData;
     }
 }

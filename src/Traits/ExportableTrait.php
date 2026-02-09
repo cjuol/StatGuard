@@ -7,39 +7,39 @@ namespace Cjuol\StatGuard\Traits;
 trait ExportableTrait
 {
     /**
-     * Exporta el resumen estadístico a formato JSON.
+     * Export the statistical summary to JSON.
      */
-    public function toJson(array $datos, int $options = JSON_PRETTY_PRINT): string
+    public function toJson(array $data, int $options = JSON_PRETTY_PRINT): string
     {
-        return json_encode($this->obtenerResumen($datos), $options);
+        return json_encode($this->getSummary($data), $options);
     }
 
     /**
-     * Exporta el resumen estadístico a formato CSV.
-     * @return string Contenido del CSV (Cabecera + Valores)
+     * Export the statistical summary to CSV.
+     * @return string CSV content (Header + Values)
      */
-    public function toCsv(array $datos, string $delimiter = ","): string
+    public function toCsv(array $data, string $delimiter = ","): string
     {
-        $resumen = $this->obtenerResumen($datos);
-        
-        // Aplanamos campos que sean arrays (outliers, intervalos, etc.)
-        $datosParaCsv = [];
-        foreach ($resumen as $key => $value) {
+        $summary = $this->getSummary($data);
+
+        // Flatten array fields (outliers, intervals, etc.)
+        $csvData = [];
+        foreach ($summary as $key => $value) {
             if (is_array($value)) {
-                // Convertimos el array a una cadena separada por pipes |
-                $datosParaCsv[$key] = empty($value) ? '' : implode('|', $value);
+                // Convert arrays to a pipe-separated string
+                $csvData[$key] = empty($value) ? '' : implode('|', $value);
             } else {
-                $datosParaCsv[$key] = $value;
+                $csvData[$key] = $value;
             }
         }
 
         $handle = fopen('php://temp', 'r+');
-        
-        // 1. Insertar Cabeceras
-        fputcsv($handle, array_keys($datosParaCsv), $delimiter);
-        
-        // 2. Insertar Datos
-        fputcsv($handle, array_values($datosParaCsv), $delimiter);
+
+        // 1. Insert headers
+        fputcsv($handle, array_keys($csvData), $delimiter);
+
+        // 2. Insert values
+        fputcsv($handle, array_values($csvData), $delimiter);
         
         rewind($handle);
         $csv = stream_get_contents($handle);

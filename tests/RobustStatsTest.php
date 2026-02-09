@@ -21,111 +21,111 @@ class RobustStatsTest extends TestCase
     }
 
     #[DataProvider('medianaProvider')]
-    public function testCalculoMediana(array $datos, float $esperado): void
+    public function testMedianCalculation(array $datos, float $esperado): void
     {
-        $this->assertEquals($esperado, $this->stats->getMediana($datos));
+        $this->assertEquals($esperado, $this->stats->getMedian($datos));
     }
 
     #[DataProvider('desviacionRobustaProvider')]
-    public function testCalculoDesviacionRobusta(array $datos, float $esperado): void
+    public function testRobustDeviationCalculation(array $datos, float $esperado): void
     {
-        $resultado = $this->stats->getDesviacionRobusta($datos);
-        // Usamos delta para permitir pequeñas variaciones de decimales
-        $this->assertEqualsWithDelta($esperado, $resultado, self::DELTA);
+        $result = $this->stats->getRobustDeviation($datos);
+        // Use delta to allow small decimal variations
+        $this->assertEqualsWithDelta($esperado, $result, self::DELTA);
     }
 
-    public function testCalculoCVr(): void
+    public function testRobustCvCalculation(): void
     {
-        $resultado = $this->stats->getCVr($this->datosReferencia);
-        $this->assertEqualsWithDelta(2.354112542617955, $resultado, self::DELTA);
+        $result = $this->stats->getRobustCv($this->datosReferencia);
+        $this->assertEqualsWithDelta(2.354112542617955, $result, self::DELTA);
     }
 
-    public function testCalculoCVConMedianaCero(): void
+    public function testCoefficientOfVariationWithZeroMedian(): void
     {
-        $resultado = $this->stats->getCV([0, 0, 0]);
-        $this->assertSame(0.0, $resultado);
+        $result = $this->stats->getCoefficientOfVariation([0, 0, 0]);
+        $this->assertSame(0.0, $result);
     }
 
-    public function testIntervalosConfianza(): void
+    public function testConfidenceIntervals(): void
     {
-        $ic = $this->stats->getIntervalosConfianza($this->datosReferencia);
-        $this->assertEqualsWithDelta(89.13117961716858, $ic['superior'], self::DELTA);
-        $this->assertEqualsWithDelta(81.26882038283142, $ic['inferior'], self::DELTA);
+        $intervals = $this->stats->getConfidenceIntervals($this->datosReferencia);
+        $this->assertEqualsWithDelta(89.13117961716858, $intervals['upper'], self::DELTA);
+        $this->assertEqualsWithDelta(81.26882038283142, $intervals['lower'], self::DELTA);
     }
 
-    public function testCalculoMedia(): void
+    public function testMeanCalculation(): void
     {
-        $resultado = $this->stats->getMedia($this->datosReferencia);
-        $this->assertEqualsWithDelta(83.92, $resultado, self::DELTA);
+        $result = $this->stats->getMean($this->datosReferencia);
+        $this->assertEqualsWithDelta(83.92, $result, self::DELTA);
     }
 
-    public function testCalculoVarianzaRobusta(): void
+    public function testRobustVarianceCalculation(): void
     {
-        $resultado = $this->stats->getVarianzaRobusta($this->datosReferencia);
-        // Varianza robusta = S*²
-        $this->assertEqualsWithDelta(4.022848079561035, $resultado, self::DELTA);
+        $result = $this->stats->getRobustVariance($this->datosReferencia);
+        // Robust variance = S*^2
+        $this->assertEqualsWithDelta(4.022848079561035, $result, self::DELTA);
     }
 
-    public function testCalculoIQR(): void
+    public function testIqrCalculation(): void
     {
-        $resultado = $this->stats->getIQR($this->datosReferencia);
+        $result = $this->stats->getIqr($this->datosReferencia);
         // IQR = Q3 - Q1
-        $this->assertEqualsWithDelta(6.85, $resultado, self::DELTA);
+        $this->assertEqualsWithDelta(6.85, $result, self::DELTA);
     }
 
-    public function testCalculoMAD(): void
+    public function testMadCalculation(): void
     {
-        $resultado = $this->stats->getMAD($this->datosReferencia);
-        // MAD = Desviación Absoluta de la Mediana
-        $this->assertEqualsWithDelta(2.95, $resultado, self::DELTA);
+        $result = $this->stats->getMad($this->datosReferencia);
+        // MAD = Median Absolute Deviation
+        $this->assertEqualsWithDelta(2.95, $result, self::DELTA);
     }
 
-    public function testDeteccionOutliers(): void
+    public function testOutlierDetection(): void
     {
-        // Con los datos de referencia no hay outliers
+        // No outliers for the reference data
         $outliers = $this->stats->getOutliers($this->datosReferencia);
         $this->assertEmpty($outliers);
 
-        // Probamos con datos que contienen outliers
-        $datosConOutliers = [1, 2, 3, 4, 5, 100]; // 100 es un outlier claro
-        $outliersDetectados = $this->stats->getOutliers($datosConOutliers);
-        $this->assertNotEmpty($outliersDetectados);
-        $this->assertContains(100, $outliersDetectados);
+        // Try data that contains outliers
+        $dataWithOutliers = [1, 2, 3, 4, 5, 100]; // 100 is a clear outlier
+        $detectedOutliers = $this->stats->getOutliers($dataWithOutliers);
+        $this->assertNotEmpty($detectedOutliers);
+        $this->assertContains(100, $detectedOutliers);
     }
 
-    public function testObtenerResumen(): void
+    public function testGetSummary(): void
     {
-        $resumen = $this->stats->obtenerResumen($this->datosReferencia, true, 2);
+        $summary = $this->stats->getSummary($this->datosReferencia, true, 2);
 
-        // Validamos que el resumen contiene todas las claves esperadas
-        $this->assertArrayHasKey('media', $resumen);
-        $this->assertArrayHasKey('mediana', $resumen);
-        $this->assertArrayHasKey('desviacionRobusta', $resumen);
-        $this->assertArrayHasKey('varianzaRobusta', $resumen);
-        $this->assertArrayHasKey('CVr', $resumen);
-        $this->assertArrayHasKey('IQR', $resumen);
-        $this->assertArrayHasKey('MAD', $resumen);
-        $this->assertArrayHasKey('outliers', $resumen);
-        $this->assertArrayHasKey('intervalosConfianza', $resumen);
+        // Validate that the summary contains all expected keys
+        $this->assertArrayHasKey('mean', $summary);
+        $this->assertArrayHasKey('median', $summary);
+        $this->assertArrayHasKey('robustDeviation', $summary);
+        $this->assertArrayHasKey('robustVariance', $summary);
+        $this->assertArrayHasKey('robustCv', $summary);
+        $this->assertArrayHasKey('iqr', $summary);
+        $this->assertArrayHasKey('mad', $summary);
+        $this->assertArrayHasKey('outliers', $summary);
+        $this->assertArrayHasKey('confidenceIntervals', $summary);
 
-        // Validamos algunos valores
-        $this->assertEqualsWithDelta(83.92, $resumen['media'], self::DELTA);
-        $this->assertEquals(85.2, $resumen['mediana']);
-        $this->assertEqualsWithDelta(2.01, $resumen['desviacionRobusta'], self::DELTA);
-        $this->assertIsArray($resumen['intervalosConfianza']);
-        $this->assertIsArray($resumen['outliers']);
+        // Validate a few values
+        $this->assertEqualsWithDelta(83.92, $summary['mean'], self::DELTA);
+        $this->assertEquals(85.2, $summary['median']);
+        $this->assertEqualsWithDelta(2.01, $summary['robustDeviation'], self::DELTA);
+        $this->assertIsArray($summary['confidenceIntervals']);
+        $this->assertIsArray($summary['outliers']);
     }
 
-    public function testExportJsonCoincideConResumen(): void
+    public function testExportJsonMatchesSummary(): void
     {
         $json = $this->stats->toJson($this->datosReferencia);
         $this->assertJson($json);
 
         $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        $this->assertEquals($this->stats->obtenerResumen($this->datosReferencia), $decoded);
+        $this->assertEquals($this->stats->getSummary($this->datosReferencia), $decoded);
     }
 
-    public function testExportCsvCoincideConResumen(): void
+    public function testExportCsvMatchesSummary(): void
     {
         $csv = $this->stats->toCsv($this->datosReferencia);
         $lineas = preg_split('/\r?\n/', trim($csv));
@@ -135,7 +135,7 @@ class RobustStatsTest extends TestCase
         $cabeceras = str_getcsv($lineas[0], ',');
         $valores = str_getcsv($lineas[1], ',');
 
-        $resumen = $this->stats->obtenerResumen($this->datosReferencia);
+        $resumen = $this->stats->getSummary($this->datosReferencia);
         $esperado = [];
         foreach ($resumen as $key => $value) {
             if (is_array($value)) {
@@ -149,18 +149,18 @@ class RobustStatsTest extends TestCase
         $this->assertSame(array_values($esperado), $valores);
     }
 
-    public function testCVrConMedianaCero(): void
+    public function testRobustCvWithZeroMedian(): void
     {
         $datos = [-1, 0, 1, 0];
-        $resultado = $this->stats->getCVr($datos);
-        $this->assertSame(0.0, $resultado);
+        $result = $this->stats->getRobustCv($datos);
+        $this->assertSame(0.0, $result);
     }
 
     #[DataProvider('validacionProvider')]
-    public function testValidacionDatos(array $datos): void
+    public function testDataValidation(array $datos): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->stats->getMedia($datos);
+        $this->stats->getMean($datos);
     }
 
     public static function medianaProvider(): array
