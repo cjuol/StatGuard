@@ -1,134 +1,165 @@
-# 🐙 Symmetrical Octo: Robust Stats Suite for PHP
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/symmetrical-octo.svg?style=flat-square)](https://packagist.org/packages/cjuol/symmetrical-octo)
+# 🛡️ StatGuard: Robust Statistics & Data Integrity for PHP
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/statguard.svg?style=flat-square)](https://packagist.org/packages/cjuol/statguard)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![PHP Tests](https://github.com/cjuol/symmetrical-octo/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/symmetrical-octo/actions)
+[![PHP Tests](https://github.com/cjuol/statguard/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/statguard/actions)
 
-Symmetrical Octo es una suite avanzada de análisis estadístico. Su propósito es permitir a los desarrolladores enfrentar la Estadística Clásica contra la Estadística Robusta para identificar sesgos, ruido y errores de medición de forma automatizada.
+StatGuard is a robust statistical analysis suite for PHP. It compares classic statistics against robust statistics to detect bias, noise, and measurement anomalies in a fully automated way.
 
-## 💡 Motivación y Origen
+## 💡 Motivation
 
-En entornos como el seguimiento deportivo o la telemetría, los datos suelen contener "ruido" (fallos de sensores, días excepcionales). La estadística clásica (Media) es un "cristal" que se rompe ante un solo valor extremo.
+In domains like sports tracking or telemetry, data often includes noise (sensor glitches, exceptional days). Classic statistics (mean) can break under a single extreme value. StatGuard acts as a data quality filter, telling you when you can trust the mean and when you should rely on the robustness of the median and MAD.
 
-Symmetrical Octo actúa como un filtro de calidad, permitiéndote saber cuándo puedes confiar en la media y cuándo debes recurrir a la robustez de la mediana y el MAD.
+## 🚀 Highlights
 
-## 🚀 Nuevas Funcionalidades (v1.1.0)
+- **ClassicStats**: Full classic descriptive statistics implementation.
+- **StatsComparator**: The analysis core that evaluates data fidelity and issues a verdict.
+- **ExportableTrait**: First-class CSV and JSON exports for every stats class.
+- **Traits + Interfaces**: Built-in data validation and extensible architecture.
 
-Esta versión transforma la biblioteca en una herramienta integral con arquitectura SOLID:
-
-- **ClassicStats**: Implementación completa de estadística descriptiva tradicional.
-- **StatsComparator**: El "cerebro" que analiza la fidelidad de tus datos y emite veredictos.
-- **ExportableTrait**: Exportación nativa a CSV y JSON integrada en todas las clases.
-- **Arquitectura de Traits e Interfaces**: Validación automática de datos y extensibilidad garantizada.
-
-## 🛠 Instalación
+## 🛠 Installation
 
 ```bash
-composer require cjuol/symmetrical-octo
+composer require cjuol/statguard
 ```
 
-## 📖 Guía de Uso
+## 📖 Usage
 
-### 1. El Comparador (Detección de Sesgos)
+### 1. Comparator (Bias Detection)
 
-Es la herramienta más potente de la suite. Analiza si la media clásica está "muriendo" por culpa de los outliers.
+The most powerful tool in the suite. It detects when classic mean-based metrics are distorted by outliers.
 
 ```php
-use Cjuol\SymmetricalOcto\StatsComparator;
+use Cjuol\StatGuard\StatsComparator;
 
 $comparator = new StatsComparator();
-$datos = [10, 12, 11, 15, 10, 1000]; // El 1000 es ruido
+$data = [10, 12, 11, 15, 10, 1000]; // 1000 is noise
 
-$analisis = $comparator->analizar($datos);
+$analysis = $comparator->analyze($data);
 
-echo $analisis['veredicto'];
-// ALERTA: Datos altamente influenciados por outliers. Se recomienda usar métricas Robustas.
+echo $analysis['verdict'];
+// ALERT: Data is highly influenced by outliers. Use robust metrics.
 ```
 
-### 2. Exportación Instantánea
+### 2. Instant Export
 
-Cualquier clase estadística puede generar informes listos para descargar o enviar por API:
+Any stats class can generate reports for download or API responses:
 
 ```php
-$robust = new \Cjuol\SymmetricalOcto\RobustStats();
+use Cjuol\StatGuard\RobustStats;
 
-// Generar un CSV para abrir en Excel
-file_put_contents('informe.csv', $robust->toCsv($datos));
+$robust = new RobustStats();
 
-// O un JSON para tu Frontend
-echo $robust->toJson($datos);
+// Generate a CSV for spreadsheets
+file_put_contents('report.csv', $robust->toCsv($data));
+
+// Or JSON for your frontend
+echo $robust->toJson($data);
 ```
 
-## 📊 Comparativa de Métricas
+### 3. Summary Keys (Classic vs Robust)
 
-| Métrica | ClassicStats | RobustStats | Impacto de Outliers |
+Classic summary keys:
+
+```php
+[
+	'mean',
+	'median',
+	'stdDev',
+	'sampleVariance',
+	'cv',
+	'outliersZScore',
+	'count'
+]
+```
+
+Robust summary keys:
+
+```php
+[
+	'mean',
+	'median',
+	'robustDeviation',
+	'robustVariance',
+	'robustCv',
+	'iqr',
+	'mad',
+	'outliers',
+	'confidenceIntervals',
+	'count'
+]
+```
+
+## 📊 Metrics Comparison
+
+| Metric | ClassicStats | RobustStats | Outlier Impact |
 | :--- | :--- | :--- | :--- |
-| Centro | Media | Mediana | Alta en Clásica |
-| Dispersión | Desv. Estándar | MAD (Escalado) | Extremo en Clásica |
-| Variabilidad | CV% | CVr% | Muy alto en Clásica |
-| Exportable | ✅ Si | ✅ Si | - |
+| Center | Mean | Median | High in classic |
+| Dispersion | Standard Deviation | MAD (Scaled) | Extreme in classic |
+| Variability | CV% | Robust CV% | Very high in classic |
+| Exportable | ✅ Yes | ✅ Yes | - |
 
-## 📌 Metodos Implementados
+## 📌 Implemented Methods
 
 ### ClassicStats
 
-- `getMedia(array $datos): float`
-- `getMediana(array $datos): float`
-- `getDesviacion(array $datos): float`
-- `getDesviacionEstandar(array $datos): float`
-- `getCV(array $datos): float`
-- `getVarianzaMuestral(array $datos): float`
-- `getVarianzaPoblacional(array $datos): float`
-- `getOutliers(array $datos): array`
-- `obtenerResumen(array $datos, bool $ordenar = true, int $decimales = 2): array`
-- `toJson(array $datos, int $options = JSON_PRETTY_PRINT): string`
-- `toCsv(array $datos, string $delimiter = ","): string`
+- `getMean(array $data): float`
+- `getMedian(array $data): float`
+- `getDeviation(array $data): float`
+- `getStandardDeviation(array $data): float`
+- `getCoefficientOfVariation(array $data): float`
+- `getSampleVariance(array $data): float`
+- `getPopulationVariance(array $data): float`
+- `getOutliers(array $data): array`
+- `getSummary(array $data, bool $sort = true, int $decimals = 2): array`
+- `toJson(array $data, int $options = JSON_PRETTY_PRINT): string`
+- `toCsv(array $data, string $delimiter = ","): string`
 
 ### RobustStats
 
-- `getMedia(array $datos): float`
-- `getMediana(array $datos): float`
-- `getDesviacion(array $datos): float`
-- `getCV(array $datos): float`
-- `getDesviacionRobusta(array $datos): float`
-- `getCVr(array $datos): float`
-- `getVarianzaRobusta(array $datos): float`
-- `getIQR(array $datos): float`
-- `getMAD(array $datos): float`
-- `getOutliers(array $datos): array`
-- `getIntervalosConfianza(array $datos): array`
-- `obtenerResumen(array $datos, bool $ordenar = true, int $decimales = 2): array`
-- `toJson(array $datos, int $options = JSON_PRETTY_PRINT): string`
-- `toCsv(array $datos, string $delimiter = ","): string`
+- `getMean(array $data): float`
+- `getMedian(array $data): float`
+- `getDeviation(array $data): float`
+- `getCoefficientOfVariation(array $data): float`
+- `getRobustDeviation(array $data): float`
+- `getRobustCv(array $data): float`
+- `getRobustVariance(array $data): float`
+- `getIqr(array $data): float`
+- `getMad(array $data): float`
+- `getOutliers(array $data): array`
+- `getConfidenceIntervals(array $data): array`
+- `getSummary(array $data, bool $sort = true, int $decimals = 2): array`
+- `toJson(array $data, int $options = JSON_PRETTY_PRINT): string`
+- `toCsv(array $data, string $delimiter = ","): string`
 
 ### StatsComparator
 
 - `__construct(?RobustStats $robust = null, ?ClassicStats $classic = null)`
-- `analizar(array $datos, int $decimales = 2): array`
+- `analyze(array $data, int $decimals = 2): array`
 
-## 🧪 Fundamento Matemático
+## 🧪 Mathematical Basis
 
-### Desviación Robusta Escalada
+### Scaled Robust Deviation
 
-Para que el comparador sea justo, escalamos el MAD para hacerlo comparable a la desviación estándar en distribuciones normales:
+To keep comparisons fair, MAD is scaled to be comparable to standard deviation under normal distributions:
 
 $$\sigma_{robust} = MAD \times 1.4826$$
 
-### Coeficiente de Variación Robusto ($CV_r$)
+### Robust Coefficient of Variation ($CV_r$)
 
-Calculado sobre la mediana para evitar que un solo valor extremo infle la percepción de volatilidad:
+Calculated over the median to avoid a single extreme value inflating volatility:
 
 $$CV_r = \left( \frac{\sigma_{robust}}{|\tilde{x}|} \right) \times 100$$
 
-## 🚦 Tests y Calidad
+## 🚦 Tests and Quality
 
-Validación completa mediante PHPUnit asegurando una cobertura total en cálculos y validaciones de datos.
+Validated with PHPUnit for full coverage of calculations and data validation.
 
 ```bash
 ./vendor/bin/phpunit tests
 ```
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+This project is licensed under the MIT License. See LICENSE for details.
 
-Desarrollado con ❤️ por cjuol.
+Built with care by cjuol.

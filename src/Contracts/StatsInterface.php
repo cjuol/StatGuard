@@ -6,10 +6,10 @@ namespace Cjuol\StatGuard\Contracts;
 
 interface StatsInterface
 {
-    public function getMedia(array $datos): float;
-    public function getMediana(array $datos): float;
-    public function getDesviacion(array $datos): float;
-    public function getCV(array $datos): float;
-    public function getOutliers(array $datos): array;
-    public function obtenerResumen(array $datos, bool $ordenar = true, int $decimales = 2): array;
+    public function getMean(array $data): float;
+    public function getMedian(array $data): float;
+    public function getDeviation(array $data): float;
+    public function getCoefficientOfVariation(array $data): float;
+    public function getOutliers(array $data): array;
+    public function getSummary(array $data, bool $sort = true, int $decimals = 2): array;
 }
