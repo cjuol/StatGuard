@@ -127,6 +127,9 @@ Robust summary keys:
 - `getMad(array $data): float`
 - `getOutliers(array $data): array`
 - `getConfidenceIntervals(array $data): array`
+- `getTrimmedMean(array $data, float $trimPercentage = 0.1): float`
+- `getWinsorizedMean(array $data, float $trimPercentage = 0.1, int $type = 7): float`
+- `getHuberMean(array $data, float $k = 1.345, int $maxIterations = 50, float $tolerance = 0.001): float`
 - `getSummary(array $data, bool $sort = true, int $decimals = 2): array`
 - `toJson(array $data, int $options = JSON_PRETTY_PRINT): string`
 - `toCsv(array $data, string $delimiter = ","): string`
@@ -149,6 +152,10 @@ $$\sigma_{robust} = MAD \times 1.4826$$
 Calculated over the median to avoid a single extreme value inflating volatility:
 
 $$CV_r = \left( \frac{\sigma_{robust}}{|\tilde{x}|} \right) \times 100$$
+
+## ✅ R Compatibility & Accuracy
+
+StatGuard is bit-for-bit compatible with R v4.x for quantile calculations, using Type 7 as the default quantile definition (the same default as `quantile()` in R). Robust central tendency methods (trimmed mean, winsorized mean, and Huber M-estimator) are validated with R comparisons and scripting utilities included in the repository.
 
 ## 🚦 Tests and Quality
 

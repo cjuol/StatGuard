@@ -5,6 +5,21 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 y este proyecto se adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-10
+
+### Añadido
+- **CentralTendencyEngine**: Nuevo motor estático para medias robustas (Trimmed, Winsorized, Huber M-estimator).
+- **RobustStats**: Nuevos métodos `getTrimmedMean()`, `getWinsorizedMean()` y `getHuberMean()`.
+- **QuantileEngineTest**: Validación con expectativas compatibles con los 9 tipos de `quantile()` en R.
+- **scripts/validate_with_r.php**: Script rápido de comparación de cuantiles con R en tiempo real.
+- **tests/BenchmarkStatGuard.php**: Benchmark del Huber M-estimator con 10,000 elementos.
+
+### Cambiado
+- Documentación ampliada para compatibilidad exacta con R v4.x y referencia a Hyndman & Fan (1996) y Huber (1964).
+
+### Notas
+- Este cambio no es Breaking Change: no modifica la API pública existente de `RobustStats`, solo añade nuevos métodos.
+
 ## [1.1.0] - 2025-05-22
 
 ### Añadido

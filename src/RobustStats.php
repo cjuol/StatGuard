@@ -86,6 +86,58 @@ class RobustStats implements StatsInterface
         return $this->detectOutliers($this->prepareData($data, true), $type);
     }
 
+    /**
+     * Trimmed mean by removing a percentage from each tail.
+     *
+     * Reference: Hyndman & Fan (1996) quantile definitions.
+     */
+    public function getTrimmedMean(array $data, float $trimPercentage = CentralTendencyEngine::DEFAULT_TRIM_PERCENTAGE): float
+    {
+        return CentralTendencyEngine::trimmedMean(
+            $this->prepareData($data, true),
+            $trimPercentage,
+            true
+        );
+    }
+
+    /**
+     * Winsorized mean using quantile cut points.
+     *
+     * Reference: Hyndman & Fan (1996) quantile definitions.
+     */
+    public function getWinsorizedMean(
+        array $data,
+        float $trimPercentage = CentralTendencyEngine::DEFAULT_TRIM_PERCENTAGE,
+        int $type = self::TYPE_R_DEFAULT
+    ): float {
+        return CentralTendencyEngine::winsorizedMean(
+            $this->prepareData($data, true),
+            $trimPercentage,
+            $type,
+            true
+        );
+    }
+
+    /**
+     * Huber M-estimator for robust location.
+     *
+     * Reference: Peter Huber (1964).
+     */
+    public function getHuberMean(
+        array $data,
+        float $k = CentralTendencyEngine::DEFAULT_HUBER_K,
+        int $maxIterations = CentralTendencyEngine::DEFAULT_HUBER_MAX_ITERATIONS,
+        float $tolerance = CentralTendencyEngine::DEFAULT_HUBER_TOLERANCE
+    ): float {
+        return CentralTendencyEngine::huberMean(
+            $this->prepareData($data, true),
+            $k,
+            $maxIterations,
+            $tolerance,
+            true
+        );
+    }
+
     public function getConfidenceIntervals(array $data): array
     {
         return $this->calculateConfidenceIntervals($this->prepareData($data, true));
