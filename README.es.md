@@ -1,4 +1,4 @@
-# 🛡️ StatGuard: Robust Statistics & Data Integrity for PHP
+# 🛡️ StatGuard: Estadistica Robusta e Integridad de Datos para PHP
 [English](README.md) | [Español](README.es.md)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/statguard.svg?style=flat-square)](https://packagist.org/packages/cjuol/statguard)
@@ -7,28 +7,28 @@
 [![R-Compatibility](https://img.shields.io/badge/R-compatibility-blue?style=flat-square)](https://cran.r-project.org/)
 [![PHP 8.x](https://img.shields.io/badge/PHP-8.x-777BB4?style=flat-square)](https://www.php.net/)
 
-StatGuard is a robust statistical analysis suite for PHP. It compares classic statistics against robust statistics to detect bias, noise, and measurement anomalies in a fully automated way.
+StatGuard es una suite de analisis estadistico robusto para PHP. Compara estadistica clasica contra estadistica robusta para detectar sesgo, ruido y anomalias de medicion de forma automatica.
 
-## Why StatGuard
+## Por que StatGuard
 
-Outliers are inevitable in telemetry, finance, sports tracking, and lab measurements. A single extreme value can pull the arithmetic mean far from the central mass, which biases decisions that depend on it. StatGuard provides robust estimators (median, MAD, trimmed and winsorized means, Huber M-estimator) that stay stable under contamination so you can trust summaries even when the data is messy.
+Los outliers son inevitables en telemetria, finanzas, deporte y laboratorios. Un solo valor extremo puede arrastrar la media aritmetica lejos de la masa central y sesgar las decisiones. StatGuard ofrece estimadores robustos (mediana, MAD, medias recortadas y winsorizadas, estimador M de Huber) que se mantienen estables bajo contaminacion, permitiendo confiar en los resumenes aun con datos ruidosos.
 
-## Highlights
+## Destacados
 
-- **ClassicStats**: Full classic descriptive statistics implementation.
-- **StatsComparator**: The analysis core that evaluates data fidelity and issues a verdict.
-- **ExportableTrait**: First-class CSV and JSON exports for every stats class.
-- **Traits + Interfaces**: Built-in data validation and extensible architecture.
+- **ClassicStats**: Implementacion completa de estadistica descriptiva clasica.
+- **StatsComparator**: Nucleo de analisis que evalua la fidelidad de los datos y emite un veredicto.
+- **ExportableTrait**: Exportacion CSV y JSON para cada clase estadistica.
+- **Traits + Interfaces**: Validacion integrada y arquitectura extensible.
 
-## Installation
+## Instalacion
 
 ```bash
 composer require cjuol/statguard
 ```
 
-## Usage
+## Uso
 
-### Robust Estimators (Quick Start)
+### Estimadores Robustos (Inicio Rapido)
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -40,14 +40,14 @@ $huber = $robust->getHuberMean($data);
 $winsorized = $robust->getWinsorizedMean($data, 0.1);
 ```
 
-Robust estimators stay stable even with extreme outliers:
+Los estimadores robustos se mantienen estables ante outliers extremos:
 
-| Metric | Result | Comment |
+| Metrica | Resultado | Comentario |
 | :--- | :--- | :--- |
-| Arithmetic Mean | 95.9091 | Pulled up by the outlier |
-| Huber Mean | 6.0982 | Stays close to the central mass |
+| Media aritmetica | 95.9091 | Sesgada por el outlier |
+| Media de Huber | 6.0982 | Cerca de la masa central |
 
-### Example: Huber Mean
+### Ejemplo: Media de Huber
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -58,7 +58,7 @@ $data = [10, 12, 11, 15, 10, 1000];
 $huber = $robust->getHuberMean($data, 1.345, 50, 0.001);
 ```
 
-### Example: Winsorized Mean (R-Compatible Quantile Type)
+### Ejemplo: Media Winsorizada (Tipo de Cuantil Compatible con R)
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -66,11 +66,11 @@ use Cjuol\StatGuard\RobustStats;
 $robust = new RobustStats();
 $data = [10, 12, 11, 15, 10, 1000];
 
-// Type 7 matches R's default quantile() behavior.
+// El tipo 7 coincide con el quantile() por defecto de R.
 $winsorized = $robust->getWinsorizedMean($data, 0.1, 7);
 ```
 
-### Comparator (Bias Detection)
+### Comparator (Deteccion de Sesgo)
 
 ```php
 use Cjuol\StatGuard\StatsComparator;
@@ -81,10 +81,10 @@ $data = [10, 12, 11, 15, 10, 1000];
 $analysis = $comparator->analyze($data);
 
 echo $analysis['verdict'];
-// ALERT: Data is highly influenced by outliers. Use robust metrics.
+// ALERTA: Los datos estan muy influidos por outliers. Use metricas robustas.
 ```
 
-### Instant Export
+### Exportacion Instantanea
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -95,9 +95,9 @@ file_put_contents('report.csv', $robust->toCsv($data));
 echo $robust->toJson($data);
 ```
 
-### Summary Keys (Classic vs Robust)
+### Claves de Resumen (Clasico vs Robusto)
 
-Classic summary keys:
+Claves clasicas:
 
 ```php
 [
@@ -111,7 +111,7 @@ Classic summary keys:
 ]
 ```
 
-Robust summary keys:
+Claves robustas:
 
 ```php
 [
@@ -128,32 +128,32 @@ Robust summary keys:
 ]
 ```
 
-## Metrics Comparison
+## Comparativa de Metricas
 
-| Metric | ClassicStats | RobustStats | Outlier Impact |
+| Metrica | ClassicStats | RobustStats | Impacto del Outlier |
 | :--- | :--- | :--- | :--- |
-| Center | Mean | Median | High in classic |
-| Dispersion | Standard Deviation | MAD (Scaled) | Extreme in classic |
-| Variability | CV% | Robust CV% | Very high in classic |
-| Exportable | ✅ Yes | ✅ Yes | - |
+| Centro | Media | Mediana | Alto en clasico |
+| Dispersion | Desviacion estandar | MAD (escalado) | Extremo en clasico |
+| Variabilidad | CV% | CV% robusto | Muy alto en clasico |
+| Exportable | ✅ Si | ✅ Si | - |
 
-## R Quantile Types (1-9)
+## Tipos de Cuantil R (1-9)
 
-StatGuard matches R v4.x quantile definitions. The table below summarizes the nine Hyndman & Fan (1996) types supported by `quantile()`.
+StatGuard replica las definiciones de cuantiles de R v4.x. La tabla resume los nueve tipos de Hyndman & Fan (1996) soportados por `quantile()`.
 
-| Type | $p_k$ | $a$ | $b$ | Notes |
+| Tipo | $p_k$ | $a$ | $b$ | Notas |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | $k / n$ | 0 | 0 | Inverse of empirical CDF (discontinuous). |
-| 2 | $k / n$ | 0 | 0 | Averaged at discontinuities. |
-| 3 | $(k - 0.5) / n$ | -0.5 | 0 | Nearest order statistic. |
-| 4 | $k / n$ | 0 | 1 | Linear interpolation of CDF. |
+| 1 | $k / n$ | 0 | 0 | Inversa de la CDF empirica (discontinua). |
+| 2 | $k / n$ | 0 | 0 | Promediado en discontinuidades. |
+| 3 | $(k - 0.5) / n$ | -0.5 | 0 | Estadistico de orden mas cercano. |
+| 4 | $k / n$ | 0 | 1 | Interpolacion lineal de la CDF. |
 | 5 | $(k - 0.5) / n$ | 0.5 | 0.5 | Hazen (1914). |
 | 6 | $k / (n + 1)$ | 0 | 1 | Weibull (1939). |
-| 7 | $(k - 1) / (n - 1)$ | 1 | 1 | R default, mode of $F(x)$. |
-| 8 | $(k - 1/3) / (n + 1/3)$ | 1/3 | 1/3 | Median-unbiased. |
-| 9 | $(k - 3/8) / (n + 1/4)$ | 3/8 | 3/8 | Normal-unbiased. |
+| 7 | $(k - 1) / (n - 1)$ | 1 | 1 | Por defecto de R, modo de $F(x)$. |
+| 8 | $(k - 1/3) / (n + 1/3)$ | 1/3 | 1/3 | Mediana-no-sesgado. |
+| 9 | $(k - 3/8) / (n + 1/4)$ | 3/8 | 3/8 | Normal-no-sesgado. |
 
-## Implemented Methods
+## Metodos Implementados
 
 ### ClassicStats
 
@@ -194,34 +194,34 @@ StatGuard matches R v4.x quantile definitions. The table below summarizes the ni
 - `__construct(?RobustStats $robust = null, ?ClassicStats $classic = null)`
 - `analyze(array $data, int $decimals = 2): array`
 
-## Mathematical Basis
+## Base Matematica
 
-### Scaled Robust Deviation
+### Desviacion Robusta Escalada
 
-To keep comparisons fair, MAD is scaled to be comparable to standard deviation under normal distributions:
+Para comparaciones justas, la MAD se escala para ser comparable con la desviacion estandar bajo distribuciones normales:
 
 $$\sigma_{robust} = MAD \times 1.4826$$
 
-### Robust Coefficient of Variation ($CV_r$)
+### Coeficiente de Variacion Robusta ($CV_r$)
 
-Calculated over the median to avoid a single extreme value inflating volatility:
+Se calcula sobre la mediana para evitar que un valor extremo infle la volatilidad:
 
 $$CV_r = \left( \frac{\sigma_{robust}}{|\tilde{x}|} \right) \times 100$$
 
-## R Compatibility & Accuracy
+## Compatibilidad con R y Precision
 
-StatGuard is bit-for-bit compatible with R v4.x for quantile calculations, using Type 7 as the default quantile definition (the same default as `quantile()` in R). Robust central tendency methods (trimmed mean, winsorized mean, and Huber M-estimator) are validated with R comparisons and scripting utilities included in the repository.
+StatGuard es compatible bit a bit con R v4.x en cuantiles, usando el Tipo 7 por defecto (el mismo de `quantile()` en R). Los metodos de tendencia central robusta (media recortada, winsorizada y estimador M de Huber) se validan con comparaciones contra R y utilidades de scripting en el repositorio.
 
-## Tests and Quality
+## Pruebas y Calidad
 
-Validated with PHPUnit for full coverage of calculations and data validation.
+Validado con PHPUnit para cubrir calculos y validacion de datos.
 
 ```bash
 ./vendor/bin/phpunit tests
 ```
 
-## License
+## Licencia
 
-This project is licensed under the MIT License. See LICENSE for details.
+Este proyecto se publica bajo la licencia MIT. Ver LICENSE para detalles.
 
-Built with care by cjuol.
+Creado con cuidado por cjuol.

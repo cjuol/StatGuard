@@ -1,0 +1,32 @@
+name: Robust Means CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, curl, libxml, simplexml
+          coverage: none
+          tools: composer:v2
+
+      - name: Install R and packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y r-base r-cran-mass r-cran-desctools
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit tests
