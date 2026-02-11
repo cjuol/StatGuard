@@ -30,7 +30,7 @@ jobs:
           mkdir -p docs/api
           docker run --rm \
             -v "${{ github.workspace }}:/var/www/html/statguard" \
-            phpdocumentor/phpdocumentor \
+            phpdoc/phpdoc:3.5 \
             phpdoc -c /var/www/html/statguard/phpdoc.dist.xml
 
       - name: Fix API docs permissions
