@@ -26,7 +26,7 @@ jobs:
       - name: Publish shield.json to Gist
         uses: exuanbo/actions-deploy-gist@v1
         with:
-          gist_id: ${{ secrets.GIST_ID }}
+          gist_id: 414f8bf15fbe9503c332a5c0a57a699f
           gist_token: ${{ secrets.GIST_TOKEN }}
           gist_file_name: statguard-perf.json
           file_path: statguard-perf.json

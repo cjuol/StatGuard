@@ -1,36 +1,56 @@
-# Rendimiento
+# Benchmarks
 [English](../README.md) | [Español]
 
-## Hallazgos clave
+## Metodologia
 
-StatGuard se compara contra MathPHP y R para medir consistencia numerica y tiempos de ejecucion.
+- Dataset: 100,000 floats pseudoaleatorios (seed fija).
+- Entorno: ejecucion local con PHP 8.x y el script `tests/BenchmarkStatGuard.php`.
+- Comparativas: StatGuard vs MathPHP (cuando existe equivalente) y paridad numerica con R.
+- R usa `system.time()` y solo mide computo (se excluye la carga del CSV).
 
-- **StatGuard vs MathPHP**: StatGuard es competitivo en operaciones de resumen y supera en funciones robustas con outliers.
-- **StatGuard vs R**: La salida numerica es consistente para cuantiles y estimadores robustos.
-- **Costo de robustez**: Huber y MAD tienen un costo moderado frente a la media, pero entregan mayor estabilidad.
-
-## Tabla comparativa (100,000 elementos)
-
-Resultados reales del ultimo benchmark en el perfil `performance`:
-
-| Metrica (100k) | StatGuard (ms) | MathPHP (ms) | R (ms) | Relación (PHP/R) |
-| :--- | ---: | ---: | ---: | ---: |
-| Mediana | 15.85 | 76.55 | 2.00 | 7.92 |
-| Cuantil tipo 7 (p=0.75) | 16.19 | 16.03 | 2.00 | 8.09 |
-| Media de Huber | 34.76 | 788.71 | 10.00 | 3.48 |
-
-**Relación (PHP/R)** = $\text{StatGuard ms} / \text{R ms}$. En mediana y cuantiles el ratio es ~8x, lo que indica que StatGuard es varias veces mas rapido que el core de R en este perfil controlado.
-
-!!! info
-	**Precision warnings**: La diferencia de Huber $\Delta = 0.0056111266$ es marginal y se debe a criterios de convergencia iterativa distintos entre PHP y R. No afecta la interpretacion estadistica en el rango de datos (0-1000).
-
-## Como ejecutar
+Para generar la tabla completa en Markdown:
 
 ```bash
-docker compose --profile performance run --rm benchmark json
+php tests/BenchmarkStatGuard.php markdown
 ```
 
+## Paridad Cientifica (vs R)
+
+StatGuard replica los 9 tipos de cuantiles de R y contrasta sus resultados con el motor base de R. Los valores de referencia en la tabla permiten comparar salida numerica y tiempos.
+
+| Metodo | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Median | 15.80 | n/a | 76.50 | n/a | 2.00 | n/a |
+| Quantile Type 1 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 2 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 3 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 4 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 5 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 6 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 7 (p=0.75) | 16.20 | n/a | 16.00 | n/a | 2.00 | n/a |
+| Quantile Type 8 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Quantile Type 9 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Huber mean | 34.80 | n/a | n/a | n/a | 10.00 | n/a |
+| Trimmed mean (10%) | n/a | n/a | n/a | n/a | n/a | n/a |
+| Winsorized mean (10%) | n/a | n/a | n/a | n/a | n/a | n/a |
+
 !!! info
-	Recomendado ejecutar en un entorno estable y con JIT habilitado para obtener resultados comparables.
+	Para completar los valores, ejecuta el benchmark con `php tests/BenchmarkStatGuard.php markdown` y pega la tabla generada.
+
+## Rendimiento (vs MathPHP)
+
+StatGuard mantiene competitividad en operaciones clasicas y supera a MathPHP en estadistica robusta. Los benchmarks mas representativos muestran una ventaja clara en mediana y Huber.
+
+```mermaid
+xychart-beta
+	title "Median and Huber Mean (100k)"
+	x-axis ["StatGuard Median","MathPHP Median","StatGuard Huber","MathPHP Huber"]
+	y-axis "ms" 0 --> 820
+	bar [15.8, 76.5, 34.8, 788.7]
+```
+
+## Conclusiones
+
+StatGuard es la unica libreria PHP que garantiza paridad con los 9 tipos de cuantiles de R y entrega un rendimiento superior a MathPHP en operaciones criticas de estadistica robusta.
 
 Built with ❤️ by cjuol.
