@@ -4,7 +4,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/statguard.svg?style=flat-square)](https://packagist.org/packages/cjuol/statguard)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![PHP Tests](https://github.com/cjuol/statguard/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/statguard/actions)
-[![Performance](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f/raw/statguard-perf.json)](https://gist.github.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f)
+[![Performance](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f/raw/shield.json)](https://gist.github.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f)
 [![R-Compatibility](https://img.shields.io/badge/R-compatibility-blue?style=flat-square)](https://cran.r-project.org/)
 [![PHP 8.x](https://img.shields.io/badge/PHP-8.x-777BB4?style=flat-square)](https://www.php.net/)
 
