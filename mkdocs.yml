@@ -12,6 +12,11 @@ nav:
 markdown_extensions:
   - admonition
   - footnotes
+  - pymdownx.arithmatex:
+      generic: true
   - tables
   - toc:
       permalink: true
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

@@ -8,34 +8,35 @@
 - Comparativas: StatGuard vs MathPHP (cuando existe equivalente) y paridad numerica con R.
 - R usa `system.time()` y solo mide computo (se excluye la carga del CSV).
 
-Para generar la tabla completa en Markdown:
+Para generar y actualizar la tabla en Markdown:
 
 ```bash
-php tests/BenchmarkStatGuard.php markdown
+php tests/BenchmarkStatGuard.php report
 ```
 
 ## Paridad Cientifica (vs R)
 
 StatGuard replica los 9 tipos de cuantiles de R y contrasta sus resultados con el motor base de R. Los valores de referencia en la tabla permiten comparar salida numerica y tiempos.
+La columna Status marca ✅ cuando la diferencia absoluta entre StatGuard y R es menor a 0.0001.
 
-| Metodo | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value |
-| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Median | 15.80 | n/a | 76.50 | n/a | 2.00 | n/a |
-| Quantile Type 1 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 2 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 3 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 4 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 5 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 6 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 7 (p=0.75) | 16.20 | n/a | 16.00 | n/a | 2.00 | n/a |
-| Quantile Type 8 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Quantile Type 9 (p=0.75) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Huber mean | 34.80 | n/a | n/a | n/a | 10.00 | n/a |
-| Trimmed mean (10%) | n/a | n/a | n/a | n/a | n/a | n/a |
-| Winsorized mean (10%) | n/a | n/a | n/a | n/a | n/a | n/a |
+<!-- BENCHMARK_PARITY_START -->
+| Method | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value | Status |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | :---: |
+| Median | - | - | - | - | - | - | ❌ |
+| Quantile Type 1 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 2 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 3 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 4 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 5 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 6 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 7 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 8 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 9 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Huber mean | - | - | - | - | - | - | ❌ |
+<!-- BENCHMARK_PARITY_END -->
 
 !!! info
-	Para completar los valores, ejecuta el benchmark con `php tests/BenchmarkStatGuard.php markdown` y pega la tabla generada.
+	La tabla se actualiza automaticamente con `php tests/BenchmarkStatGuard.php report`.
 
 ## Rendimiento (vs MathPHP)
 

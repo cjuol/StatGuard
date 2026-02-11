@@ -246,6 +246,28 @@ Up to 5x faster than MathPHP in median calculations.
 
 Dataset: 100,000 random floats. Benchmarks executed in the Docker performance profile using `docker compose --profile performance run --rm benchmark json`. R timings use `system.time()` and only measure computation (file load excluded).
 
+### Scientific Parity (vs R)
+
+Status shows ✅ when the absolute difference between StatGuard and R is below 0.0001.
+
+Generate or refresh the table with `php tests/BenchmarkStatGuard.php report`.
+
+<!-- BENCHMARK_PARITY_START -->
+| Method | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value | Status |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | :---: |
+| Median | - | - | - | - | - | - | ❌ |
+| Quantile Type 1 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 2 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 3 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 4 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 5 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 6 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 7 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 8 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Quantile Type 9 (p=0.75) | - | - | - | - | - | - | ❌ |
+| Huber mean | - | - | - | - | - | - | ❌ |
+<!-- BENCHMARK_PARITY_END -->
+
 | Metric (100k) | StatGuard ms | MathPHP ms | R ms | Ratio (PHP/R) |
 | :--- | ---: | ---: | ---: | ---: |
 | Median | 15.8 | 76.5 | 2.00 | 7.92 |
