@@ -1,12 +1,20 @@
 # Fundamentos matematicos
 
-StatGuard aplica estadistica robusta para evitar que el ruido y los outliers distorsionen las conclusiones.
+Esta seccion explica el "por que" con un enfoque simple. Si quieres recetas, ve a Tutoriales. Si buscas formulas completas, continua aqui.
 
 ## Huber M-Estimator
 
-El estimador de Huber es un compromiso entre la media y la mediana. Minimiza una perdida cuadratica cerca del centro y lineal en las colas, lo que reduce la influencia de valores extremos sin perder eficiencia cuando los datos son limpios.
+Idea simple: la media clasica da demasiado peso a valores extremos. Huber mantiene el centro estable y aplica un freno gradual a los outliers.
 
-En telemetria con ruido, el Huber M-Estimator es preferible porque mantiene sensibilidad al centro sin dejar que picos espurios dicten el resultado. Es ideal para series con mediciones intermitentes o sensores con drift.
+Ejemplo rapido:
+
+```text
+[10, 12, 11, 15, 10, 1000]
+```
+
+La media sube demasiado, pero Huber se mantiene cerca del centro.
+
+Definicion:
 
 $$
 \rho_k(r) = \begin{cases}
@@ -15,12 +23,31 @@ k\left(|r| - \frac{1}{2}k\right) & |r| > k
 \end{cases}
 $$
 
-!!! info
-	Cuando hay ruido o mediciones anomales, el Huber M-Estimator mantiene estabilidad donde la media clasica se sesga.
+Interpretacion:
+- Cerca del centro, se comporta como la media (cuadratica).
+- En las colas, se vuelve lineal para reducir el impacto.
+
+## MAD escalado
+
+MAD mide dispersion alrededor de la mediana. Para comparar con desviacion estandar, se escala asi:
+
+$$
+\sigma_{robust} = MAD \times 1.4826
+$$
+
+Esto lo hace comparable bajo distribuciones normales.
+
+## Coeficiente de variacion robusto
+
+En lugar de la media, se usa la mediana para evitar inflar la variabilidad:
+
+$$
+CV_r = \left(\frac{\sigma_{robust}}{|\tilde{x}|}\right) \times 100
+$$
 
 ## Cuantiles de R (Hyndman & Fan)
 
-Para un conjunto ordenado $x_{(1)} \le \dots \le x_{(n)}$, los cuantiles se calculan con reglas definidas por $p_k$ y por los parametros $(a, b)$:
+Para un conjunto ordenado $x_{(1)} \le \dots \le x_{(n)}$, los cuantiles siguen reglas definidas por $p_k$ y por los parametros $(a, b)$:
 
 $$
 p_k = \frac{k - a}{n + b}
@@ -41,12 +68,4 @@ La interpolacion lineal se aplica entre $x_{(j)}$ y $x_{(j+1)}$ cuando $p$ cae e
 | 9 | $(k - 3/8) / (n + 1/4)$ | 3/8 | 3/8 | Normal-no-sesgada. |
 
 !!! success
-	Los cuantiles tipo 7 son el comportamiento por defecto de R y el mas comun en analisis exploratorio.
-
-## Benchmark (100,000 elementos)
-
-| Metrica (100k) | StatGuard (ms) | MathPHP (ms) | R (ms) | Relacion (PHP/R) |
-| :--- | ---: | ---: | ---: | ---: |
-| Mediana | 15.85 | 76.55 | 2.00 | 7.92 |
-| Cuantil tipo 7 (p=0.75) | 16.19 | 16.03 | 2.00 | 8.09 |
-| Media de Huber | 34.76 | 788.71 | 10.00 | 3.48 |
+	Si no sabes cual usar, el tipo 7 es el comportamiento por defecto de R.

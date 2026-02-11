@@ -244,7 +244,9 @@ Up to 5x faster than MathPHP in median calculations.
 
 20x faster than MathPHP in robust mean estimation.
 
-Dataset: 100,000 random floats. Benchmarks executed in the Docker performance profile using `docker compose --profile performance run --rm benchmark json`. R timings use `system.time()` and only measure computation (file load excluded).
+Dataset: 100,000 random floats. Benchmarks executed in the Docker performance profile using `docker compose --profile performance run --rm benchmark report`. R timings use `system.time()` and only measure computation (file load excluded).
+
+Use `json` only when you need the shield data output (it does not update the markdown tables).
 
 ### Scientific Parity (vs R)
 

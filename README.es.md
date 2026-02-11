@@ -244,7 +244,9 @@ Hasta 5x mas rapido que MathPHP en calculos de mediana.
 
 20x mas rapido que MathPHP en estimacion de media robusta.
 
-Dataset: 100000 floats aleatorios. Benchmarks ejecutados en el perfil performance con `docker compose --profile performance run --rm benchmark json`. Los tiempos de R usan `system.time()` y miden solo computacion (carga del archivo excluida).
+Dataset: 100000 floats aleatorios. Benchmarks ejecutados en el perfil performance con `docker compose --profile performance run --rm benchmark report`. Los tiempos de R usan `system.time()` y miden solo computacion (carga del archivo excluida).
+
+Usa `json` solo cuando necesites el output para el shield (no actualiza las tablas en Markdown).
 
 | Metrica (100k) | StatGuard ms | MathPHP ms | R ms | Relación (PHP/R) |
 | :--- | ---: | ---: | ---: | ---: |
