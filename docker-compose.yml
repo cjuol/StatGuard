@@ -1,0 +1,49 @@
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      target: base
+    image: statguard-core
+    environment:
+      - CHOWN_USER=${UID:-1000}
+      - CHOWN_GROUP=${GID:-1000}
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/statguard
+
+  validator:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      target: validator
+    image: statguard-validator # Imagen con PHP + R
+    profiles: ["r-validation"]
+    volumes:
+      - ./:/var/www/html/statguard
+    working_dir: /var/www/html/statguard
+    command: ["php", "scripts/validate_with_r.php"]
+
+  benchmark:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      target: validator
+    image: statguard-validator
+    profiles: ["performance"]
+    environment:
+      - DEFAULT_COMMAND=php tests/BenchmarkStatGuard.php
+    volumes:
+      - ./:/var/www/html/statguard
+    working_dir: /var/www/html/statguard
+    # Al usar 'image' sin 'build', Docker usará la imagen generada por validator
+    command: ["php", "tests/BenchmarkStatGuard.php"]
+
+  docs:
+    image: phpdocumentor/phpdocumentor
+    profiles: ["docs"]
+    volumes:
+      - ./:/var/www/html/statguard
+    # Nota: phpdoc suele trabajar mejor si le das el path absoluto del contenedor
+    command: ["phpdoc", "-d", "/var/www/html/statguard/src", "-t", "/var/www/html/statguard/docs/api"]

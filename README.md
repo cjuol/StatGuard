@@ -1,38 +1,93 @@
 # 🛡️ StatGuard: Robust Statistics & Data Integrity for PHP
+[English] | [Español](README.es.md)
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/statguard.svg?style=flat-square)](https://packagist.org/packages/cjuol/statguard)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![PHP Tests](https://github.com/cjuol/statguard/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/statguard/actions)
+[![Performance](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f/raw/statguard-perf.json)](https://gist.github.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f)
+[![R-Compatibility](https://img.shields.io/badge/R-compatibility-blue?style=flat-square)](https://cran.r-project.org/)
+[![PHP 8.x](https://img.shields.io/badge/PHP-8.x-777BB4?style=flat-square)](https://www.php.net/)
 
-StatGuard is a robust statistical analysis suite for PHP. It compares classic statistics against robust statistics to detect bias, noise, and measurement anomalies in a fully automated way.
+StatGuard is a robust statistical analysis suite for PHP focused on scientific precision and data integrity. It compares classic statistics against robust statistics to detect bias, noise, and measurement anomalies in a fully automated way.
 
-## 💡 Motivation
+## Why StatGuard
 
-In domains like sports tracking or telemetry, data often includes noise (sensor glitches, exceptional days). Classic statistics (mean) can break under a single extreme value. StatGuard acts as a data quality filter, telling you when you can trust the mean and when you should rely on the robustness of the median and MAD.
+Outliers are inevitable in telemetry, finance, sports tracking, and lab measurements. A single extreme value can pull the arithmetic mean far from the central mass, which biases decisions that depend on it. StatGuard provides robust estimators (median, MAD, trimmed and winsorized means, Huber M-estimator) that stay stable under contamination so you can trust summaries even when the data is messy.
 
-## 🚀 Highlights
+## Highlights
 
 - **ClassicStats**: Full classic descriptive statistics implementation.
 - **StatsComparator**: The analysis core that evaluates data fidelity and issues a verdict.
 - **ExportableTrait**: First-class CSV and JSON exports for every stats class.
 - **Traits + Interfaces**: Built-in data validation and extensible architecture.
+- **Independent engines**: `QuantileEngine` and `CentralTendencyEngine` keep core math isolated and reusable.
+- **R parity**: Quantiles and robust means are validated against R outputs.
 
-## 🛠 Installation
+## Features
+
+- 9 R-compatible quantile types (Hyndman & Fan 1-9).
+- Robust means: Huber, winsorized, and trimmed.
+
+## Installation
+
+Install via Composer:
 
 ```bash
 composer require cjuol/statguard
 ```
 
-## 📖 Usage
+## Usage
 
-### 1. Comparator (Bias Detection)
+### Robust Estimators (Quick Start)
 
-The most powerful tool in the suite. It detects when classic mean-based metrics are distorted by outliers.
+```php
+use Cjuol\StatGuard\RobustStats;
+
+$stats = new RobustStats();
+$data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1000];
+
+$huber = $stats->getHuberMean($data);
+$winsorized = $stats->getWinsorizedMean($data, 0.1);
+$iqr = $stats->getIqr($data, RobustStats::TYPE_R_DEFAULT);
+```
+
+Robust estimators stay stable even with extreme outliers:
+
+| Metric | Result | Comment |
+| :--- | :--- | :--- |
+| Arithmetic Mean | 95.9091 | Pulled up by the outlier |
+| Huber Mean | 6.0982 | Stays close to the central mass |
+
+### Example: Huber Mean
+
+```php
+use Cjuol\StatGuard\RobustStats;
+
+$robust = new RobustStats();
+$data = [10, 12, 11, 15, 10, 1000];
+
+$huber = $robust->getHuberMean($data, 1.345, 50, 0.001);
+```
+
+### Example: Winsorized Mean (R-Compatible Quantile Type)
+
+```php
+use Cjuol\StatGuard\RobustStats;
+
+$robust = new RobustStats();
+$data = [10, 12, 11, 15, 10, 1000];
+
+// Type 7 matches R's default quantile() behavior.
+$winsorized = $robust->getWinsorizedMean($data, 0.1, 7);
+```
+
+### Comparator (Bias Detection)
 
 ```php
 use Cjuol\StatGuard\StatsComparator;
 
 $comparator = new StatsComparator();
-$data = [10, 12, 11, 15, 10, 1000]; // 1000 is noise
+$data = [10, 12, 11, 15, 10, 1000];
 
 $analysis = $comparator->analyze($data);
 
@@ -40,23 +95,18 @@ echo $analysis['verdict'];
 // ALERT: Data is highly influenced by outliers. Use robust metrics.
 ```
 
-### 2. Instant Export
-
-Any stats class can generate reports for download or API responses:
+### Instant Export
 
 ```php
 use Cjuol\StatGuard\RobustStats;
 
 $robust = new RobustStats();
 
-// Generate a CSV for spreadsheets
 file_put_contents('report.csv', $robust->toCsv($data));
-
-// Or JSON for your frontend
 echo $robust->toJson($data);
 ```
 
-### 3. Summary Keys (Classic vs Robust)
+### Summary Keys (Classic vs Robust)
 
 Classic summary keys:
 
@@ -89,7 +139,7 @@ Robust summary keys:
 ]
 ```
 
-## 📊 Metrics Comparison
+## Metrics Comparison
 
 | Metric | ClassicStats | RobustStats | Outlier Impact |
 | :--- | :--- | :--- | :--- |
@@ -98,7 +148,23 @@ Robust summary keys:
 | Variability | CV% | Robust CV% | Very high in classic |
 | Exportable | ✅ Yes | ✅ Yes | - |
 
-## 📌 Implemented Methods
+## R Quantile Types (1-9)
+
+StatGuard matches R v4.x quantile definitions. The table below summarizes the nine Hyndman & Fan (1996) types supported by `quantile()`.
+
+| Type | $p_k$ | $a$ | $b$ | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | $k / n$ | 0 | 0 | Inverse of empirical CDF (discontinuous). |
+| 2 | $k / n$ | 0 | 0 | Averaged at discontinuities. |
+| 3 | $(k - 0.5) / n$ | -0.5 | 0 | Nearest order statistic. |
+| 4 | $k / n$ | 0 | 1 | Linear interpolation of CDF. |
+| 5 | $(k - 0.5) / n$ | 0.5 | 0.5 | Hazen (1914). |
+| 6 | $k / (n + 1)$ | 0 | 1 | Weibull (1939). |
+| 7 | $(k - 1) / (n - 1)$ | 1 | 1 | R default, mode of $F(x)$. |
+| 8 | $(k - 1/3) / (n + 1/3)$ | 1/3 | 1/3 | Median-unbiased. |
+| 9 | $(k - 3/8) / (n + 1/4)$ | 3/8 | 3/8 | Normal-unbiased. |
+
+## Implemented Methods
 
 ### ClassicStats
 
@@ -127,6 +193,9 @@ Robust summary keys:
 - `getMad(array $data): float`
 - `getOutliers(array $data): array`
 - `getConfidenceIntervals(array $data): array`
+- `getTrimmedMean(array $data, float $trimPercentage = 0.1): float`
+- `getWinsorizedMean(array $data, float $trimPercentage = 0.1, int $type = 7): float`
+- `getHuberMean(array $data, float $k = 1.345, int $maxIterations = 50, float $tolerance = 0.001): float`
 - `getSummary(array $data, bool $sort = true, int $decimals = 2): array`
 - `toJson(array $data, int $options = JSON_PRETTY_PRINT): string`
 - `toCsv(array $data, string $delimiter = ","): string`
@@ -136,7 +205,7 @@ Robust summary keys:
 - `__construct(?RobustStats $robust = null, ?ClassicStats $classic = null)`
 - `analyze(array $data, int $decimals = 2): array`
 
-## 🧪 Mathematical Basis
+## Mathematical Basis
 
 ### Scaled Robust Deviation
 
@@ -150,7 +219,44 @@ Calculated over the median to avoid a single extreme value inflating volatility:
 
 $$CV_r = \left( \frac{\sigma_{robust}}{|\tilde{x}|} \right) \times 100$$
 
-## 🚦 Tests and Quality
+## R Compatibility & Accuracy
+
+Every public statistic is tested against R v4.x outputs to ensure scientific accuracy. Quantile calculations use Type 7 by default (the same default as `quantile()` in R), and robust central tendency methods (trimmed mean, winsorized mean, Huber M-estimator) are verified via R comparison scripts in the repository.
+
+## Docker Profiles (Optional R Validation)
+
+StatGuard does not require R for normal usage. The default container is lightweight and focused on PHP development. For scientific auditing, you can enable the `r-validation` profile to run the R comparison script.
+
+```bash
+# Default dev container (no R runtime)
+docker compose up -d
+
+# Run tests in the default container
+composer run test
+
+# Run R validation in the heavy profile
+composer run validate-r
+```
+
+## Performance Benchmarks (StatGuard vs MathPHP vs R)
+
+Up to 5x faster than MathPHP in median calculations.
+
+20x faster than MathPHP in robust mean estimation.
+
+Dataset: 100,000 random floats. Benchmarks executed in the Docker performance profile using `docker compose --profile performance run --rm benchmark json`. R timings use `system.time()` and only measure computation (file load excluded).
+
+| Metric (100k) | StatGuard ms | MathPHP ms | R ms | Ratio (PHP/R) |
+| :--- | ---: | ---: | ---: | ---: |
+| Median | 15.8 | 76.5 | 2.00 | 7.92 |
+| Quantile Type 7 (p=0.75) | 16.2 | 16.0 | 2.00 | 8.09 |
+| Huber mean | 34.8 | 788.7 | 10.00 | 3.48 |
+
+Precision check (Huber): $\Delta = 0.0056111266$ for $n = 100000$ (warning threshold $10^{-10}$). Smaller datasets showed higher deltas, which are reported by the benchmark warnings.
+
+Consistent results with R core within 0.01% tolerance on the benchmark scale (0-1000).
+
+## Tests and Quality
 
 Validated with PHPUnit for full coverage of calculations and data validation.
 
@@ -158,8 +264,8 @@ Validated with PHPUnit for full coverage of calculations and data validation.
 ./vendor/bin/phpunit tests
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License. See LICENSE for details.
 
-Built with care by cjuol.
+Built with ❤️ by cjuol.

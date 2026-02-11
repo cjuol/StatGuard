@@ -1,0 +1,32 @@
+name: Performance Badge
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run benchmark (JSON)
+        run: php tests/BenchmarkStatGuard.php json
+
+      - name: Publish shield.json to Gist
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          gist_id: 414f8bf15fbe9503c332a5c0a57a699f
+          gist_token: ${{ secrets.GIST_TOKEN }}
+          gist_file_name: statguard-perf.json
+          file_path: statguard-perf.json

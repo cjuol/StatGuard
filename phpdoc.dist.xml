@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpdoc xmlns="https://www.phpdoc.org"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.phpdoc.org https://docs.phpdoc.org/latest/phpdoc.xsd">
+    <title>StatGuard API Documentation</title>
+    <paths>
+        <directory>src</directory>
+    </paths>
+    <ignore>
+        <path>vendor/*</path>
+        <path>vendor/**</path>
+    </ignore>
+    <template>
+        <name>default</name>
+    </template>
+    <transformer>
+        <target>docs/api</target>
+    </transformer>
+</phpdoc>
