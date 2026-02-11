@@ -31,7 +31,7 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/var/www/html/statguard" \
             phpdoc/phpdoc:3.5 \
-            phpdoc -c /var/www/html/statguard/phpdoc.dist.xml
+            -c /var/www/html/statguard/phpdoc.dist.xml
 
       - name: Fix API docs permissions
         run: sudo chown -R "$USER:$USER" docs/api
