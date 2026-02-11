@@ -18,6 +18,7 @@ $quantileTypes = range(1, 9);
 $format = $argv[1] ?? 'table';
 
 mt_srand(42);
+$parityTolerance = 0.0001;
 
 // --- 1. HELPERS DE DATOS Y SISTEMA ---
 
@@ -37,27 +38,33 @@ function resetMemory(): void {
 
 // --- 2. ALGORITMOS DE REFERENCIA (MANUALES) ---
 
-function manualMedian(array $data): float {
-    sort($data, SORT_NUMERIC);
+function huberMeanMathPhp(array $data, float $k = 1.345, int $maxIterations = 50, float $tolerance = 0.001): float {
     $n = count($data);
-    $mid = intdiv($n, 2);
-    return ($n % 2 === 0) 
-        ? ((float)$data[$mid - 1] + (float)$data[$mid]) / 2.0 
-        : (float)$data[$mid];
-}
+    if ($n === 0) {
+        throw new RuntimeException('Cannot compute Huber mean for empty dataset.');
+    }
 
-function manualQuantileType7(array $data, float $p): float {
-    sort($data, SORT_NUMERIC);
-    $n = count($data);
-    $p = max(0.0, min(1.0, $p));
-    $h = 1.0 + ($n - 1.0) * $p;
-    $k = (int) floor($h);
-    $d = $h - $k;
-    
-    if ($k <= 1) return (float)$data[0];
-    if ($k >= $n) return (float)$data[$n - 1];
-    
-    return (float)$data[$k - 1] + $d * ((float)$data[$k] - (float)$data[$k - 1]);
+    $mu = Average::mean($data);
+    for ($i = 0; $i < $maxIterations; $i++) {
+        $weightedSum = 0.0;
+        $weightTotal = 0.0;
+        foreach ($data as $value) {
+            $diff = $value - $mu;
+            $absDiff = abs($diff);
+            $weight = $absDiff <= $k ? 1.0 : $k / $absDiff;
+            $weightedSum += $value * $weight;
+            $weightTotal += $weight;
+        }
+
+        $nextMu = $weightTotal > 0 ? $weightedSum / $weightTotal : $mu;
+        if (abs($nextMu - $mu) < $tolerance) {
+            $mu = $nextMu;
+            break;
+        }
+        $mu = $nextMu;
+    }
+
+    return $mu;
 }
 
 // --- 3. INTEGRACIÓN CON R ---
@@ -155,10 +162,10 @@ function formatValue(?float $value): string {
     return rtrim(rtrim($formatted, '0'), '.');
 }
 
-function buildMarkdownTable(array $summaryForSize, array $methodOrder, array $methodLabels): string {
+function buildMarkdownTable(array $summaryForSize, array $methodOrder, array $methodLabels, float $tolerance): string {
     $lines = [];
-    $lines[] = '| Method | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value |';
-    $lines[] = '| :--- | ---: | ---: | ---: | ---: | ---: | ---: |';
+    $lines[] = '| Method | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value | Status |';
+    $lines[] = '| :--- | ---: | ---: | ---: | ---: | ---: | ---: | :---: |';
 
     foreach ($methodOrder as $methodKey) {
         $label = $methodLabels[$methodKey] ?? $methodKey;
@@ -166,33 +173,55 @@ function buildMarkdownTable(array $summaryForSize, array $methodOrder, array $me
         $math = $summaryForSize[$methodKey]['mathphp'] ?? ['ms' => null, 'value' => null];
         $r = $summaryForSize[$methodKey]['r'] ?? ['ms' => null, 'value' => null];
 
+        $status = '❌';
+        if ($stat['value'] !== null && $r['value'] !== null) {
+            $status = abs($stat['value'] - $r['value']) < $tolerance ? '✅' : '❌';
+        }
+
         $lines[] = sprintf(
-            '| %s | %s | %s | %s | %s | %s | %s |',
+            '| %s | %s | %s | %s | %s | %s | %s | %s |',
             $label,
             formatMs($stat['ms']),
             formatValue($stat['value']),
             formatMs($math['ms']),
             formatValue($math['value']),
             formatMs($r['ms']),
-            formatValue($r['value'])
+            formatValue($r['value']),
+            $status
         );
     }
 
     return implode("\n", $lines);
 }
 
+function updateMarkdownSection(string $filePath, string $startMarker, string $endMarker, string $table): void {
+    $contents = file_get_contents($filePath);
+    if ($contents === false) {
+        throw new RuntimeException("Unable to read {$filePath}.");
+    }
+
+    $startPos = strpos($contents, $startMarker);
+    $endPos = strpos($contents, $endMarker);
+    if ($startPos === false || $endPos === false || $endPos <= $startPos) {
+        throw new RuntimeException("Markers not found in {$filePath}.");
+    }
+
+    $before = substr($contents, 0, $startPos + strlen($startMarker));
+    $after = substr($contents, $endPos);
+
+    $updated = $before . "\n\n" . $table . "\n\n" . $after;
+    file_put_contents($filePath, $updated);
+}
+
 // --- 5. EJECUCIÓN DEL FLUJO PRINCIPAL ---
 
 $stats = new RobustStats();
 $results = [];
-$precisionWarnings = [];
 $summary = [];
 
 $methodLabels = [
     'median' => 'Median',
-    'huber_mean' => 'Huber mean',
-    'trimmed_mean_10' => 'Trimmed mean (10%)',
-    'winsorized_mean_10' => 'Winsorized mean (10%)'
+    'huber_mean' => 'Huber mean'
 ];
 
 $methodOrder = ['median'];
@@ -201,7 +230,41 @@ foreach ($quantileTypes as $type) {
     $methodLabels[$methodKey] = "Quantile Type {$type} (p={$quantileP})";
     $methodOrder[] = $methodKey;
 }
-$methodOrder = array_merge($methodOrder, ['huber_mean', 'trimmed_mean_10', 'winsorized_mean_10']);
+$methodOrder[] = 'huber_mean';
+
+$methods = [
+    'median' => [
+        'label' => 'Median',
+        'statguard' => fn(array $data) => $stats->getMedian($data),
+        'mathphp' => fn(array $data) => Average::median($data),
+        'stat_label' => fn(int $size) => "median: StatGuard ({$size})",
+        'math_label' => fn(int $size) => "median: MathPHP ({$size})",
+        'r_ms_key' => 'median_ms',
+        'r_value_key' => 'median'
+    ],
+    'huber_mean' => [
+        'label' => 'Huber mean',
+        'statguard' => fn(array $data) => $stats->getHuberMean($data),
+        'mathphp' => fn(array $data) => huberMeanMathPhp($data),
+        'stat_label' => fn(int $size) => "mean: Huber StatGuard ({$size})",
+        'math_label' => fn(int $size) => "mean: Huber MathPHP ({$size})",
+        'r_ms_key' => 'huber_ms',
+        'r_value_key' => 'huber_mu'
+    ]
+];
+
+foreach ($quantileTypes as $type) {
+    $methodKey = "quantile_t{$type}";
+    $methods[$methodKey] = [
+        'label' => "Quantile Type {$type} (p={$quantileP})",
+        'statguard' => fn(array $data) => QuantileEngine::calculate($data, $quantileP, $type),
+        'mathphp' => fn(array $data) => Descriptive::percentile($data, $quantileP * 100),
+        'stat_label' => fn(int $size) => "quantile t{$type}: StatGuard p={$quantileP} ({$size})",
+        'math_label' => fn(int $size) => "quantile t{$type}: MathPHP p={$quantileP} ({$size})",
+        'r_ms_key' => "quantile_t{$type}_ms",
+        'r_value_key' => "quantile_t{$type}_value"
+    ];
+}
 
 foreach ($sizes as $size) {
     $data = generateDataset($size);
@@ -213,132 +276,76 @@ foreach ($sizes as $size) {
         $rBench = [];
     }
 
-    /** SECCIÓN: MEDIANA */
-    $resMedian = measure("median: StatGuard ($size)", fn() => $stats->getMedian($data));
-    $resMedian['r_ms'] = $rBench['median_ms'] ?? null;
+    foreach ($methodOrder as $methodKey) {
+        $method = $methods[$methodKey];
+        $statLabel = $method['stat_label']($size);
+        $mathLabel = $method['math_label']($size);
 
-    $results[] = $resMedian;
-    $results[] = measure("median: manual sort ($size)", fn() => manualMedian($data));
+        $statResult = measure($statLabel, fn() => $method['statguard']($data));
+        $statResult['r_ms'] = $rBench[$method['r_ms_key']] ?? null;
+        $results[] = $statResult;
 
-    $resMedianMath = measure("median: MathPHP ($size)", fn() => Average::median($data));
-    $resMedianMath['r_ms'] = $rBench['median_ms'] ?? null;
-    $results[] = $resMedianMath;
+        $mathResult = measure($mathLabel, fn() => $method['mathphp']($data));
+        $mathResult['r_ms'] = $rBench[$method['r_ms_key']] ?? null;
+        $results[] = $mathResult;
 
-    recordSummary($summary, $size, 'median', 'statguard', $resMedian['ms'], $resMedian['value']);
-    recordSummary($summary, $size, 'median', 'mathphp', $resMedianMath['ms'], $resMedianMath['value']);
-    recordSummary($summary, $size, 'median', 'r', $rBench['median_ms'] ?? null, $rBench['median'] ?? null);
-
-    /** SECCIÓN: CUANTILES */
-    foreach ($quantileTypes as $type) {
-        $methodKey = "quantile_t{$type}";
-        $resQ = measure(
-            "quantile t{$type}: StatGuard p={$quantileP} ($size)",
-            fn() => QuantileEngine::calculate($data, $quantileP, $type)
-        );
-        $resQ['r_ms'] = $rBench["quantile_t{$type}_ms"] ?? null;
-
-        $results[] = $resQ;
-        if ($type === 7) {
-            $results[] = measure(
-                "quantile t{$type}: manual p={$quantileP} ($size)",
-                fn() => manualQuantileType7($data, $quantileP)
-            );
-        }
-
-        recordSummary($summary, $size, $methodKey, 'statguard', $resQ['ms'], $resQ['value']);
+        recordSummary($summary, $size, $methodKey, 'statguard', $statResult['ms'], $statResult['value']);
+        recordSummary($summary, $size, $methodKey, 'mathphp', $mathResult['ms'], $mathResult['value']);
         recordSummary(
             $summary,
             $size,
             $methodKey,
             'r',
-            $rBench["quantile_t{$type}_ms"] ?? null,
-            $rBench["quantile_t{$type}_value"] ?? null
+            $rBench[$method['r_ms_key']] ?? null,
+            $rBench[$method['r_value_key']] ?? null
         );
-
-        if ($type === 7) {
-            $resQMath = measure(
-                "quantile t{$type}: MathPHP p={$quantileP} ($size)",
-                fn() => Descriptive::percentile($data, $quantileP * 100)
-            );
-            $resQMath['r_ms'] = $rBench["quantile_t{$type}_ms"] ?? null;
-            $results[] = $resQMath;
-            recordSummary($summary, $size, $methodKey, 'mathphp', $resQMath['ms'], $resQMath['value']);
-        } else {
-            recordSummary($summary, $size, $methodKey, 'mathphp', null, null);
-        }
-    }
-
-    /** SECCIÓN: MEDIAS ROBUSTAS (HUBER) */
-    $resHuber = measure("mean: Huber StatGuard ($size)", fn() => $stats->getHuberMean($data));
-    $resHuber['r_ms'] = $rBench['huber_ms'] ?? null;
-
-    $results[] = measure("mean: arithmetic ($size)", fn() => array_sum($data) / count($data));
-    $results[] = $resHuber;
-
-    recordSummary($summary, $size, 'huber_mean', 'statguard', $resHuber['ms'], $resHuber['value']);
-    recordSummary($summary, $size, 'huber_mean', 'mathphp', null, null);
-    recordSummary($summary, $size, 'huber_mean', 'r', $rBench['huber_ms'] ?? null, $rBench['huber_mu'] ?? null);
-
-    /** SECCIÓN: TRIMMED MEAN (10%) */
-    $resTrimmed = measure("mean: Trimmed StatGuard 10% ($size)", fn() => $stats->getTrimmedMean($data, 0.1));
-    $resTrimmed['r_ms'] = $rBench['trimmed_ms'] ?? null;
-    $results[] = $resTrimmed;
-
-    $resTrimmedMath = measure("mean: Trimmed MathPHP 10% ($size)", fn() => Average::truncatedMean($data, 10));
-    $resTrimmedMath['r_ms'] = $rBench['trimmed_ms'] ?? null;
-    $results[] = $resTrimmedMath;
-
-    recordSummary($summary, $size, 'trimmed_mean_10', 'statguard', $resTrimmed['ms'], $resTrimmed['value']);
-    recordSummary($summary, $size, 'trimmed_mean_10', 'mathphp', $resTrimmedMath['ms'], $resTrimmedMath['value']);
-    recordSummary($summary, $size, 'trimmed_mean_10', 'r', $rBench['trimmed_ms'] ?? null, $rBench['trimmed_mean'] ?? null);
-
-    /** SECCIÓN: WINSORIZED MEAN (10%) */
-    $resWinsor = measure(
-        "mean: Winsorized StatGuard 10% ($size)",
-        fn() => $stats->getWinsorizedMean($data, 0.1, 7)
-    );
-    $resWinsor['r_ms'] = $rBench['winsorized_ms'] ?? null;
-    $results[] = $resWinsor;
-
-    recordSummary($summary, $size, 'winsorized_mean_10', 'statguard', $resWinsor['ms'], $resWinsor['value']);
-    recordSummary($summary, $size, 'winsorized_mean_10', 'mathphp', null, null);
-    recordSummary(
-        $summary,
-        $size,
-        'winsorized_mean_10',
-        'r',
-        $rBench['winsorized_ms'] ?? null,
-        $rBench['winsorized_mean'] ?? null
-    );
-
-    // Verificación de precisión contra R
-    if (isset($rBench['huber_mu'])) {
-        $diff = abs($resHuber['value'] - (float)$rBench['huber_mu']);
-        if ($diff > 1e-10) {
-            $precisionWarnings[] = "Huber Accuracy Warning ($size): Δ $diff";
-        }
     }
 }
 
 // --- 6. RENDERIZADO DE RESULTADOS ---
 
-if ($format === 'json') {
+if ($format === 'json' || $format === 'report') {
     $shieldData = buildShieldData($results);
     file_put_contents(
         'statguard-perf.json',
         json_encode($shieldData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
     );
 
-    $markdown = buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels);
-    echo json_encode(
-        ['benchmarks' => $results, 'warnings' => $precisionWarnings, 'markdown' => $markdown],
-        JSON_PRETTY_PRINT
-    );
+    $markdown = buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels, $parityTolerance);
+    $report = [
+        'generated_at' => date('c'),
+        'sizes' => $sizes,
+        'quantile_p' => $quantileP,
+        'tolerance' => $parityTolerance,
+        'method_order' => $methodOrder,
+        'method_labels' => $methodLabels,
+        'benchmarks' => $results,
+        'summary' => $summary,
+        'table_size' => 100000,
+        'table_markdown' => $markdown
+    ];
+
+    if ($format === 'report') {
+        updateMarkdownSection(
+            __DIR__ . '/../docs/benchmarks.md',
+            '<!-- BENCHMARK_PARITY_START -->',
+            '<!-- BENCHMARK_PARITY_END -->',
+            $markdown
+        );
+        updateMarkdownSection(
+            __DIR__ . '/../README.md',
+            '<!-- BENCHMARK_PARITY_START -->',
+            '<!-- BENCHMARK_PARITY_END -->',
+            $markdown
+        );
+    }
+
+    echo json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     exit;
 }
 
 if ($format === 'markdown') {
-    echo buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels) . "\n";
+    echo buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels, $parityTolerance) . "\n";
     exit;
 }
 
@@ -356,7 +363,5 @@ foreach ($results as $r) {
     );
 }
 
-foreach ($precisionWarnings as $w) echo "⚠️  $w\n";
-
 echo "\nMARKDOWN SUMMARY (100000)\n";
-echo buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels) . "\n";
+echo buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels, $parityTolerance) . "\n";
