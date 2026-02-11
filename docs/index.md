@@ -5,20 +5,20 @@
 [![Version](https://img.shields.io/badge/version-v1.1.0-brightgreen.svg)](https://packagist.org/packages/cjuol/statguard)
 [![Licencia](https://img.shields.io/github/license/cjuol/statguard.svg)](LICENSE)
 
-StatGuard es el motor estadistico mas rapido para PHP en analisis robusto, enfocado en precision cientifica y deteccion de sesgos por valores atipicos. En medianas supera a MathPHP por un factor cercano a 5x en datasets grandes y en la media de Huber alcanza cerca de 20x.
+StatGuard es una suite de estadistica robusta para PHP. Te ayuda a resumir datos con outliers sin sesgo y a comparar resultados clasicos vs robustos con un veredicto claro.
 
 !!! info
 	Incluye cuantiles compatibles con R, estimadores robustos (Huber, MAD, IQR) y exportaciones listas para auditoria.
 
-## Benchmark (100,000 elementos)
+## Empieza rapido
 
-| Metrica (100k) | StatGuard (ms) | MathPHP (ms) | R (ms) | Relacion (PHP/R) |
-| :--- | ---: | ---: | ---: | ---: |
-| Mediana | 15.85 | 76.55 | 2.00 | 7.92 |
-| Cuantil tipo 7 (p=0.75) | 16.19 | 16.03 | 2.00 | 8.09 |
-| Media de Huber | 34.76 | 788.71 | 10.00 | 3.48 |
+Instala via Composer:
 
-## Quick Start
+```bash
+composer require cjuol/statguard
+```
+
+Ejemplo minimo:
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -30,14 +30,18 @@ $mean = $stats->getMean($data);
 $huber = $stats->getHuberMean($data);
 ```
 
-Comparativa rapida (Media vs Huber):
+Si quieres un flujo completo, sigue la guia de inicio y los tutoriales.
 
-| Metrica | Resultado | Interpretacion |
-| :--- | ---: | :--- |
-| Media | 95.9091 | Sesgada por el outlier |
-| Huber | 6.0982 | Se mantiene cerca del centro |
+## Que puedes hacer con StatGuard
 
-!!! success
-	El estimador de Huber conserva precision en el centro y controla el impacto de valores extremos.
+- Detectar sesgo por outliers con `StatsComparator`.
+- Generar reportes robustos con `RobustStats`.
+- Replicar cuantiles de R (tipos 1-9).
+
+## Siguientes pasos
+
+- Guia de inicio: instalacion y primer resultado.
+- Tutoriales: recetas para casos reales.
+- Conceptos: fundamentos simples antes de la teoria.
 
 Built with ❤️ by cjuol.

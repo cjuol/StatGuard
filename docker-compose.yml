@@ -38,7 +38,7 @@ services:
       - ./:/var/www/html/statguard
     working_dir: /var/www/html/statguard
     # Al usar 'image' sin 'build', Docker usará la imagen generada por validator
-    command: ["php", "tests/BenchmarkStatGuard.php"]
+    command: ["php", "tests/BenchmarkStatGuard.php", "report"]
 
   docs:
     image: phpdocumentor/phpdocumentor

@@ -5,10 +5,14 @@ theme:
   name: material
   language: es
 nav:
-  - Introduccion: index.md
+  - Inicio: index.md
+  - Guia de inicio: getting-started.md
+  - Tutoriales: tutorials.md
+  - Conceptos: concepts.md
   - Fundamentos matematicos: math-basis.md
   - Referencia API: api-reference.md
   - Benchmarks: benchmarks.md
+  - FAQ: faq.md
 markdown_extensions:
   - admonition
   - footnotes
