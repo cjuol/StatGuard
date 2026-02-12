@@ -1,7 +1,7 @@
 # 🛡️ StatGuard
 
 [![GitHub Actions](https://github.com/cjuol/statguard/actions/workflows/docs.yml/badge.svg)](https://github.com/cjuol/statguard/actions)
-[![Stable](https://img.shields.io/github/v/release/cjuol/statguard?color=brightgreen&label=stable)](https://github.com/cjuol/statguard/releases)
+[![Latest Stable Version](https://img.shields.io/packagist/v/cjuol/statguard?color=brightgreen&label=stable)](https://packagist.org/packages/cjuol/statguard)
 [![License](https://img.shields.io/github/license/cjuol/statguard.svg)](LICENSE)
 
 StatGuard is a robust statistics suite for PHP. It helps you summarize data with outliers without bias and compare classic vs robust results with a clear verdict.
