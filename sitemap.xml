@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/api-reference/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/api-reference/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/api-reference/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/benchmarks/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/benchmarks/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/benchmarks/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/concepts/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/concepts/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/concepts/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/faq/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/faq/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/faq/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/getting-started/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/getting-started/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/math-basis/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/math-basis/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/math-basis/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/tutorials/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/tutorials/"/>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/tutorials/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/api-reference/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/api-reference/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/api-reference/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/benchmarks/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/benchmarks/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/benchmarks/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/concepts/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/concepts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/concepts/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/faq/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/faq/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/faq/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/getting-started/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/getting-started/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/getting-started/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/math-basis/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/math-basis/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/math-basis/"/>
+    </url>
+    <url>
+        <loc>https://cjuol.github.io/StatGuard/es/tutorials/</loc>
+        <lastmod>2026-02-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="es" href="https://cjuol.github.io/StatGuard/es/tutorials/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cjuol.github.io/StatGuard/tutorials/"/>
+    </url>
+</urlset>
