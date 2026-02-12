@@ -8,7 +8,9 @@ suppressPackageStartupMessages({
 x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1000)
 
 trimmed <- mean(x, trim = 0.1)
-winsorized <- DescTools::WinsorizedMean(x, probs = c(0.1, 0.9))
+ql <- quantile(x, probs = 0.1, type = 7, names = FALSE)
+qu <- quantile(x, probs = 0.9, type = 7, names = FALSE)
+winsorized <- mean(pmin(pmax(x, ql), qu))
 huber_mu <- MASS::huber(x)$mu
 
 huber_k <- as.numeric(formals(MASS::huber)$k)

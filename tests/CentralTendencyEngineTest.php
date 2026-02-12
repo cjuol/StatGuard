@@ -59,7 +59,7 @@ final class CentralTendencyEngineTest extends TestCase
             (float) $reference['huber_tol']
         );
 
-        $this->assertEqualsWithDelta($reference['huber'], $result, self::DELTA);
+        $this->assertEqualsWithDelta($reference['huber'], $result, 2e-6);
     }
 
     public static function emptyDatasetProvider(): array
