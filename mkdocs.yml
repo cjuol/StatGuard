@@ -1,6 +1,6 @@
 site_name: StatGuard Documentation
 site_description: Technical documentation for StatGuard
-site_url: https://cjuol.github.io/statguard/
+site_url: https://cjuol.github.io/StatGuard/
 theme:
   name: material
   language: en
@@ -52,8 +52,8 @@ extra_javascript:
 extra:
   alternate:
     - name: English
-      link: https://cjuol.github.io/statguard/
+      link: https://cjuol.github.io/StatGuard/
       lang: en
     - name: Espanol
-      link: https://cjuol.github.io/statguard/es/
+      link: https://cjuol.github.io/StatGuard/es/
       lang: es
