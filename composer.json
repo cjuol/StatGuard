@@ -44,7 +44,7 @@
         }
     },
     "scripts": {
-        "test": "docker compose build web && docker compose run --rm web phpunit",
+        "test": "sh -c 'if docker compose --profile r-validation run --rm validator Rscript --version >/dev/null 2>&1; then docker compose --profile r-validation run --rm validator phpunit -c phpunit.xml.dist; else docker compose build web && docker compose run --rm web phpunit -c phpunit.xml.dist; fi'",
         "validate-r": "docker compose build web validator && docker compose --profile r-validation run --rm validator"
     },
     "minimum-stability": "stable",
