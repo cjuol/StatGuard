@@ -1,24 +1,23 @@
 # 🛡️ StatGuard
-[English](../README.md) | [Español]
 
 [![GitHub Actions](https://github.com/cjuol/statguard/actions/workflows/docs.yml/badge.svg)](https://github.com/cjuol/statguard/actions)
-[![Version](https://img.shields.io/badge/version-v1.1.0-brightgreen.svg)](https://packagist.org/packages/cjuol/statguard)
-[![Licencia](https://img.shields.io/github/license/cjuol/statguard.svg)](LICENSE)
+[![Stable](https://img.shields.io/github/v/release/cjuol/statguard?color=brightgreen&label=stable)](https://github.com/cjuol/statguard/releases)
+[![License](https://img.shields.io/github/license/cjuol/statguard.svg)](LICENSE)
 
-StatGuard es una suite de estadistica robusta para PHP. Te ayuda a resumir datos con outliers sin sesgo y a comparar resultados clasicos vs robustos con un veredicto claro.
+StatGuard is a robust statistics suite for PHP. It helps you summarize data with outliers without bias and compare classic vs robust results with a clear verdict.
 
 !!! info
-	Incluye cuantiles compatibles con R, estimadores robustos (Huber, MAD, IQR) y exportaciones listas para auditoria.
+	Includes R-compatible quantiles, robust estimators (Huber, MAD, IQR), and audit-ready exports.
 
-## Empieza rapido
+## Quick start
 
-Instala via Composer:
+Install via Composer:
 
 ```bash
 composer require cjuol/statguard
 ```
 
-Ejemplo minimo:
+Minimal example:
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -30,18 +29,18 @@ $mean = $stats->getMean($data);
 $huber = $stats->getHuberMean($data);
 ```
 
-Si quieres un flujo completo, sigue la guia de inicio y los tutoriales.
+If you want a full workflow, follow the Getting started guide and the tutorials.
 
-## Que puedes hacer con StatGuard
+## What you can do with StatGuard
 
-- Detectar sesgo por outliers con `StatsComparator`.
-- Generar reportes robustos con `RobustStats`.
-- Replicar cuantiles de R (tipos 1-9).
+- Detect outlier bias with `StatsComparator`.
+- Generate robust reports with `RobustStats`.
+- Replicate R quantiles (types 1-9).
 
-## Siguientes pasos
+## Next steps
 
-- Guia de inicio: instalacion y primer resultado.
-- Tutoriales: recetas para casos reales.
-- Conceptos: fundamentos simples antes de la teoria.
+- Getting started: installation and first result.
+- Tutorials: recipes for real cases.
+- Concepts: simple foundations before theory.
 
 Built with ❤️ by cjuol.

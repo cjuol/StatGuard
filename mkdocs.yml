@@ -1,18 +1,41 @@
 site_name: StatGuard Documentation
-site_description: Documentacion tecnica de StatGuard
+site_description: Technical documentation for StatGuard
 site_url: https://cjuol.github.io/statguard/
 theme:
   name: material
-  language: es
+  language: en
 nav:
-  - Inicio: index.md
-  - Guia de inicio: getting-started.md
-  - Tutoriales: tutorials.md
-  - Conceptos: concepts.md
-  - Fundamentos matematicos: math-basis.md
-  - Referencia API: api-reference.md
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Tutorials: tutorials.md
+  - Concepts: concepts.md
+  - Mathematical basis: math-basis.md
+  - API Reference: api-reference.md
   - Benchmarks: benchmarks.md
   - FAQ: faq.md
+plugins:
+  - search
+  - i18n:
+      default_language: en
+      docs_structure: suffix
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: es
+          name: Espanol
+          build: true
+      nav_translations:
+        es:
+          Home: Inicio
+          Getting started: Guia de inicio
+          Tutorials: Tutoriales
+          Concepts: Conceptos
+          Mathematical basis: Fundamentos matematicos
+          API Reference: Referencia API
+          Benchmarks: Benchmarks
+          FAQ: FAQ
 markdown_extensions:
   - admonition
   - footnotes
@@ -23,4 +46,14 @@ markdown_extensions:
       permalink: true
 
 extra_javascript:
+  - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra:
+  alternate:
+    - name: English
+      link: https://cjuol.github.io/statguard/
+      lang: en
+    - name: Espanol
+      link: https://cjuol.github.io/statguard/es/
+      lang: es

@@ -1,20 +1,20 @@
-# API reference
+# Referencia de API
 
-The API generated with phpDocumentor is available in the menu under **API**.
-Use this page as a quick map of classes and minimal examples.
+La API generada con phpDocumentor esta disponible en el menu bajo el enlace **API**.
+Usa esta pagina como mapa rapido de clases y ejemplos minimos.
 
 !!! info
-	If you run the site locally, open the API section to browse namespaces, classes, and methods.
+	Si ejecutas el sitio localmente, abre la seccion API para navegar por namespaces, clases y metodos.
 
-## Class map
+## Mapa de clases
 
-- `ClassicStats`: classic statistics (mean, deviation, variance, outliers).
-- `RobustStats`: robust statistics (Huber, MAD, IQR, robust CV).
-- `QuantileEngine`: R-compatible quantiles types 1-9.
-- `CentralTendencyEngine`: median, Huber, and robust means.
-- `StatsComparator`: bias verdict between classic and robust.
+- `ClassicStats`: estadistica clasica (media, desviacion, varianza, outliers).
+- `RobustStats`: estadistica robusta (Huber, MAD, IQR, robust CV).
+- `QuantileEngine`: cuantiles tipo 1-9 compatibles con R.
+- `CentralTendencyEngine`: mediana, Huber y medias robustas.
+- `StatsComparator`: veredicto de sesgo entre clasico y robusto.
 
-## Minimal examples
+## Ejemplos minimos
 
 ### ClassicStats
 

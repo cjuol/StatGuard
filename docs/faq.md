@@ -1,22 +1,22 @@
 # FAQ
 
-## Por que mis resultados difieren de R
+## Why do my results differ from R
 
-- Verifica que el tipo de cuantil sea el mismo (1-9).
-- Asegurate de ordenar y limpiar los datos igual.
-- Confirma que estas usando los mismos decimales y redondeo.
+- Verify that the quantile type is the same (1-9).
+- Make sure you sort and clean the data in the same way.
+- Confirm you are using the same decimals and rounding.
 
-## Que tamanio minimo de dataset necesito
+## What minimum dataset size do I need
 
-No hay minimo tecnico, pero:
-- Con menos de 5-7 valores, la varianza es poco estable.
-- Para detectar outliers, se recomiendan mas de 20 valores.
+There is no hard minimum, but:
+- With fewer than 5-7 values, variance is unstable.
+- To detect outliers, more than 20 values are recommended.
 
-## Cuando usar Huber vs mediana
+## When to use Huber vs median
 
-- Huber conserva eficiencia cuando los datos son limpios.
-- Mediana es mas resistente si hay extremos muy agresivos.
+- Huber keeps efficiency when data is clean.
+- Median is more resilient when extremes are aggressive.
 
-## Puedo exportar resultados para auditoria
+## Can I export results for audits
 
-Si, usa `toJson()` o `toCsv()` en ClassicStats o RobustStats.
+Yes. Use `toJson()` or `toCsv()` in ClassicStats or RobustStats.

@@ -74,12 +74,13 @@ function runRBenchmark(array $data): array {
     $tmpFile = '/tmp/bench.csv';
     file_put_contents($tmpFile, implode("\n", $data));
 
-    $command = 'Rscript tests/r_performance.R ' . escapeshellarg($tmpFile);
+    $command = 'Rscript tests/r_performance.R ' . escapeshellarg($tmpFile) . ' 2>&1';
     $output = shell_exec($command);
     @unlink($tmpFile);
 
     if (!$output || !preg_match('/\{.*\}/s', $output, $matches)) {
-        throw new RuntimeException("Error ejecutando R o salida JSON no encontrada.");
+        $details = $output ? trim($output) : 'sin salida';
+        throw new RuntimeException("Error ejecutando R o salida JSON no encontrada: {$details}");
     }
 
     return json_decode($matches[0], true);
@@ -213,6 +214,42 @@ function updateMarkdownSection(string $filePath, string $startMarker, string $en
     file_put_contents($filePath, $updated);
 }
 
+function replaceMarkdownPlaceholders(string $filePath, array $replacements): void {
+    $contents = file_get_contents($filePath);
+    if ($contents === false) {
+        throw new RuntimeException("Unable to read {$filePath}.");
+    }
+
+    $updated = strtr($contents, $replacements);
+    file_put_contents($filePath, $updated);
+}
+
+function buildPlaceholderReplacements(array $summaryForSize, array $methodOrder, float $tolerance): array {
+    $replacements = [];
+
+    foreach ($methodOrder as $methodKey) {
+        $stat = $summaryForSize[$methodKey]['statguard'] ?? ['ms' => null, 'value' => null];
+        $math = $summaryForSize[$methodKey]['mathphp'] ?? ['ms' => null, 'value' => null];
+        $r = $summaryForSize[$methodKey]['r'] ?? ['ms' => null, 'value' => null];
+
+        $status = '❌';
+        if ($stat['value'] !== null && $r['value'] !== null) {
+            $status = abs($stat['value'] - $r['value']) < $tolerance ? '✅' : '❌';
+        }
+
+        $prefix = $methodKey;
+        $replacements["{{{$prefix}_statguard_ms}}"] = formatMs($stat['ms']);
+        $replacements["{{{$prefix}_statguard_value}}"] = formatValue($stat['value']);
+        $replacements["{{{$prefix}_mathphp_ms}}"] = formatMs($math['ms']);
+        $replacements["{{{$prefix}_mathphp_value}}"] = formatValue($math['value']);
+        $replacements["{{{$prefix}_r_ms}}"] = formatMs($r['ms']);
+        $replacements["{{{$prefix}_r_value}}"] = formatValue($r['value']);
+        $replacements["{{{$prefix}_status}}"] = $status;
+    }
+
+    return $replacements;
+}
+
 // --- 5. EJECUCIÓN DEL FLUJO PRINCIPAL ---
 
 $stats = new RobustStats();
@@ -273,6 +310,7 @@ foreach ($sizes as $size) {
     try {
         $rBench = runRBenchmark($data);
     } catch (Exception $e) {
+        fwrite(STDERR, "R benchmark fallo: {$e->getMessage()}\n");
         $rBench = [];
     }
 
@@ -308,10 +346,12 @@ if ($format === 'json' || $format === 'report') {
     $shieldData = buildShieldData($results);
     file_put_contents(
         'statguard-perf.json',
-        json_encode($shieldData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        json_encode($shieldData, JSON_UNESCAPED_SLASHES)
     );
 
-    $markdown = buildMarkdownTable($summary[100000] ?? [], $methodOrder, $methodLabels, $parityTolerance);
+    $tableSize = 100000;
+    $summaryForTable = $summary[$tableSize] ?? [];
+    $markdown = buildMarkdownTable($summaryForTable, $methodOrder, $methodLabels, $parityTolerance);
     $report = [
         'generated_at' => date('c'),
         'sizes' => $sizes,
@@ -321,23 +361,26 @@ if ($format === 'json' || $format === 'report') {
         'method_labels' => $methodLabels,
         'benchmarks' => $results,
         'summary' => $summary,
-        'table_size' => 100000,
+        'table_size' => $tableSize,
         'table_markdown' => $markdown
     ];
 
     if ($format === 'report') {
-        updateMarkdownSection(
+        $benchmarksPaths = [
             __DIR__ . '/../docs/benchmarks.md',
-            '<!-- BENCHMARK_PARITY_START -->',
-            '<!-- BENCHMARK_PARITY_END -->',
-            $markdown
-        );
-        updateMarkdownSection(
-            __DIR__ . '/../README.md',
-            '<!-- BENCHMARK_PARITY_START -->',
-            '<!-- BENCHMARK_PARITY_END -->',
-            $markdown
-        );
+            __DIR__ . '/../docs/benchmarks.es.md'
+        ];
+
+        foreach ($benchmarksPaths as $benchmarksPath) {
+            if (file_exists($benchmarksPath)) {
+                updateMarkdownSection(
+                    $benchmarksPath,
+                    '<!-- BENCHMARK_PARITY_START -->',
+                    '<!-- BENCHMARK_PARITY_END -->',
+                    $markdown
+                );
+            }
+        }
     }
 
     echo json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

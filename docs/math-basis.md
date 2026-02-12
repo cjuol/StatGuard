@@ -1,71 +1,71 @@
-# Fundamentos matematicos
+# Mathematical basis
 
-Esta seccion explica el "por que" con un enfoque simple. Si quieres recetas, ve a Tutoriales. Si buscas formulas completas, continua aqui.
+This section explains the "why" with a simple approach. If you want recipes, go to Tutorials. If you want full formulas, keep reading.
 
 ## Huber M-Estimator
 
-Idea simple: la media clasica da demasiado peso a valores extremos. Huber mantiene el centro estable y aplica un freno gradual a los outliers.
+Simple idea: the classic mean gives too much weight to extreme values. Huber keeps the center stable and applies a gradual brake to outliers.
 
-Ejemplo rapido:
+Quick example:
 
 ```text
 [10, 12, 11, 15, 10, 1000]
 ```
 
-La media sube demasiado, pero Huber se mantiene cerca del centro.
+The mean jumps too much, but Huber stays near the center.
 
-Definicion:
+Definition:
 
 $$
 \rho_k(r) = \begin{cases}
-\frac{1}{2}r^2 & |r| \le k \\
-k\left(|r| - \frac{1}{2}k\right) & |r| > k
+\frac{1}{2} r^2 & \text{if } |r| \le k \\
+k\left(|r| - \frac{1}{2} k\right) & \text{if } |r| > k
 \end{cases}
 $$
 
-Interpretacion:
-- Cerca del centro, se comporta como la media (cuadratica).
-- En las colas, se vuelve lineal para reducir el impacto.
+Interpretation:
+- Near the center, it behaves like the mean (quadratic).
+- In the tails, it becomes linear to reduce impact.
 
-## MAD escalado
+## Scaled MAD
 
-MAD mide dispersion alrededor de la mediana. Para comparar con desviacion estandar, se escala asi:
+MAD measures dispersion around the median. To compare it with standard deviation, scale it as follows:
 
 $$
 \sigma_{robust} = MAD \times 1.4826
 $$
 
-Esto lo hace comparable bajo distribuciones normales.
+This makes it comparable under normal distributions.
 
-## Coeficiente de variacion robusto
+## Robust coefficient of variation
 
-En lugar de la media, se usa la mediana para evitar inflar la variabilidad:
+Instead of the mean, use the median to avoid inflating variability:
 
 $$
 CV_r = \left(\frac{\sigma_{robust}}{|\tilde{x}|}\right) \times 100
 $$
 
-## Cuantiles de R (Hyndman & Fan)
+## R quantiles (Hyndman & Fan)
 
-Para un conjunto ordenado $x_{(1)} \le \dots \le x_{(n)}$, los cuantiles siguen reglas definidas por $p_k$ y por los parametros $(a, b)$:
+For an ordered set $x_{(1)} \le \dots \le x_{(n)}$, quantiles follow rules defined by $p_k$ and parameters $(a, b)$:
 
 $$
 p_k = \frac{k - a}{n + b}
 $$
 
-La interpolacion lineal se aplica entre $x_{(j)}$ y $x_{(j+1)}$ cuando $p$ cae entre posiciones. StatGuard implementa los 9 tipos usados por R.
+Linear interpolation applies between $x_{(j)}$ and $x_{(j+1)}$ when $p$ falls between positions. StatGuard implements the 9 types used by R.
 
-| Tipo | $p_k$ | $a$ | $b$ | Nota |
+| Type | $p_k$ | $a$ | $b$ | Note |
 | :---: | :--- | :---: | :---: | :--- |
-| 1 | $k / n$ | 0 | 0 | Inversa de la CDF empirica (discontinua). |
-| 2 | $k / n$ | 0 | 0 | Promedia en discontinuidades. |
-| 3 | $(k - 0.5) / n$ | -0.5 | 0 | Estadistico de orden mas cercano. |
-| 4 | $k / n$ | 0 | 1 | Interpolacion lineal de CDF. |
+| 1 | $k / n$ | 0 | 0 | Inverse of the empirical CDF (discontinuous). |
+| 2 | $k / n$ | 0 | 0 | Averages at discontinuities. |
+| 3 | $(k - 0.5) / n$ | -0.5 | 0 | Nearest order statistic. |
+| 4 | $k / n$ | 0 | 1 | Linear interpolation of CDF. |
 | 5 | $(k - 0.5) / n$ | 0.5 | 0.5 | Hazen (1914). |
 | 6 | $k / (n + 1)$ | 0 | 1 | Weibull (1939). |
-| 7 | $(k - 1) / (n - 1)$ | 1 | 1 | Default de R, modo de $F(x)$. |
-| 8 | $(k - 1/3) / (n + 1/3)$ | 1/3 | 1/3 | Mediana-no-sesgada. |
-| 9 | $(k - 3/8) / (n + 1/4)$ | 3/8 | 3/8 | Normal-no-sesgada. |
+| 7 | $(k - 1) / (n - 1)$ | 1 | 1 | R default, mode of $F(x)$. |
+| 8 | $(k - 1/3) / (n + 1/3)$ | 1/3 | 1/3 | Median-unbiased. |
+| 9 | $(k - 3/8) / (n + 1/4)$ | 3/8 | 3/8 | Normal-unbiased. |
 
 !!! success
-	Si no sabes cual usar, el tipo 7 es el comportamiento por defecto de R.
+	If you are unsure, type 7 is the default behavior in R.

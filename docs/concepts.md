@@ -1,37 +1,36 @@
-# Conceptos (para dummys)
+# Concepts (plain language)
 
-Estas ideas te ayudan a escoger la estadistica correcta sin entrar en teoria
-pesada.
+These ideas help you pick the right statistic without heavy theory.
 
-## Media vs mediana vs Huber
+## Mean vs median vs Huber
 
-Piensa en 6 mediciones y un error grande:
+Think of 6 measurements and one big error:
 
 ```text
 [10, 12, 11, 15, 10, 1000]
 ```
 
-- Media: sube mucho por el 1000.
-- Mediana: se queda en el centro real.
-- Huber: se parece a la media cuando todo esta limpio, pero "frena" outliers.
+- Mean: rises a lot because of 1000.
+- Median: stays at the real center.
+- Huber: behaves like the mean when data is clean, but "brakes" outliers.
 
-Regla simple:
-- Usa media si los datos son limpios.
-- Usa mediana o Huber si hay outliers.
+Simple rule:
+- Use the mean if data is clean.
+- Use median or Huber if there are outliers.
 
-## MAD e IQR
+## MAD and IQR
 
-- MAD (Median Absolute Deviation) mide dispersion alrededor de la mediana.
-- IQR (Interquartile Range) mide el rango entre el 25% y 75%.
+- MAD (Median Absolute Deviation) measures dispersion around the median.
+- IQR (Interquartile Range) measures the spread between 25% and 75%.
 
-Si el MAD o el IQR son altos, hay mucho ruido o colas largas.
+If MAD or IQR are high, there is lots of noise or long tails.
 
-## Cuantiles de R
+## R quantiles
 
-R define 9 formas de calcular cuantiles. StatGuard implementa todas.
+R defines 9 ways to compute quantiles. StatGuard implements all of them.
 
-- Tipo 7: default de R. Buen equilibrio.
-- Tipos 1-3: mas discretos (menos interpolacion).
-- Tipos 8-9: ajustes de sesgo para ciertas distribuciones.
+- Type 7: R default. Good balance.
+- Types 1-3: more discrete (less interpolation).
+- Types 8-9: bias adjustments for certain distributions.
 
-Si no sabes cual usar, empieza por tipo 7.
+If you are unsure, start with type 7.

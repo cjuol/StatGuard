@@ -47,3 +47,18 @@ services:
       - ./:/var/www/html/statguard
     # Nota: phpdoc suele trabajar mejor si le das el path absoluto del contenedor
     command: ["phpdoc", "-d", "/var/www/html/statguard/src", "-t", "/var/www/html/statguard/docs/api"]
+
+  mkdocs:
+    image: squidfunk/mkdocs-material
+    profiles: ["docs"]
+    ports:
+      - "8000:8000" # Vital para ver el sitio en el navegador
+    volumes:
+      - ./:/docs
+    working_dir: /docs
+    # Usamos 'serve' para desarrollo en vivo en lugar de 'build'
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        pip install --no-cache-dir mkdocs-static-i18n
+        && mkdocs serve --dev-addr=0.0.0.0:8000

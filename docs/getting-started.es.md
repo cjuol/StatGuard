@@ -1,20 +1,21 @@
-# Getting started
+# Guia de inicio
 
-This guide takes you from zero to a first result in under 10 minutes.
+Esta guia te lleva de cero a un primer resultado en menos de 10 minutos.
 
-## Installation
+## Instalacion
 
-Install via Composer:
+Instala via Composer:
 
 ```bash
 composer require cjuol/statguard
 ```
 
-Requirements: PHP 8.x.
+Requisitos: PHP 8.x.
 
-## First 10 minutes
+## Primeros 10 minutos
 
-Goal: compare the classic mean with a robust estimator and generate a quick report.
+Objetivo: comparar la media clasica con un estimador robusto y generar un
+reporte rapido.
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -38,11 +39,11 @@ print_r([
 ]);
 ```
 
-What to expect:
-- The mean shifts because of the outlier.
-- Huber stays near the center.
-- The verdict flags bias from extreme values.
+Que esperar:
+- La media se desplaza por el outlier.
+- Huber se mantiene cerca del centro.
+- El veredicto indica sesgo por valores extremos.
 
-## Next step
+## Siguiente paso
 
-Go to the tutorials for full cases and recipes.
+Pasa a los tutoriales para ver casos completos y recetas.

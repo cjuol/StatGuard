@@ -1,8 +1,8 @@
-# Tutorials
+# Tutoriales
 
-Short recipes for common tasks.
+Recetas cortas para tareas comunes.
 
-## 1) Detect outlier bias
+## 1) Detectar sesgo por outliers
 
 ```php
 use Cjuol\StatGuard\StatsComparator;
@@ -15,11 +15,11 @@ $analysis = $comparator->analyze($data);
 echo $analysis['verdict'];
 ```
 
-Quick interpretation:
-- If the verdict warns about bias, use median or Huber.
-- If the verdict is stable, the classic mean is safe.
+Interpretacion rapida:
+- Si el veredicto alerta sesgo, usa medianas o Huber.
+- Si el veredicto es estable, la media clasica es segura.
 
-## 2) Robust summary for reports
+## 2) Resumen robusto para reportes
 
 ```php
 use Cjuol\StatGuard\RobustStats;
@@ -33,7 +33,7 @@ file_put_contents('summary.csv', $robust->toCsv($data));
 file_put_contents('summary.json', $robust->toJson($data));
 ```
 
-## 3) R-compatible quantiles
+## 3) Cuantiles compatibles con R
 
 ```php
 use Cjuol\StatGuard\QuantileEngine;
@@ -41,16 +41,16 @@ use Cjuol\StatGuard\QuantileEngine;
 $data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 $engine = new QuantileEngine();
 
-// Type 7 is the R default.
+// Type 7 es el default de R.
 $q7 = $engine->quantile($data, 0.75, 7);
 
-// Type 1 is more discrete and depends on ordering.
+// Type 1 es mas discreto y depende del orden.
 $q1 = $engine->quantile($data, 0.75, 1);
 ```
 
-When to pick type 7:
-- General exploratory analysis.
-- Consistency with R defaults.
+Cuando elegir tipo 7:
+- Analisis exploratorio general.
+- Consistencia con R por defecto.
 
-When to pick type 1:
-- Discrete series or counts where you do not want interpolation.
+Cuando elegir tipo 1:
+- Series discretas o conteos donde no deseas interpolacion.

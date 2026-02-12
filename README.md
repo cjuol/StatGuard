@@ -1,7 +1,7 @@
 # 🛡️ StatGuard: Robust Statistics & Data Integrity for PHP
-[English] | [Español](README.es.md)
+[English] | [Español](docs/index.es.md)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/statguard.svg?style=flat-square)](https://packagist.org/packages/cjuol/statguard)
+[![Stable](https://img.shields.io/github/v/release/cjuol/statguard?color=brightgreen&label=stable)](https://github.com/cjuol/statguard/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![PHP Tests](https://github.com/cjuol/statguard/actions/workflows/php-tests.yml/badge.svg)](https://github.com/cjuol/statguard/actions)
 [![Performance](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f/raw/statguard-perf.json)](https://gist.github.com/cjuol/414f8bf15fbe9503c332a5c0a57a699f)

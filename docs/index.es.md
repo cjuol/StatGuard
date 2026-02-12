@@ -1,5 +1,4 @@
 # 🛡️ StatGuard: Estadistica Robusta e Integridad de Datos para PHP
-[English](README.md) | [Español]
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/cjuol/statguard.svg?style=flat-square)](https://packagist.org/packages/cjuol/statguard)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
@@ -112,13 +111,13 @@ Claves clasicas:
 
 ```php
 [
-	'mean',
-	'median',
-	'stdDev',
-	'sampleVariance',
-	'cv',
-	'outliersZScore',
-	'count'
+    'mean',
+    'median',
+    'stdDev',
+    'sampleVariance',
+    'cv',
+    'outliersZScore',
+    'count'
 ]
 ```
 
@@ -126,16 +125,16 @@ Claves robustas:
 
 ```php
 [
-	'mean',
-	'median',
-	'robustDeviation',
-	'robustVariance',
-	'robustCv',
-	'iqr',
-	'mad',
-	'outliers',
-	'confidenceIntervals',
-	'count'
+    'mean',
+    'median',
+    'robustDeviation',
+    'robustVariance',
+    'robustCv',
+    'iqr',
+    'mad',
+    'outliers',
+    'confidenceIntervals',
+    'count'
 ]
 ```
 
@@ -218,56 +217,3 @@ $$\sigma_{robust} = MAD \times 1.4826$$
 Se calcula sobre la mediana para evitar que un valor extremo infle la volatilidad:
 
 $$CV_r = \left( \frac{\sigma_{robust}}{|\tilde{x}|} \right) \times 100$$
-
-## Compatibilidad con R y Precision
-
-Cada funcion publica se prueba contra los resultados de R v4.x para garantizar precision cientifica. Los cuantiles usan el Tipo 7 por defecto (el mismo de `quantile()` en R), y los metodos de tendencia central robusta (media recortada, winsorizada y estimador M de Huber) se verifican mediante scripts de comparacion con R incluidos en el repositorio.
-
-## Perfiles Docker (Validacion R Opcional)
-
-StatGuard no requiere R para su uso normal. El contenedor por defecto es liviano y esta enfocado en desarrollo PHP. Para auditoria cientifica, puedes habilitar el perfil `r-validation` para ejecutar el script de comparacion con R.
-
-```bash
-# Contenedor por defecto (sin runtime R)
-docker compose up -d
-
-# Ejecutar tests en el contenedor por defecto
-composer run test
-
-# Ejecutar validacion R en el perfil pesado
-composer run validate-r
-```
-
-## Benchmarks de Rendimiento (StatGuard vs MathPHP vs R)
-
-Hasta 5x mas rapido que MathPHP en calculos de mediana.
-
-20x mas rapido que MathPHP en estimacion de media robusta.
-
-Dataset: 100000 floats aleatorios. Benchmarks ejecutados en el perfil performance con `docker compose --profile performance run --rm benchmark report`. Los tiempos de R usan `system.time()` y miden solo computacion (carga del archivo excluida).
-
-Usa `json` solo cuando necesites el output para el shield (no actualiza las tablas en Markdown).
-
-| Metrica (100k) | StatGuard ms | MathPHP ms | R ms | Relación (PHP/R) |
-| :--- | ---: | ---: | ---: | ---: |
-| Mediana | 15.8 | 76.5 | 2.00 | 7.92 |
-| Cuantil Tipo 7 (p=0.75) | 16.2 | 16.0 | 2.00 | 8.09 |
-| Media de Huber | 34.8 | 788.7 | 10.00 | 3.48 |
-
-Chequeo de precision (Huber): $\Delta = 0.0056111266$ para $n = 100000$ (umbral de aviso $10^{-10}$). En datasets mas pequenos se observan deltas mayores y el benchmark los reporta como warnings.
-
-Resultados consistentes con el core de R dentro de una tolerancia del 0.01% en la escala del benchmark (0-1000).
-
-## Pruebas y Calidad
-
-Validado con PHPUnit para cubrir calculos y validacion de datos.
-
-```bash
-./vendor/bin/phpunit tests
-```
-
-## Licencia
-
-Este proyecto se publica bajo la licencia MIT. Ver LICENSE para detalles.
-
-Built with ❤️ by cjuol.
