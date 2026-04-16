@@ -4,47 +4,17 @@ declare(strict_types=1);
 
 namespace Cjuol\StatGuard\Traits;
 
-use Cjuol\StatGuard\Exceptions\InvalidDataSetException;
+use Cjuol\StatGuard\Support\DataValidator;
 
 trait DataProcessorTrait
 {
     private function validateData(array $data, bool $alreadyProcessed = false): array
     {
-        $count = count($data);
-        if ($count < 2) {
-            throw new InvalidDataSetException('At least 2 numeric values are required.');
-        }
-
-        $isSequential = true;
-        $expectedKey = 0;
-
-        foreach ($data as $key => $value) {
-            if (!is_numeric($value)) {
-                throw new InvalidDataSetException('All sample values must be numeric.');
-            }
-            if (!is_finite((float) $value)) {
-                throw new InvalidDataSetException('Non-finite values (NaN/Inf) are not allowed.');
-            }
-
-            if (!$alreadyProcessed && $key !== $expectedKey) {
-                $isSequential = false;
-            }
-            $expectedKey++;
-        }
-
-        if ($alreadyProcessed || $isSequential) {
-            return $data;
-        }
-
-        return array_values($data);
+        return DataValidator::prepare($data, 2, false);
     }
 
     private function prepareData(array $data, bool $sort = true, bool $alreadyProcessed = false, bool $alreadySorted = false): array
     {
-        $processedData = $this->validateData($data, $alreadyProcessed);
-        if ($sort && !$alreadySorted) {
-            sort($processedData, SORT_NUMERIC);
-        }
-        return $processedData;
+        return DataValidator::prepare($data, 2, $sort && !$alreadySorted);
     }
 }

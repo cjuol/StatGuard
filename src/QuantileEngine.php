@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cjuol\StatGuard;
 
-use Cjuol\StatGuard\Exceptions\InvalidDataSetException;
+use Cjuol\StatGuard\Support\DataValidator;
 
 final class QuantileEngine
 {
@@ -57,35 +57,7 @@ final class QuantileEngine
 
     private static function normalizeData(array $data, bool $alreadySorted): array
     {
-        $count = count($data);
-        if ($count === 0) {
-            throw new InvalidDataSetException('At least 1 numeric value is required.');
-        }
-
-        $isSequential = true;
-        $expectedKey = 0;
-
-        foreach ($data as $key => $value) {
-            if (!is_numeric($value)) {
-                throw new InvalidDataSetException('All sample values must be numeric.');
-            }
-            if (!is_finite((float) $value)) {
-                throw new InvalidDataSetException('Non-finite values (NaN/Inf) are not allowed.');
-            }
-
-            if ($key !== $expectedKey) {
-                $isSequential = false;
-            }
-            $expectedKey++;
-        }
-
-        $normalized = $isSequential ? $data : array_values($data);
-
-        if (!$alreadySorted) {
-            sort($normalized, SORT_NUMERIC);
-        }
-
-        return $normalized;
+        return DataValidator::prepare($data, 1, !$alreadySorted);
     }
 
     private static function calculateDiscrete(array $sorted, float $p, int $type): float
