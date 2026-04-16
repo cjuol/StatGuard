@@ -45,10 +45,9 @@ $iqr = $robust->getIqr($data, RobustStats::TYPE_R_DEFAULT);
 ```php
 use Cjuol\StatGuard\QuantileEngine;
 
-$engine = new QuantileEngine();
 $data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-$q7 = $engine->quantile($data, 0.75, 7);
+$q7 = QuantileEngine::calculate($data, 0.75, 7);
 ```
 
 ### StatsComparator
