@@ -47,10 +47,7 @@ if (count($payload['data']) > MAX_DATA_POINTS) {
     exit;
 }
 
-$data = array_values(array_filter(
-    array_map(static fn($v) => is_numeric($v) ? (float) $v : null, $payload['data']),
-    static fn($v) => $v !== null && is_finite($v)
-));
+$data = $payload['data'];
 
 $trimPercent = isset($payload['trimPercent']) && is_numeric($payload['trimPercent'])
     ? max(0.0, min(0.45, (float) $payload['trimPercent']))
