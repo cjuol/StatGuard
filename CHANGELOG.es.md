@@ -6,6 +6,36 @@ Todos los cambios notables en este proyecto se documentan en este archivo.
 El formato esta basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/)
 y este proyecto se adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-04-16
+
+Patch release que cierra todos los items ALTO/MEDIO/BAJO de la auditoria completa (`docs/audits/2026-04-16-full-audit.md`). Sin cambios de API.
+
+### Seguridad
+- **SEC-01** Limita los payloads de `POST /api.php` a 50 000 puntos; rechaza mayores con HTTP 413.
+- **SEC-02** La demo ya no filtra el contenido de `Throwable::getMessage()` en respuestas 500; los errores se loguean server-side y se exponen como `"Internal error."` generico.
+- **SEC-03** `CentralTendencyEngine::normalizeData` ahora rechaza NaN/Inf via `is_finite`, restaurando el contrato v2.0.0 en todas las rutas.
+- **SEC-06** Hashes SRI (SHA-384) + `crossorigin=anonymous` + `referrerpolicy=no-referrer` en los tres scripts jsDelivr del playground.
+- **SEC-07** `X-Content-Type-Options: nosniff` en `api.php`; meta CSP en `index.html` que restringe orígenes de script/estilo/fuente/conexión y prohíbe framing.
+
+### Corregido
+- **QUA-04** `api.php` ya no descarta silenciosamente NaN/Inf via `array_filter`. La libreria recibe el payload tal cual y devuelve HTTP 422 via `InvalidDataSetException`.
+- **QUA-05** Snippet roto de QuantileEngine en `docs/api-reference.md` sustituido por la API estatica real (`QuantileEngine::calculate`).
+- **QUA-07** Typo `"5.1h"` → `"5.1x"` corregido en `shield.json`.
+
+### Cambiado
+- **QUA-01** Validacion de datos unificada en `Cjuol\StatGuard\Support\DataValidator`. El trait y ambos engines delegan aqui en vez de duplicar los chequeos `is_numeric` / `is_finite`.
+- **PERF-01** `RobustStats::getSummary` reusa Q1/Q3/mediana precalculados, pasando de cuatro calculos de cuantil a dos.
+- **PERF-02** `StatsComparator::analyze` inlinea el pipeline de validacion/ordenacion via `QuantileEngine`, saltando ordenaciones redundantes sobre el dataset compartido.
+
+### Build y CI
+- **SEC-13** Fija los tags `phpdocumentor/phpdocumentor:3.5` y `squidfunk/mkdocs-material:9.5.44` en `docker-compose.yml`.
+- **CI-01** Pinea `exuanbo/actions-deploy-gist@47697fc` (v1.1.4) en lugar del tag movil `@v1` en los workflows que manejan `GIST_TOKEN`.
+- **QUA-08** Deja de trackear el `statguard-perf.json` regenerado; ahora lo escribe solo el workflow de benchmark.
+- **QW-08** Anade un `Makefile` minimo (`test`, `test-docker`, `analyse`, `coverage`, `bench`, `clean`, `help`).
+
+### Documentacion
+- **SEC-04** Documenta los rangos validos de `huberK` (default 1.345, abierto en lib, clamp demo ≥ 0.1) y `trimPercentage` (lib `[0.0, 0.5)` vs clamp demo `[0.0, 0.45]`), ademas de las constantes internas de iteracion Huber, en `docs/api-reference.md`.
+
 ## [2.0.0] - 2026-04-16
 
 ### Rompedor
