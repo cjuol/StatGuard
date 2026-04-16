@@ -141,6 +141,9 @@ class ClassicStatsTest extends TestCase
         return [
             'menos_de_dos' => [[1]],
             'no_numericos' => [[1, 'abc', 3]],
+            'nan' => [[1.0, NAN, 3.0]],
+            'inf_positivo' => [[1.0, INF, 3.0]],
+            'inf_negativo' => [[1.0, -INF, 3.0]],
         ];
     }
 }

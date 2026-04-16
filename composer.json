@@ -25,6 +25,7 @@
     },
     "require-dev": {
         "markrogoyski/math-php": "^2.0",
+        "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0"
     },
     "autoload": {
@@ -45,7 +46,8 @@
     },
     "scripts": {
         "test": "sh -c 'if docker compose --profile r-validation run --rm validator Rscript --version >/dev/null 2>&1; then docker compose --profile r-validation run --rm validator phpunit -c phpunit.xml.dist; else docker compose build web && docker compose run --rm web phpunit -c phpunit.xml.dist; fi'",
-        "validate-r": "docker compose build web validator && docker compose --profile r-validation run --rm validator"
+        "validate-r": "docker compose build web validator && docker compose --profile r-validation run --rm validator",
+        "analyse": "phpstan analyse --memory-limit=512M"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

@@ -33,7 +33,7 @@ final class QuantileEngine
 
         $p = max(0.0, min(1.0, $probability));
 
-        if ($type >= 1 && $type <= 3) {
+        if ($type <= 3) {
             return self::calculateDiscrete($sorted, $p, $type);
         }
 
@@ -53,6 +53,9 @@ final class QuantileEngine
         foreach ($data as $key => $value) {
             if (!is_numeric($value)) {
                 throw new InvalidDataSetException('All sample values must be numeric.');
+            }
+            if (!is_finite((float) $value)) {
+                throw new InvalidDataSetException('Non-finite values (NaN/Inf) are not allowed.');
             }
 
             if ($key !== $expectedKey) {
@@ -78,6 +81,7 @@ final class QuantileEngine
             1 => (float) $sorted[max(1, min($n, (int) ceil($n * $p))) - 1],
             2 => self::calculateType2($sorted, $p),
             3 => (float) $sorted[max(1, min($n, (int) round($n * $p, 0, PHP_ROUND_HALF_EVEN))) - 1],
+            default => throw new \InvalidArgumentException("Unsupported discrete quantile type: {$type}"),
         };
     }
 
@@ -139,6 +143,7 @@ final class QuantileEngine
             7 => [1.0, 1.0],
             8 => [1.0 / 3.0, 1.0 / 3.0],
             9 => [3.0 / 8.0, 3.0 / 8.0],
+            default => throw new \InvalidArgumentException("Unsupported continuous quantile type: {$type}"),
         };
     }
 }

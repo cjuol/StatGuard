@@ -32,6 +32,22 @@ class QuantileEngineTest extends TestCase
         $this->assertEqualsWithDelta($expected, $result, self::DELTA);
     }
 
+    #[DataProvider('nonFiniteProvider')]
+    public function testRejectsNonFiniteValues(array $data): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        QuantileEngine::calculate($data, 0.5, 7);
+    }
+
+    public static function nonFiniteProvider(): array
+    {
+        return [
+            'nan' => [[1.0, NAN, 3.0]],
+            'inf_positivo' => [[1.0, INF, 3.0]],
+            'inf_negativo' => [[1.0, -INF, 3.0]],
+        ];
+    }
+
     public static function rQuantileProvider(): array
     {
         return [
