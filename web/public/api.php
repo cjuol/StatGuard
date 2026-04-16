@@ -11,6 +11,7 @@ use Cjuol\StatGuard\StatsComparator;
 require __DIR__ . '/../../vendor/autoload.php';
 
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
