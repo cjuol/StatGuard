@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StatGuard — Laboratorio de Outliers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=Space+Grotesk:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        :root {
+            --bg: #000;
+            --surface: #0a0a0a;
+            --hairline: rgba(255, 255, 255, 0.08);
+            --hairline-strong: rgba(255, 255, 255, 0.18);
+            --text-display: #fff;
+            --text-primary: rgba(255, 255, 255, 0.92);
+            --text-secondary: rgba(255, 255, 255, 0.58);
+            --text-disabled: rgba(255, 255, 255, 0.38);
+            --red: #d71921;
+            --amber: #e0a800;
+            --green: #2ecc71;
+            --mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+            --sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
+            --display: "Doto", "Space Grotesk", monospace;
+        }
+
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--sans);
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 1.45;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        .mono { font-family: var(--mono); }
+        .label {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        .caption {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+        }
+
+        .shell {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 48px 40px 80px;
+        }
+        @media (max-width: 700px) { .shell { padding: 32px 20px 64px; } }
+
+        /* ---- Header ---- */
+        .brand {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--hairline);
+        }
+        .brand h1 {
+            font-family: var(--display);
+            font-weight: 700;
+            font-size: 36px;
+            letter-spacing: 0.01em;
+            margin: 0;
+            color: var(--text-display);
+        }
+        .brand .meta { display: flex; gap: 24px; align-items: baseline; }
+        .brand .meta a { color: var(--text-secondary); text-decoration: none; }
+        .brand .meta a:hover { color: var(--text-display); }
+
+        .lang-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            padding: 4px 28px 4px 12px;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'><path fill='%23ffffff94' d='M0 0l4 5 4-5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            transition: color 120ms ease, border-color 120ms ease;
+        }
+        .lang-select:hover { color: var(--text-display); border-color: var(--hairline-strong); }
+        .lang-select:focus { outline: none; border-color: var(--hairline-strong); }
+        .lang-select option { background: var(--bg); color: var(--text-primary); }
+
+        .sub {
+            margin: 16px 0 0;
+            color: var(--text-secondary);
+            max-width: 64ch;
+            font-weight: 300;
+            font-size: 15.5px;
+        }
+
+        /* ---- Hero verdict ---- */
+        .hero { margin: 64px 0 48px; }
+        .hero .verdict {
+            font-family: var(--sans);
+            font-weight: 300;
+            font-size: 42px;
+            line-height: 1.08;
+            letter-spacing: -0.015em;
+            color: var(--text-primary);
+            max-width: 22ch;
+        }
+        .hero .verdict .status { font-weight: 500; }
+        .hero .verdict.stable .status { color: var(--green); }
+        .hero .verdict.caution .status { color: var(--amber); }
+        .hero .verdict.alert .status { color: var(--red); }
+        .hero .verdict .dot {
+            display: inline-block;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            vertical-align: 0.1em;
+            margin-right: 12px;
+        }
+        .hero .verdict.stable .dot { background: var(--green); }
+        .hero .verdict.caution .dot { background: var(--amber); }
+        .hero .verdict.alert .dot { background: var(--red); }
+
+        .hero-strip {
+            margin-top: 48px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--hairline);
+            border-top: 1px solid var(--hairline);
+            border-bottom: 1px solid var(--hairline);
+        }
+        .hero-strip > div {
+            background: var(--bg);
+            padding: 20px 20px 20px 0;
+        }
+        .hero-strip > div:not(:first-child) { padding-left: 20px; }
+        .hero-strip .k {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        .hero-strip .v {
+            font-family: var(--mono);
+            font-size: 24px;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-display);
+            font-weight: 400;
+        }
+        .hero-strip .v.warn { color: var(--amber); }
+        .hero-strip .v.alert { color: var(--red); }
+        @media (max-width: 780px) { .hero-strip { grid-template-columns: repeat(2, 1fr); } }
+
+        /* ---- Main grid ---- */
+        main {
+            display: grid;
+            grid-template-columns: minmax(260px, 320px) 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+        @media (max-width: 980px) { main { grid-template-columns: 1fr; gap: 48px; } }
+
+        /* ---- Aside (inputs) ---- */
+        aside > section { margin-bottom: 40px; }
+        aside h3 {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 0 0 14px;
+            font-weight: 400;
+        }
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.55;
+            background: transparent;
+            color: var(--text-primary);
+            border: none;
+            border-top: 1px solid var(--hairline);
+            border-bottom: 1px solid var(--hairline);
+            padding: 12px 0;
+            resize: vertical;
+            outline: none;
+        }
+        textarea:focus { border-color: var(--hairline-strong); }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .chip {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 6px 10px;
+            border: 1px solid var(--hairline);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: color 120ms ease, border-color 120ms ease;
+        }
+        .chip:hover { color: var(--text-display); border-color: var(--hairline-strong); }
+
+        .field { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hairline); }
+        .field:last-child { border-bottom: none; }
+        .field .k { flex: 0 0 100px; color: var(--text-secondary); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .field input[type=range] {
+            flex: 1;
+            appearance: none;
+            height: 2px;
+            background: var(--hairline);
+            outline: none;
+        }
+        .field input[type=range]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px; height: 14px;
+            background: var(--text-display);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .field input[type=range]::-moz-range-thumb {
+            width: 14px; height: 14px;
+            background: var(--text-display);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+        }
+        .field .readout {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-display);
+            min-width: 52px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .field input[type=number] {
+            background: transparent;
+            color: var(--text-display);
+            border: 1px solid var(--hairline);
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-family: var(--mono);
+            font-size: 13px;
+            width: 100%;
+        }
+        .field input[type=number]:focus { outline: none; border-color: var(--hairline-strong); }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .btn {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 12px 18px;
+            background: var(--text-display);
+            color: var(--bg);
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 400;
+        }
+        .btn.ghost {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--hairline-strong);
+        }
+        .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+
+        .counter {
+            margin-top: 10px;
+            font-family: var(--mono);
+            font-size: 10.5px;
+            color: var(--text-disabled);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* ---- Results (right) ---- */
+        .results > section + section { margin-top: 64px; }
+        .results h2 {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 0 0 20px;
+            font-weight: 400;
+        }
+
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        @media (max-width: 720px) { .compare { grid-template-columns: 1fr; gap: 32px; } }
+        .compare h3 {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 0 0 4px;
+            font-weight: 400;
+        }
+        .compare .flag { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--hairline); }
+        .compare .flag .dot { width: 6px; height: 6px; border-radius: 50%; }
+        .compare.classic-col .flag .dot { background: var(--amber); }
+        .compare.robust-col .flag .dot { background: var(--green); }
+
+        .rows { display: flex; flex-direction: column; }
+        .rows .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--hairline);
+            gap: 12px;
+        }
+        .rows .row:last-child { border-bottom: none; }
+        .rows .row .k {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rows .row .v {
+            font-family: var(--mono);
+            font-size: 15px;
+            color: var(--text-display);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .rows .row.warn .v { color: var(--amber); }
+        .rows .row.hi .v { color: var(--green); }
+
+        /* ---- Distribution ---- */
+        .chart-wrap { position: relative; height: 320px; margin-top: 8px; }
+        .dist-legend {
+            display: flex; flex-wrap: wrap; gap: 24px;
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        .dist-legend .dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* ---- Color key (severity + method legends) ---- */
+        .key-strip {
+            display: flex; flex-wrap: wrap; gap: 20px;
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--hairline);
+        }
+        .key-strip.inline {
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-top: 0;
+            border-top: none;
+        }
+        .key-strip .dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* ---- State ---- */
+        .error {
+            color: var(--red);
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 10px 0;
+            border-top: 1px solid var(--red);
+            border-bottom: 1px solid var(--red);
+            margin-bottom: 24px;
+        }
+        details summary { cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+        details summary:hover { color: var(--text-display); }
+        details pre {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            color: var(--text-primary);
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+
+        footer {
+            margin-top: 96px;
+            padding-top: 24px;
+            border-top: 1px solid var(--hairline);
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+        }
+        footer .kbd { color: var(--text-secondary); }
+    </style>
+</head>
+<body x-data="statguard()" x-effect="document.documentElement.lang = lang; document.title = t('title')">
+
+<div class="shell">
+
+    <header class="brand">
+        <h1>STATGUARD</h1>
+        <div class="meta">
+            <span class="caption" x-text="t('caption_playground')"></span>
+            <a href="https://github.com/cjuol/statguard" target="_blank" rel="noopener" class="caption" x-text="t('caption_github')"></a>
+            <select class="lang-select" x-model="lang" @change="persistLang()" :aria-label="t('caption_language')">
+                <option value="es">ES</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
+    </header>
+
+    <p class="sub" x-text="t('subtitle')"></p>
+
+    <template x-if="error">
+        <div class="error" style="margin-top: 40px;" x-text="error"></div>
+    </template>
+
+    <section class="hero" x-show="result" x-cloak>
+        <p class="caption" style="margin: 0 0 20px;" x-text="t('verdict')"></p>
+        <div class="verdict" :class="verdictClass">
+            <span class="dot"></span>
+            <span class="status" x-text="verdictWord"></span>
+            <span x-text="verdictTail"></span>
+        </div>
+
+        <div class="hero-strip" x-show="result">
+            <div>
+                <div class="k" x-text="t('hero_bias')"></div>
+                <div class="v" :class="{ 'warn': Math.abs(parseFloat(result.comparison.centralComparison.biasPercent)) > 5, 'alert': Math.abs(parseFloat(result.comparison.centralComparison.biasPercent)) > 10 }" x-text="result.comparison.centralComparison.biasPercent"></div>
+            </div>
+            <div>
+                <div class="k" x-text="t('hero_noise')"></div>
+                <div class="v" :class="{ 'warn': result.comparison.dispersionComparison.noiseRatio > 1.2, 'alert': result.comparison.dispersionComparison.noiseRatio > 1.5 }" x-text="result.comparison.dispersionComparison.noiseRatio"></div>
+            </div>
+            <div>
+                <div class="k" x-text="t('hero_absdiff')"></div>
+                <div class="v" x-text="result.comparison.centralComparison.absoluteDifference"></div>
+            </div>
+            <div>
+                <div class="k" x-text="t('hero_outliers')"></div>
+                <div class="v">
+                    <span x-text="result.comparison.outlierDetection.tukeyMethod"></span>
+                    <span style="color: var(--text-disabled);"> / </span>
+                    <span x-text="result.comparison.outlierDetection.zScoreMethod"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="key-strip" :aria-label="t('verdict')">
+            <span><span class="dot" style="background: var(--red);"></span><span x-text="t('verdict_alert')"></span></span>
+            <span><span class="dot" style="background: var(--amber);"></span><span x-text="t('verdict_caution')"></span></span>
+            <span><span class="dot" style="background: var(--green);"></span><span x-text="t('verdict_stable')"></span></span>
+        </div>
+    </section>
+
+    <main>
+        <aside>
+            <section>
+                <h3 x-text="t('section_input')"></h3>
+                <div class="chips">
+                    <template x-for="p in presets" :key="p.key">
+                        <button class="chip" type="button" @click="loadPreset(p)" x-text="t('preset_' + p.key)"></button>
+                    </template>
+                </div>
+                <textarea x-model="raw" :placeholder="t('placeholder')" @input.debounce.400ms="run()" spellcheck="false"></textarea>
+                <p class="counter"><span x-text="parsed.length"></span> <span x-text="t('counter')"></span></p>
+            </section>
+
+            <section>
+                <h3 x-text="t('section_inject')"></h3>
+                <div class="field">
+                    <div class="k" x-text="t('field_magnitude')"></div>
+                    <input type="range" min="0" max="1000" step="10" x-model.number="outlierMagnitude" @input="run()">
+                    <div class="readout" x-text="outlierMagnitude"></div>
+                </div>
+                <div class="field">
+                    <div class="k" x-text="t('field_count')"></div>
+                    <input type="range" min="0" max="10" step="1" x-model.number="outlierCount" @input="run()">
+                    <div class="readout" x-text="outlierCount"></div>
+                </div>
+            </section>
+
+            <section>
+                <h3 x-text="t('section_tuning')"></h3>
+                <div class="field">
+                    <div class="k" x-text="t('field_huber')"></div>
+                    <input type="number" step="0.1" min="0.1" x-model.number="huberK" @change="run()">
+                </div>
+                <div class="field">
+                    <div class="k" x-text="t('field_trim')"></div>
+                    <input type="number" step="0.05" min="0" max="0.45" x-model.number="trimPercent" @change="run()">
+                </div>
+            </section>
+
+            <section>
+                <div class="actions">
+                    <button class="btn" type="button" @click="run()" :disabled="loading" x-text="t('btn_recompute')"></button>
+                    <button class="btn ghost" type="button" @click="exportJson()" :disabled="!result" x-text="t('btn_export')"></button>
+                </div>
+            </section>
+        </aside>
+
+        <div class="results">
+            <section x-show="result" x-cloak>
+                <h2 x-text="t('h2_calculations')"></h2>
+                <div class="key-strip inline">
+                    <span><span class="dot" style="background: var(--amber);"></span><span x-text="t('col_classic')"></span></span>
+                    <span><span class="dot" style="background: var(--green);"></span><span x-text="t('col_robust')"></span></span>
+                </div>
+                <div class="compare">
+                    <div class="compare classic-col" style="display: block;">
+                        <div class="flag"><span class="dot"></span><h3 style="margin: 0;" x-text="t('col_classic')"></h3></div>
+                        <div class="rows">
+                            <div class="row warn">
+                                <span class="k" x-text="t('row_mean')"></span>
+                                <span class="v" x-text="fmt(result.classic.mean)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_median')"></span>
+                                <span class="v" x-text="fmt(result.classic.median)"></span>
+                            </div>
+                            <div class="row warn">
+                                <span class="k" x-text="t('row_stddev')"></span>
+                                <span class="v" x-text="fmt(result.classic.stdDev)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_samplevar')"></span>
+                                <span class="v" x-text="fmt(result.classic.sampleVariance)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_cv')"></span>
+                                <span class="v" x-text="fmt(result.classic.cv) + '%'"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_zoutliers')"></span>
+                                <span class="v" x-text="result.classic.outliersZScore.length"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="compare robust-col" style="display: block;">
+                        <div class="flag"><span class="dot"></span><h3 style="margin: 0;" x-text="t('col_robust')"></h3></div>
+                        <div class="rows">
+                            <div class="row hi">
+                                <span class="k" x-text="t('row_median')"></span>
+                                <span class="v" x-text="fmt(result.centralTendency.median)"></span>
+                            </div>
+                            <div class="row hi">
+                                <span class="k"><span x-text="t('row_huber')"></span><span x-text="huberK"></span>)</span>
+                                <span class="v" x-text="fmt(result.centralTendency.huberMean)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k"><span x-text="t('row_trimmed')"></span><span x-text="pct(trimPercent)"></span>)</span>
+                                <span class="v" x-text="fmt(result.centralTendency.trimmedMean)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k"><span x-text="t('row_winsorized')"></span><span x-text="pct(trimPercent)"></span>)</span>
+                                <span class="v" x-text="fmt(result.centralTendency.winsorizedMean)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_mad')"></span>
+                                <span class="v" x-text="fmt(result.robust.mad)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_iqr')"></span>
+                                <span class="v" x-text="fmt(result.robust.iqr)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_robustdev')"></span>
+                                <span class="v" x-text="fmt(result.robust.robustDeviation)"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_robustcv')"></span>
+                                <span class="v" x-text="fmt(result.robust.robustCv) + '%'"></span>
+                            </div>
+                            <div class="row">
+                                <span class="k" x-text="t('row_tukey')"></span>
+                                <span class="v" x-text="result.robust.outliers.length"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2 x-text="t('h2_distribution')"></h2>
+                <div class="dist-legend">
+                    <span><span class="dot" style="background: #e0a800;"></span><span x-text="t('legend_mean')"></span></span>
+                    <span><span class="dot" style="background: #2ecc71;"></span><span x-text="t('legend_median')"></span></span>
+                    <span><span class="dot" style="background: #8ab4ff;"></span><span x-text="t('legend_huber')"></span></span>
+                    <span><span class="dot" style="background: #d71921;"></span><span x-text="t('legend_trimmed')"></span></span>
+                </div>
+                <div class="chart-wrap"><canvas id="histogram"></canvas></div>
+            </section>
+
+            <section x-show="result" x-cloak>
+                <details>
+                    <summary x-text="t('details_raw')"></summary>
+                    <pre x-text="JSON.stringify(result, null, 2)"></pre>
+                </details>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        API <span class="kbd">POST /api.php</span> · body <span class="kbd">{"data": [...], "huberK": 1.345, "trimPercent": 0.1}</span>
+    </footer>
+
+</div>
+
+<style>[x-cloak] { display: none !important; }</style>
+
+<script>
+if (window['chartjs-plugin-annotation']) {
+    Chart.register(window['chartjs-plugin-annotation']);
+}
+
+const STATGUARD_I18N = {
+    es: {
+        title: 'StatGuard — Laboratorio de Outliers',
+        caption_playground: 'Laboratorio de Outliers',
+        caption_github: 'Github ↗',
+        caption_language: 'Idioma',
+        subtitle: 'Estadística clásica frente a estadística robusta, lado a lado. Inyecta outliers y observa cómo la media aritmética se desvía mientras la mediana, el estimador M de Huber y las medias truncada y winsorizada se mantienen.',
+        verdict: 'Veredicto',
+        verdict_alert: 'Alerta',
+        verdict_caution: 'Precaución',
+        verdict_stable: 'Estable',
+        verdict_tail_alert: 'los datos están muy influidos por outliers. Usa métricas robustas.',
+        verdict_tail_caution: 'hay sesgo moderado. Compara ambas métricas antes de decidir.',
+        verdict_tail_stable: 'los datos siguen una distribución limpia. La estadística clásica es fiable.',
+        hero_bias: 'Sesgo · media vs mediana',
+        hero_noise: 'Ratio de ruido · σ / σ*',
+        hero_absdiff: '|media − mediana|',
+        hero_outliers: 'Tukey / Z-score',
+        section_input: 'Entrada',
+        section_inject: 'Inyectar outlier',
+        section_tuning: 'Ajustes',
+        placeholder: '1, 2, 3, 4, 5',
+        counter: 'valores válidos',
+        field_magnitude: 'Magnitud',
+        field_count: 'Cantidad',
+        field_huber: 'Huber k',
+        field_trim: 'Trim %',
+        btn_recompute: 'Recalcular',
+        btn_export: 'Exportar JSON',
+        h2_calculations: '— Cálculos',
+        h2_distribution: '— Distribución',
+        col_classic: 'Estadística clásica',
+        col_robust: 'Estadística robusta',
+        row_mean: 'Media',
+        row_median: 'Mediana',
+        row_stddev: 'Desv. típica',
+        row_samplevar: 'Varianza muestral',
+        row_cv: 'CV',
+        row_zoutliers: 'Outliers Z-score',
+        row_huber: 'Huber (k=',
+        row_trimmed: 'Truncada (',
+        row_winsorized: 'Winsorizada (',
+        row_mad: 'MAD',
+        row_iqr: 'IQR',
+        row_robustdev: 'σ* robusta',
+        row_robustcv: 'CV robusto',
+        row_tukey: 'Outliers Tukey',
+        legend_mean: 'Media',
+        legend_median: 'Mediana',
+        legend_huber: 'Huber',
+        legend_trimmed: 'Truncada',
+        details_raw: 'Respuesta JSON cruda',
+        err_need2: 'Se necesitan al menos 2 valores numéricos.',
+        err_api: 'Error de API',
+        preset_sensor: 'Sensor',
+        preset_sales: 'Ventas + pico',
+        preset_latency: 'Latencia',
+        preset_uniform: 'Uniforme 100',
+        preset_gaussian: 'Gaussiana'
+    },
+    en: {
+        title: 'StatGuard — Outlier Playground',
+        caption_playground: 'Outlier Playground',
+        caption_github: 'Github ↗',
+        caption_language: 'Language',
+        subtitle: 'Classic versus robust statistics, side by side. Inject outliers and watch the arithmetic mean drift while the median, Huber M-estimator and trimmed / winsorized means hold.',
+        verdict: 'Verdict',
+        verdict_alert: 'Alert',
+        verdict_caution: 'Caution',
+        verdict_stable: 'Stable',
+        verdict_tail_alert: 'Data is highly influenced by outliers. Use robust metrics.',
+        verdict_tail_caution: 'There is moderate bias. Compare both metrics before deciding.',
+        verdict_tail_stable: 'Data follows a clean distribution. Classic statistics are reliable.',
+        hero_bias: 'Bias · mean vs median',
+        hero_noise: 'Noise ratio · σ / σ*',
+        hero_absdiff: '|mean − median|',
+        hero_outliers: 'Tukey / Z-score',
+        section_input: 'Input',
+        section_inject: 'Inject outlier',
+        section_tuning: 'Tuning',
+        placeholder: '1, 2, 3, 4, 5',
+        counter: 'valid values',
+        field_magnitude: 'Magnitude',
+        field_count: 'Count',
+        field_huber: 'Huber k',
+        field_trim: 'Trim %',
+        btn_recompute: 'Recompute',
+        btn_export: 'Export JSON',
+        h2_calculations: '— Calculations',
+        h2_distribution: '— Distribution',
+        col_classic: 'Classic statistics',
+        col_robust: 'Robust statistics',
+        row_mean: 'Mean',
+        row_median: 'Median',
+        row_stddev: 'Std deviation',
+        row_samplevar: 'Sample variance',
+        row_cv: 'CV',
+        row_zoutliers: 'Z-score outliers',
+        row_huber: 'Huber (k=',
+        row_trimmed: 'Trimmed (',
+        row_winsorized: 'Winsorized (',
+        row_mad: 'MAD',
+        row_iqr: 'IQR',
+        row_robustdev: 'Robust σ*',
+        row_robustcv: 'Robust CV',
+        row_tukey: 'Tukey outliers',
+        legend_mean: 'Mean',
+        legend_median: 'Median',
+        legend_huber: 'Huber',
+        legend_trimmed: 'Trimmed',
+        details_raw: 'Raw API response',
+        err_need2: 'Need at least 2 numeric values.',
+        err_api: 'API error',
+        preset_sensor: 'Sensor',
+        preset_sales: 'Sales + spike',
+        preset_latency: 'Latency',
+        preset_uniform: 'Uniform 100',
+        preset_gaussian: 'Gaussian'
+    }
+};
+
+function detectLang() {
+    try {
+        const stored = localStorage.getItem('statguard.lang');
+        if (stored === 'es' || stored === 'en') return stored;
+    } catch (e) {}
+    const nav = (navigator.language || 'es').toLowerCase();
+    return nav.startsWith('es') ? 'es' : 'en';
+}
+
+function gaussian(mu, sigma) {
+    const u = 1 - Math.random();
+    const v = Math.random();
+    return mu + sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+function statguard() {
+    return {
+        lang: detectLang(),
+        raw: '',
+        parsed: [],
+        outlierMagnitude: 0,
+        outlierCount: 0,
+        huberK: 1.345,
+        trimPercent: 0.10,
+        loading: false,
+        error: null,
+        result: null,
+        chart: null,
+        presets: [
+            { key: 'sensor', values: Array.from({ length: 60 }, () => 20 + Math.random() * 2) },
+            { key: 'sales', values: [12, 14, 11, 15, 13, 14, 12, 11, 13, 15, 14, 12, 13, 14, 11, 250] },
+            { key: 'latency', values: [8, 9, 10, 11, 9, 8, 10, 11, 9, 10, 9, 1200, 8, 9, 11, 10] },
+            { key: 'uniform', values: Array.from({ length: 100 }, () => Math.random() * 1000) },
+            { key: 'gaussian', values: Array.from({ length: 80 }, () => gaussian(50, 8)) },
+        ],
+        init() {
+            this.loadPreset(this.presets[1]);
+            this.$watch('lang', () => { if (this.result) this.drawChart(this.parsed); });
+        },
+        t(key) {
+            const dict = STATGUARD_I18N[this.lang] || STATGUARD_I18N.es;
+            return dict[key] ?? key;
+        },
+        persistLang() {
+            try { localStorage.setItem('statguard.lang', this.lang); } catch (e) {}
+        },
+        get verdictClass() {
+            if (!this.result) return '';
+            const v = this.result.comparison.verdict;
+            if (v.startsWith('ALERT')) return 'alert';
+            if (v.startsWith('CAUTION')) return 'caution';
+            return 'stable';
+        },
+        get verdictWord() {
+            if (!this.result) return '';
+            const v = this.result.comparison.verdict;
+            if (v.startsWith('ALERT')) return this.t('verdict_alert');
+            if (v.startsWith('CAUTION')) return this.t('verdict_caution');
+            if (v.startsWith('STABLE')) return this.t('verdict_stable');
+            const word = v.split(':')[0];
+            return word.charAt(0) + word.slice(1).toLowerCase();
+        },
+        get verdictTail() {
+            if (!this.result) return '';
+            const v = this.result.comparison.verdict;
+            if (v.startsWith('ALERT')) return ' — ' + this.t('verdict_tail_alert');
+            if (v.startsWith('CAUTION')) return ' — ' + this.t('verdict_tail_caution');
+            if (v.startsWith('STABLE')) return ' — ' + this.t('verdict_tail_stable');
+            const parts = v.split(':');
+            if (parts.length < 2) return '';
+            return ' — ' + parts.slice(1).join(':').trim();
+        },
+        fmt(n) {
+            if (n === null || n === undefined || Number.isNaN(n)) return '—';
+            const locale = this.lang === 'es' ? 'es-ES' : 'en-US';
+            return Number(n).toLocaleString(locale, { maximumFractionDigits: 4 });
+        },
+        pct(f) {
+            return (Number(f) * 100).toFixed(0) + '%';
+        },
+        loadPreset(p) {
+            this.raw = p.values.map(v => Number(v.toFixed(3))).join(', ');
+            this.outlierMagnitude = 0;
+            this.outlierCount = 0;
+            this.run();
+        },
+        parse() {
+            const tokens = this.raw.split(/[\s,;]+/).map(t => t.trim()).filter(Boolean);
+            const nums = tokens.map(Number).filter(n => Number.isFinite(n));
+            if (this.outlierCount > 0 && this.outlierMagnitude > 0 && nums.length > 0) {
+                const base = nums.reduce((a, b) => a + b, 0) / nums.length;
+                for (let i = 0; i < this.outlierCount; i++) nums.push(base + this.outlierMagnitude);
+            }
+            this.parsed = nums;
+            return nums;
+        },
+        exportJson() {
+            if (!this.result) return;
+            const blob = new Blob([JSON.stringify(this.result, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'statguard-result.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        },
+        async run() {
+            const data = this.parse();
+            if (data.length < 2) {
+                this.result = null;
+                this.error = this.t('err_need2');
+                this.drawChart([]);
+                return;
+            }
+            this.error = null;
+            this.loading = true;
+            try {
+                const res = await fetch('api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data, huberK: this.huberK, trimPercent: this.trimPercent })
+                });
+                const json = await res.json();
+                if (!res.ok) throw new Error(json.error || this.t('err_api'));
+                this.result = json;
+                this.drawChart(data);
+            } catch (e) {
+                this.error = e.message;
+                this.result = null;
+            } finally {
+                this.loading = false;
+            }
+        },
+        drawChart(data) {
+            const canvas = document.getElementById('histogram');
+            if (!canvas) return;
+            if (this.chart) { this.chart.destroy(); this.chart = null; }
+            if (!data.length) return;
+
+            const n = data.length;
+            const sorted = [...data].sort((a, b) => a - b);
+            const min = sorted[0];
+            const max = sorted[sorted.length - 1];
+            const span = (max - min) || 1;
+
+            // Freedman–Diaconis-ish bin count, clamped
+            const q1 = sorted[Math.floor(n * 0.25)];
+            const q3 = sorted[Math.floor(n * 0.75)];
+            const iqr = Math.max(q3 - q1, span / 20);
+            const fdWidth = 2 * iqr / Math.cbrt(n);
+            let bins = fdWidth > 0 ? Math.ceil(span / fdWidth) : 20;
+            bins = Math.min(40, Math.max(8, bins));
+            const width = span / bins;
+
+            const counts = new Array(bins).fill(0);
+            const centers = Array.from({ length: bins }, (_, i) => min + width * (i + 0.5));
+            for (const v of data) {
+                let idx = Math.floor((v - min) / width);
+                if (idx >= bins) idx = bins - 1;
+                if (idx < 0) idx = 0;
+                counts[idx]++;
+            }
+            const decimals = span < 5 ? 2 : span < 100 ? 1 : 0;
+            const labels = centers.map(c => c.toFixed(decimals));
+            const maxCount = Math.max(...counts, 1);
+
+            const refs = this.result ? [
+                { key: 'mean',    color: '#e0a800', value: this.result.centralTendency.mean },
+                { key: 'median',  color: '#2ecc71', value: this.result.centralTendency.median },
+                { key: 'huber',   color: '#8ab4ff', value: this.result.centralTendency.huberMean },
+                { key: 'trimmed', color: '#d71921', value: this.result.centralTendency.trimmedMean },
+            ] : [];
+
+            const annotations = {};
+            refs.forEach(ref => {
+                if (!Number.isFinite(ref.value)) return;
+                if (ref.value < min || ref.value > max) return;
+                let idx = 0, bestDist = Infinity;
+                centers.forEach((c, j) => {
+                    const d = Math.abs(c - ref.value);
+                    if (d < bestDist) { bestDist = d; idx = j; }
+                });
+                annotations[ref.key] = {
+                    type: 'line',
+                    xMin: labels[idx],
+                    xMax: labels[idx],
+                    borderColor: ref.color,
+                    borderWidth: 1.5,
+                    borderDash: [3, 3],
+                };
+            });
+
+            const tooltipBin = this.t('tooltip_bin') === 'tooltip_bin' ? (this.lang === 'es' ? 'intervalo' : 'bin') : this.t('tooltip_bin');
+            const tooltipCount = this.lang === 'es' ? 'cuenta' : 'count';
+
+            this.chart = new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'frequency',
+                        data: counts,
+                        backgroundColor: 'rgba(255, 255, 255, 0.14)',
+                        borderColor: 'rgba(255, 255, 255, 0.55)',
+                        borderWidth: 1,
+                        borderRadius: 0,
+                        categoryPercentage: 1.0,
+                        barPercentage: 0.94,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 160, easing: 'easeOutQuad' },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#000',
+                            borderColor: 'rgba(255,255,255,0.18)',
+                            borderWidth: 1,
+                            titleFont: { family: 'Space Mono', size: 11 },
+                            bodyFont: { family: 'Space Mono', size: 11 },
+                            padding: 10,
+                            displayColors: false,
+                            callbacks: {
+                                title: items => `${tooltipBin} ${items[0].label}`,
+                                label: item => `${tooltipCount} ${item.raw}`,
+                            }
+                        },
+                        annotation: { annotations },
+                    },
+                    scales: {
+                        x: {
+                            border: { color: 'rgba(255,255,255,0.18)' },
+                            grid: { display: false },
+                            ticks: {
+                                color: 'rgba(255,255,255,0.38)',
+                                font: { family: 'Space Mono', size: 10 },
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: 10,
+                            },
+                        },
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: maxCount + Math.max(1, Math.round(maxCount * 0.1)),
+                            border: { color: 'rgba(255,255,255,0.18)' },
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: {
+                                color: 'rgba(255,255,255,0.38)',
+                                font: { family: 'Space Mono', size: 10 },
+                                precision: 0,
+                            },
+                        },
+                    },
+                },
+            });
+        },
+    };
+}
+</script>
+
+</body>
+</html>

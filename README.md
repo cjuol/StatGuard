@@ -36,6 +36,22 @@ Install via Composer:
 composer require cjuol/statguard
 ```
 
+## Interactive Demo
+
+An Outlier Playground is shipped in `web/public/`. It renders a dataset, injects synthetic outliers on demand, and shows classic vs. robust estimators (mean, median, Huber, trimmed, winsorized) side by side with a histogram overlay and the `StatsComparator` verdict.
+
+```bash
+# Local dev (native PHP, falls back to docker run if PHP not installed):
+./scripts/serve-demo.sh                # http://127.0.0.1:8080
+
+# Or with docker compose (VPS / long-running):
+docker compose up -d                   # binds 127.0.0.1:8080 by default
+```
+
+`docker compose up -d` brings up only the `demo` service (PHP built-in server on `web/public/`). Override the bind with `STATGUARD_DEMO_BIND=0.0.0.0 STATGUARD_DEMO_PORT=8080 docker compose up -d` if you are not fronting it with a reverse proxy. The legacy Apache service is kept under the `apache` profile (`docker compose --profile apache up web`).
+
+The UI calls `POST /api.php` with `{"data": [...], "huberK": 1.345, "trimPercent": 0.1}` and returns the full summary as JSON, making it a usable backend endpoint on its own.
+
 ## Usage
 
 ### Robust Estimators (Quick Start)
@@ -257,17 +273,17 @@ Generate or refresh the table with `php tests/BenchmarkStatGuard.php report`.
 <!-- BENCHMARK_PARITY_START -->
 | Method | StatGuard ms | StatGuard value | MathPHP ms | MathPHP value | R ms | R value | Status |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | :---: |
-| Median | - | - | - | - | - | - | ❌ |
-| Quantile Type 1 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 2 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 3 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 4 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 5 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 6 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 7 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 8 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Quantile Type 9 (p=0.75) | - | - | - | - | - | - | ❌ |
-| Huber mean | - | - | - | - | - | - | ❌ |
+| Median | 15.23 | 499.249 | 71.69 | 499.249 | 1.00 | 499.249 | ✅ |
+| Quantile Type 1 (p=0.75) | 14.79 | 747.736 | 14.69 | 747.7385 | 1.00 | 747.736 | ✅ |
+| Quantile Type 2 (p=0.75) | 14.36 | 747.741 | 15.37 | 747.7385 | 1.00 | 747.741 | ✅ |
+| Quantile Type 3 (p=0.75) | 14.81 | 747.736 | 15.99 | 747.7385 | 2.00 | 747.736 | ✅ |
+| Quantile Type 4 (p=0.75) | 14.75 | 747.736 | 15.02 | 747.7385 | 1.00 | 747.736 | ✅ |
+| Quantile Type 5 (p=0.75) | 13.99 | 747.741 | 14.72 | 747.7385 | 1.00 | 747.741 | ✅ |
+| Quantile Type 6 (p=0.75) | 13.67 | 747.7435 | 14.42 | 747.7385 | 1.00 | 747.7435 | ✅ |
+| Quantile Type 7 (p=0.75) | 14.03 | 747.7385 | 15.12 | 747.7385 | 1.00 | 747.7385 | ✅ |
+| Quantile Type 8 (p=0.75) | 13.75 | 747.741833 | 15.03 | 747.7385 | 2.00 | 747.7418 | ✅ |
+| Quantile Type 9 (p=0.75) | 14.10 | 747.741625 | 15.15 | 747.7385 | 2.00 | 747.7416 | ✅ |
+| Huber mean | 33.00 | 499.174389 | 37.83 | 499.243589 | 8.00 | 499.18 | ❌ |
 <!-- BENCHMARK_PARITY_END -->
 
 | Metric (100k) | StatGuard ms | MathPHP ms | R ms | Ratio (PHP/R) |

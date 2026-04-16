@@ -1,10 +1,27 @@
 services:
+  demo:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      target: base
+    image: statguard-core
+    restart: unless-stopped
+    environment:
+      - CHOWN_USER=${UID:-1000}
+      - CHOWN_GROUP=${GID:-1000}
+    ports:
+      - "${STATGUARD_DEMO_BIND:-127.0.0.1}:${STATGUARD_DEMO_PORT:-8080}:8080"
+    volumes:
+      - ./:/var/www/html/statguard
+    command: ["php", "-S", "0.0.0.0:8080", "-t", "web/public"]
+
   web:
     build:
       context: ./web
       dockerfile: Dockerfile
       target: base
     image: statguard-core
+    profiles: ["apache"]
     environment:
       - CHOWN_USER=${UID:-1000}
       - CHOWN_GROUP=${GID:-1000}
