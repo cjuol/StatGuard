@@ -49,3 +49,36 @@ jobs:
 
     - name: Run Tests
       run: ./vendor/bin/phpunit tests
+
+  coverage:
+    runs-on: ubuntu-latest
+    name: Coverage (PHP 8.3)
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP with pcov
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, dom, curl, libxml, simplexml, pcov
+        coverage: pcov
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer update --prefer-dist --no-progress
+
+    - name: Run tests with coverage
+      run: ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/coverage.xml
+
+    - name: Generate coverage shield JSON
+      run: php scripts/coverage_shield.php build/coverage.xml statguard-coverage.json
+
+    - name: Publish coverage shield to Gist
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        gist_id: 414f8bf15fbe9503c332a5c0a57a699f
+        token: ${{ secrets.GIST_TOKEN }}
+        gist_file_name: statguard-coverage.json
+        file_path: statguard-coverage.json

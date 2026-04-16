@@ -3,6 +3,8 @@ vendor/
 /.phpunit.result.cache
 /composer.lock
 /.tasks-log.csv
+/build/
+/statguard-coverage.json
 site/
 docs/api/
 !docker-compose.yml
