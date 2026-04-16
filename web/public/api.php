@@ -35,6 +35,18 @@ if (!is_array($payload) || !isset($payload['data']) || !is_array($payload['data'
     exit;
 }
 
+const MAX_DATA_POINTS = 50000;
+
+if (count($payload['data']) > MAX_DATA_POINTS) {
+    http_response_code(413);
+    echo json_encode([
+        'error' => 'Data array exceeds the maximum of ' . MAX_DATA_POINTS . ' values.',
+        'limit' => MAX_DATA_POINTS,
+        'received' => count($payload['data']),
+    ]);
+    exit;
+}
+
 $data = array_values(array_filter(
     array_map(static fn($v) => is_numeric($v) ? (float) $v : null, $payload['data']),
     static fn($v) => $v !== null && is_finite($v)
