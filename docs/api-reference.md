@@ -1,10 +1,10 @@
 # API reference
 
-The API generated with phpDocumentor is available in the menu under **API**.
-Use this page as a quick map of classes and minimal examples.
+The full API, generated with phpDocumentor on every push to `main`, lives at
+[**/api/**](../api/index.html). Use this page as a quick map of classes and minimal examples.
 
 !!! info
-	If you run the site locally, open the API section to browse namespaces, classes, and methods.
+	The generated site is deployed alongside this documentation on GitHub Pages. If the link above 404s right after a fresh deploy, wait a minute for the Pages cache to refresh.
 
 ## Class map
 
