@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Cjuol\StatGuard;
 
+use Cjuol\StatGuard\Contracts\ExportableInterface;
 use Cjuol\StatGuard\Contracts\StatsInterface;
 use Cjuol\StatGuard\Traits\DataProcessorTrait;
 use Cjuol\StatGuard\Traits\ExportableTrait;
 
-class RobustStats implements StatsInterface
+class RobustStats implements StatsInterface, ExportableInterface
 {
     use DataProcessorTrait;
     use ExportableTrait;
@@ -69,6 +70,14 @@ class RobustStats implements StatsInterface
     {
         $prepared = $this->prepareData($data, true);
         return pow($this->calculateRobustDeviation($prepared), 2);
+    }
+
+    /**
+     * Contract implementation: returns the robust variance (S* squared).
+     */
+    public function getVariance(array $data): float
+    {
+        return $this->getRobustVariance($data);
     }
 
     public function getIqr(array $data, int $type = self::TYPE_R_DEFAULT): float

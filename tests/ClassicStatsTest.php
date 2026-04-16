@@ -49,6 +49,14 @@ class ClassicStatsTest extends TestCase
         $this->assertEqualsWithDelta(19.5036, $result, self::DELTA);
     }
 
+    public function testGetVarianceReturnsSampleVariance(): void
+    {
+        $this->assertSame(
+            $this->stats->getSampleVariance($this->datosReferencia),
+            $this->stats->getVariance($this->datosReferencia)
+        );
+    }
+
     #[DataProvider('cvProvider')]
     public function testCoefficientOfVariationCalculation(array $datos, float $esperado): void
     {

@@ -66,6 +66,14 @@ class RobustStatsTest extends TestCase
         $this->assertEqualsWithDelta(4.022848079561035, $result, self::DELTA);
     }
 
+    public function testGetVarianceReturnsRobustVariance(): void
+    {
+        $this->assertSame(
+            $this->stats->getRobustVariance($this->datosReferencia),
+            $this->stats->getVariance($this->datosReferencia)
+        );
+    }
+
     public function testIqrCalculation(): void
     {
         $result = $this->stats->getIqr($this->datosReferencia);

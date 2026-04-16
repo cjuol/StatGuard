@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cjuol\StatGuard;
 
+use Cjuol\StatGuard\Contracts\ExportableInterface;
 use Cjuol\StatGuard\Contracts\StatsInterface;
 use Cjuol\StatGuard\Traits\DataProcessorTrait;
 use Cjuol\StatGuard\Traits\ExportableTrait;
@@ -13,7 +14,7 @@ use Cjuol\StatGuard\Traits\ExportableTrait;
  * * Implements calculations based on mean and traditional standard deviation.
  * * Useful for bias comparisons against robust statistics.
  */
-class ClassicStats implements StatsInterface
+class ClassicStats implements StatsInterface, ExportableInterface
 {
     use DataProcessorTrait;
     use ExportableTrait;
@@ -63,6 +64,14 @@ class ClassicStats implements StatsInterface
         if (abs($mean) < 1e-9) return 0.0;
 
         return ($this->getStandardDeviation($prepared) / abs($mean)) * 100;
+    }
+
+    /**
+     * Contract implementation: returns the sample variance (Bessel correction).
+     */
+    public function getVariance(array $data): float
+    {
+        return $this->getSampleVariance($data);
     }
 
     /**
