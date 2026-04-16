@@ -179,6 +179,9 @@ final class CentralTendencyEngine
             if (!is_numeric($value)) {
                 throw new InvalidDataSetException('All sample values must be numeric.');
             }
+            if (!is_finite((float) $value)) {
+                throw new InvalidDataSetException('Non-finite values (NaN/Inf) are not allowed.');
+            }
 
             if ($key !== $expectedKey) {
                 $isSequential = false;

@@ -24,6 +24,13 @@ final class CentralTendencyEngineTest extends TestCase
         $call();
     }
 
+    #[DataProvider('nonFiniteDatasetProvider')]
+    public function testNonFiniteDatasetThrows(callable $call): void
+    {
+        $this->expectException(InvalidDataSetException::class);
+        $call();
+    }
+
     #[DataProvider('singleElementProvider')]
     public function testSingleElementReturnsValue(callable $call): void
     {
@@ -78,6 +85,18 @@ final class CentralTendencyEngineTest extends TestCase
             'winsorizedMean' => [fn() => CentralTendencyEngine::winsorizedMean(self::SINGLE_VALUE)],
             'huberMean' => [fn() => CentralTendencyEngine::huberMean(self::SINGLE_VALUE)],
         ];
+    }
+
+    public static function nonFiniteDatasetProvider(): array
+    {
+        $cases = [];
+        foreach (['nan' => NAN, 'inf' => INF, 'neg_inf' => -INF] as $label => $value) {
+            $dataset = [1.0, $value, 3.0];
+            $cases["trimmedMean_{$label}"] = [fn() => CentralTendencyEngine::trimmedMean($dataset)];
+            $cases["winsorizedMean_{$label}"] = [fn() => CentralTendencyEngine::winsorizedMean($dataset)];
+            $cases["huberMean_{$label}"] = [fn() => CentralTendencyEngine::huberMean($dataset)];
+        }
+        return $cases;
     }
 
     private static function getRReference(): array
