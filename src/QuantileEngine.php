@@ -18,6 +18,21 @@ final class QuantileEngine
         return self::calculateInternal($data, $probability, $type, true);
     }
 
+    /**
+     * Median of an already-sorted, already-validated numeric array.
+     * Equivalent to type 7 quantile at p=0.5. Skips validation for speed —
+     * callers must pass numeric, finite, sorted input.
+     */
+    public static function medianSorted(array $sorted): float
+    {
+        $n = count($sorted);
+        $m = intdiv($n, 2);
+        if ($n % 2 === 0) {
+            return ($sorted[$m - 1] + $sorted[$m]) / 2.0;
+        }
+        return (float) $sorted[$m];
+    }
+
     private static function calculateInternal(array $data, float $probability, int $type, bool $alreadySorted): float
     {
         if ($type < 1 || $type > 9) {

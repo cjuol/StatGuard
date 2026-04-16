@@ -33,7 +33,7 @@ class ClassicStats implements StatsInterface
      */
     public function getMedian(array $data): float
     {
-        return $this->calculateMedian($this->prepareData($data, true));
+        return QuantileEngine::medianSorted($this->prepareData($data, true));
     }
 
     /**
@@ -106,7 +106,7 @@ class ClassicStats implements StatsInterface
 
         return [
             'mean'           => round($this->calculateMean($prepared), $decimals),
-            'median'         => round($this->calculateMedian($prepared), $decimals),
+            'median'         => round(QuantileEngine::medianSorted($prepared), $decimals),
             'stdDev'         => round($this->getStandardDeviation($prepared), $decimals),
             'sampleVariance' => round($this->getSampleVariance($prepared), $decimals),
             // Use the safe method to avoid division by zero
@@ -121,17 +121,6 @@ class ClassicStats implements StatsInterface
     private function calculateMean(array $data): float
     {
         return array_sum($data) / count($data);
-    }
-
-    private function calculateMedian(array $data): float
-    {
-        $n = count($data);
-        $m = intdiv($n, 2);
-
-        if ($n % 2 === 0) {
-            return ($data[$m - 1] + $data[$m]) / 2.0;
-        }
-        return (float) $data[$m];
     }
 
     private function calculateVariance(array $data, bool $sample = true): float

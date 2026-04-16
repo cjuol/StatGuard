@@ -33,7 +33,7 @@ class RobustStats implements StatsInterface
 
     public function getMedian(array $data): float
     {
-        return $this->calculateMedian($this->prepareData($data, true));
+        return QuantileEngine::medianSorted($this->prepareData($data, true));
     }
 
     public function getDeviation(array $data): float
@@ -47,7 +47,7 @@ class RobustStats implements StatsInterface
     {
         // For interface consistency, use the scaled deviation
         $prepared = $this->prepareData($data, true);
-        $median = $this->calculateMedian($prepared);
+        $median = QuantileEngine::medianSorted($prepared);
         if (abs($median) < 1e-9) return 0.0;
         return (($this->calculateMad($prepared) * 1.4826) / abs($median)) * 100;
     }
@@ -147,7 +147,7 @@ class RobustStats implements StatsInterface
     {
         $prepared = $this->prepareData($data, $sort);
 
-        $median = $this->calculateMedian($prepared);
+        $median = QuantileEngine::medianSorted($prepared);
         $robustDeviation = $this->calculateRobustDeviation($prepared);
         $iqr = $this->calculateIqr($prepared, self::TYPE_R_DEFAULT);
         $robustCv = (abs($median) < 1e-9) ? 0.0 : ($robustDeviation / abs($median)) * 100;
@@ -177,13 +177,6 @@ class RobustStats implements StatsInterface
         return array_sum($data) / count($data);
     }
 
-    private function calculateMedian(array $data): float
-    {
-        $n = count($data);
-        $m = intdiv($n, 2);
-        return ($n % 2 === 0) ? ($data[$m - 1] + $data[$m]) / 2.0 : (float) $data[$m];
-    }
-
     private function calculateRobustDeviation(array $data): float
     {
         $n = count($data);
@@ -192,7 +185,7 @@ class RobustStats implements StatsInterface
 
     private function calculateRobustCv(array $data): float
     {
-        $median = $this->calculateMedian($data);
+        $median = QuantileEngine::medianSorted($data);
         if (abs($median) < 1e-9) return 0.0;
         return ($this->calculateRobustDeviation($data) / abs($median)) * 100;
     }
@@ -205,10 +198,10 @@ class RobustStats implements StatsInterface
 
     private function calculateMad(array $data): float
     {
-        $median = $this->calculateMedian($data);
+        $median = QuantileEngine::medianSorted($data);
         $diffs = array_map(fn($x) => abs($x - $median), $data);
         sort($diffs);
-        return $this->calculateMedian($diffs);
+        return QuantileEngine::medianSorted($diffs);
     }
 
     private function detectOutliers(array $data, int $type = self::TYPE_R_DEFAULT): array
@@ -221,7 +214,7 @@ class RobustStats implements StatsInterface
 
     private function calculateConfidenceIntervals(array $data): array
     {
-        $median = $this->calculateMedian($data);
+        $median = QuantileEngine::medianSorted($data);
         $margin = 1.96 * $this->calculateRobustDeviation($data);
         return ['upper' => $median + $margin, 'lower' => $median - $margin];
     }

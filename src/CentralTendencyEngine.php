@@ -112,7 +112,7 @@ final class CentralTendencyEngine
             return (float) $sorted[0];
         }
 
-        $median = self::median($sorted);
+        $median = QuantileEngine::medianSorted($sorted);
         $mad = self::mad($sorted, $median);
         $scale = $mad * 1.4826;
 
@@ -200,20 +200,10 @@ final class CentralTendencyEngine
         return array_sum($data) / count($data);
     }
 
-    private static function median(array $sorted): float
-    {
-        $n = count($sorted);
-        $m = intdiv($n, 2);
-        if ($n % 2 === 0) {
-            return ($sorted[$m - 1] + $sorted[$m]) / 2.0;
-        }
-        return (float) $sorted[$m];
-    }
-
     private static function mad(array $sorted, float $median): float
     {
         $diffs = array_map(fn($x) => abs($x - $median), $sorted);
         sort($diffs, SORT_NUMERIC);
-        return self::median($diffs);
+        return QuantileEngine::medianSorted($diffs);
     }
 }
