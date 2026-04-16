@@ -155,15 +155,17 @@ class RobustStats implements StatsInterface, ExportableInterface
     public function getSummary(array $data, bool $sort = true, int $decimals = 2): array
     {
         $prepared = $this->prepareData($data, $sort);
+        $n = count($prepared);
 
         $median = QuantileEngine::medianSorted($prepared);
-        $robustDeviation = $this->calculateRobustDeviation($prepared);
-        $iqr = $this->calculateIqr($prepared, self::TYPE_R_DEFAULT);
-        $robustCv = (abs($median) < 1e-9) ? 0.0 : ($robustDeviation / abs($median)) * 100;
-        $mad = $this->calculateMad($prepared);
         $q1 = QuantileEngine::calculateSorted($prepared, 0.25, self::TYPE_R_DEFAULT);
         $q3 = QuantileEngine::calculateSorted($prepared, 0.75, self::TYPE_R_DEFAULT);
+        $iqr = $q3 - $q1;
+        $robustDeviation = (1.25 / 1.35) * ($iqr / sqrt($n));
+        $robustCv = (abs($median) < 1e-9) ? 0.0 : ($robustDeviation / abs($median)) * 100;
+        $mad = $this->calculateMad($prepared);
         $outliers = $this->collectOutliers($prepared, $q1, $q3, $iqr);
+        $margin = 1.96 * $robustDeviation;
 
         return [
             'mean'                => round($this->calculateMean($prepared), $decimals),
@@ -174,8 +176,8 @@ class RobustStats implements StatsInterface, ExportableInterface
             'iqr'                 => round($iqr, $decimals),
             'mad'                 => round($mad, $decimals),
             'outliers'            => $outliers,
-            'confidenceIntervals' => $this->calculateConfidenceIntervals($prepared),
-            'count'               => count($prepared)
+            'confidenceIntervals' => ['upper' => $median + $margin, 'lower' => $median - $margin],
+            'count'               => $n,
         ];
     }
 
