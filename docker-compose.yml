@@ -58,7 +58,7 @@ services:
     command: ["php", "tests/BenchmarkStatGuard.php", "report"]
 
   docs:
-    image: phpdocumentor/phpdocumentor
+    image: phpdocumentor/phpdocumentor:3.5
     profiles: ["docs"]
     volumes:
       - ./:/var/www/html/statguard
@@ -66,7 +66,7 @@ services:
     command: ["phpdoc", "-d", "/var/www/html/statguard/src", "-t", "/var/www/html/statguard/docs/api"]
 
   mkdocs:
-    image: squidfunk/mkdocs-material
+    image: squidfunk/mkdocs-material:9.5.44
     profiles: ["docs"]
     ports:
       - "8000:8000" # Vital para ver el sitio en el navegador
