@@ -1,0 +1,1264 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation for StatGuard">
+      
+      
+      
+        <link rel="canonical" href="https://cjuol.github.io/StatGuard/es/audits/2026-04-16-kpi-roadmap-proposal/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="../../../audits/2026-04-16-kpi-roadmap-proposal/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="es">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>StatGuard — Propuesta de roadmap KPI (pura-cálculo) · 2026-04-16 - StatGuard Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#statguard-propuesta-de-roadmap-kpi-pura-calculo-2026-04-16" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../../" title="StatGuard Documentation" class="md-header__button md-logo" aria-label="StatGuard Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            StatGuard Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              StatGuard — Propuesta de roadmap KPI (pura-cálculo) · 2026-04-16
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Seleccionar idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../audits/2026-04-16-kpi-roadmap-proposal/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="es" class="md-select__link">
+              Espanol
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="StatGuard Documentation" class="md-nav__button md-logo" aria-label="StatGuard Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    StatGuard Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../math-basis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical basis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-contexto-y-decision-de-producto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Contexto y decisión de producto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-reclasificacion-de-features-propuestas-en-la-auditoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Reclasificación de features propuestas en la auditoría
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Reclasificación de features propuestas en la auditoría">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-se-mantienen-encajan-con-solo-calculo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Se mantienen (encajan con "solo cálculo")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-se-descartan-bajo-nuevo-foco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Se descartan bajo nuevo foco
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-se-mantiene-en-v300-decision-ya-tomada-en-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Se mantiene en v3.0.0 (decisión ya tomada en audit)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nuevos-calculos-a-anadir-pivote-kpi-industrial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Nuevos cálculos a añadir (pivote KPI industrial)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Nuevos cálculos a añadir (pivote KPI industrial)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-distribucion-y-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Distribución y tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-deteccion-de-cambio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Detección de cambio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-spc-statistical-process-control-iso-22514" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 SPC — Statistical Process Control (ISO 22514)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-streaming-ventana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Streaming / ventana
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-bootstrap-infra-compartida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Bootstrap (infra compartida)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-fiabilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Fiabilidad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-pareto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Pareto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lo-que-no-entra-queda-en-el-repo-del-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lo que NO entra (queda en el repo del dashboard)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-estructura-propuesta-de-src" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Estructura propuesta de src/
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-plan-de-versiones-reemplaza-6-del-audit-para-v220" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Plan de versiones (reemplaza §6 del audit para v2.2.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-contratos-y-patrones-recurrentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Contratos y patrones recurrentes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Contratos y patrones recurrentes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-resultado-con-ci-bootstrap-feat-02-habilita-todo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Resultado con CI bootstrap (FEAT-02 habilita todo)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-carta-de-control-como-valor-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Carta de control como valor de datos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-estado-online-serializable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Estado online serializable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-superficie-publica-que-entra-en-statsinterface-exportableinterface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Superficie pública: qué entra en StatsInterface / ExportableInterface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-preguntas-abiertas-para-el-otro-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Preguntas abiertas para el otro agente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-resumen-ejecutivo-para-el-otro-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Resumen ejecutivo para el otro agente
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="statguard-propuesta-de-roadmap-kpi-pura-calculo-2026-04-16">StatGuard — Propuesta de roadmap KPI (pura-cálculo) · 2026-04-16<a class="headerlink" href="#statguard-propuesta-de-roadmap-kpi-pura-calculo-2026-04-16" title="Permanent link">&para;</a></h1>
+<p>Autor: Claude (Opus 4.7 · 1M context) — sesión de producto con el mantenedor.
+Complementa: <code>docs/audits/2026-04-16-full-audit.md</code> (auditoría inicial + §6.1 changelog post-lote).
+Scope: redefinir el plan <strong>v2.2.0 → v3.0.0</strong> bajo un nuevo foco de producto.</p>
+<hr />
+<h2 id="1-contexto-y-decision-de-producto">1. Contexto y decisión de producto<a class="headerlink" href="#1-contexto-y-decision-de-producto" title="Permanent link">&para;</a></h2>
+<p>El mantenedor quiere pivotar StatGuard como <strong>motor de cálculo para generación de KPIs empresariales</strong>, con un primer caso real: planta de <strong>mecanizado industrial con 15 máquinas</strong> que fabrican piezas para sus clientes. El dashboard de KPIs vivirá en <strong>otro repositorio</strong>.</p>
+<p>Principio duro acordado:</p>
+<blockquote>
+<p><strong>StatGuard es librería de cálculo pura. Todo lo que sea orquestación de dominio (OEE aggregator, readers I/O, loggers, UI, share URLs) queda FUERA y vive en el repo del dashboard.</strong></p>
+</blockquote>
+<p>Esto reescribe el mapeo de features de <code>§5</code> de la auditoría original.</p>
+<hr />
+<h2 id="2-reclasificacion-de-features-propuestas-en-la-auditoria">2. Reclasificación de features propuestas en la auditoría<a class="headerlink" href="#2-reclasificacion-de-features-propuestas-en-la-auditoria" title="Permanent link">&para;</a></h2>
+<h3 id="21-se-mantienen-encajan-con-solo-calculo">2.1 Se mantienen (encajan con "solo cálculo")<a class="headerlink" href="#21-se-mantienen-encajan-con-solo-calculo" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Feature</th>
+<th>Justificación bajo nuevo foco</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FEAT-01</strong></td>
+<td>Streaming: Welford + P²</td>
+<td>P95/P99 de tiempo de ciclo online por máquina. 15 máquinas × 24 h no caben en RAM.</td>
+</tr>
+<tr>
+<td><strong>FEAT-02</strong></td>
+<td>Bootstrap CIs</td>
+<td>Cpk con CI y MTBF con CI son requisito enterprise. Datos de fabricación no son normales.</td>
+</tr>
+<tr>
+<td><strong>FEAT-03</strong></td>
+<td>Skewness/kurtosis + Shapiro-Wilk</td>
+<td>Cálculo puro. Base para comparador más cuantitativo y para diagnóstico de normalidad antes de Cpk.</td>
+</tr>
+<tr>
+<td><strong>FEAT-04</strong></td>
+<td>Rolling windowed stats</td>
+<td>Cycle-time últimas 8 h (deriva intraturno). Cálculo puro (ventana deslizante).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-se-descartan-bajo-nuevo-foco">2.2 Se descartan bajo nuevo foco<a class="headerlink" href="#22-se-descartan-bajo-nuevo-foco" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Feature</th>
+<th>Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FEAT-05</strong></td>
+<td>CSV/JSON/NDJSON reader</td>
+<td>I/O: el dashboard parsea y alimenta arrays. No es math.</td>
+</tr>
+<tr>
+<td><strong>FEAT-06</strong></td>
+<td>PSR-3 logger hook</td>
+<td>Observabilidad de app, no cálculo. Añadiría dep (<code>psr/log</code>) que contamina el <code>require</code>.</td>
+</tr>
+<tr>
+<td><strong>FEAT-07</strong></td>
+<td>Playground share URL + PNG</td>
+<td>UI del playground. Vive en <code>web/</code> como demo, no es core de la librería.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-se-mantiene-en-v300-decision-ya-tomada-en-audit">2.3 Se mantiene en v3.0.0 (decisión ya tomada en audit)<a class="headerlink" href="#23-se-mantiene-en-v300-decision-ya-tomada-en-audit" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Feature</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FEAT-08</strong></td>
+<td>Modo <code>exact</code> / bcmath</td>
+<td>Cálculo sí, pero no urgente. Mantener en v3.0.0 junto con rename de <code>robustDeviation</code> (QUA-02).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-nuevos-calculos-a-anadir-pivote-kpi-industrial">3. Nuevos cálculos a añadir (pivote KPI industrial)<a class="headerlink" href="#3-nuevos-calculos-a-anadir-pivote-kpi-industrial" title="Permanent link">&para;</a></h2>
+<p>Todo lo siguiente es <strong>cálculo estadístico puro</strong> (fórmulas cerradas, algoritmos documentados, sin dependencias de dominio). Encaja con el principio "solo math".</p>
+<h3 id="31-distribucion-y-tests">3.1 Distribución y tests<a class="headerlink" href="#31-distribucion-y-tests" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo (propuesto)</th>
+<th>Cálculos</th>
+<th>Uso típico en KPI industrial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/Distribution/NormalityTests.php</code></td>
+<td>Shapiro-Wilk, Anderson-Darling</td>
+<td>Pre-check antes de aplicar Cpk (requiere normalidad).</td>
+</tr>
+<tr>
+<td><code>src/Distribution/MomentStats.php</code></td>
+<td>Skewness, excess kurtosis</td>
+<td>Diagnóstico asimetría / colas gruesas en KPI.</td>
+</tr>
+<tr>
+<td><code>src/Distribution/TwoSampleTests.php</code></td>
+<td>Mann-Whitney U, Kolmogorov-Smirnov, permutation test</td>
+<td>Comparar <strong>máquina A vs B</strong> sin asumir normalidad.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-deteccion-de-cambio">3.2 Detección de cambio<a class="headerlink" href="#32-deteccion-de-cambio" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Cálculos</th>
+<th>Uso típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/Changepoint/CusumDetector.php</code></td>
+<td>CUSUM para detección de punto de cambio</td>
+<td>"¿Cuándo empezó a subir el scrap?"</td>
+</tr>
+<tr>
+<td><code>src/Changepoint/Pelt.php</code></td>
+<td>PELT (Pruned Exact Linear Time)</td>
+<td>Segmentación de series temporales largas.</td>
+</tr>
+<tr>
+<td><code>src/Changepoint/BinarySegmentation.php</code></td>
+<td>Binary segmentation</td>
+<td>Alternativa ligera a PELT.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-spc-statistical-process-control-iso-22514">3.3 SPC — Statistical Process Control (ISO 22514)<a class="headerlink" href="#33-spc-statistical-process-control-iso-22514" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Cálculos</th>
+<th>Uso típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/Spc/ProcessCapability.php</code></td>
+<td><code>cp</code>, <code>cpk</code>, <code>pp</code>, <code>ppk</code> + bootstrap CI</td>
+<td>Exigido por cliente automoción (IATF 16949): Cpk ≥ 1.33.</td>
+</tr>
+<tr>
+<td><code>src/Spc/ShewhartChart.php</code></td>
+<td>Xbar-R, Xbar-S, I-MR → <code>{center, ucl, lcl, violations[]}</code></td>
+<td>Carta de control de cotas dimensionales.</td>
+</tr>
+<tr>
+<td><code>src/Spc/CusumChart.php</code></td>
+<td>CUSUM control chart</td>
+<td>Detección de deriva sutil (desgaste herramienta).</td>
+</tr>
+<tr>
+<td><code>src/Spc/EwmaChart.php</code></td>
+<td>EWMA con <code>λ</code> configurable</td>
+<td>Suavizado exponencial, más sensible que Shewhart.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-streaming-ventana">3.4 Streaming / ventana<a class="headerlink" href="#34-streaming-ventana" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Cálculos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/Online/Welford.php</code></td>
+<td>Media/varianza incremental (FEAT-01).</td>
+</tr>
+<tr>
+<td><code>src/Online/P2Quantile.php</code></td>
+<td>Cuantiles online algoritmo P² (FEAT-01).</td>
+</tr>
+<tr>
+<td><code>src/Online/RollingWindow.php</code></td>
+<td>Ventana deslizante sobre cualquier estadístico (FEAT-04).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-bootstrap-infra-compartida">3.5 Bootstrap (infra compartida)<a class="headerlink" href="#35-bootstrap-infra-compartida" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Cálculos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/BootstrapEngine.php</code></td>
+<td>Resampling + CI percentil y BCa, seedable (FEAT-02).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="36-fiabilidad">3.6 Fiabilidad<a class="headerlink" href="#36-fiabilidad" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Cálculos</th>
+<th>Uso típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/Reliability/WeibullFit.php</code></td>
+<td>MLE de β (shape), η (scale); <code>reliability(t)</code>, <code>hazard(t)</code></td>
+<td>Vida útil de herramienta, análisis de fallos.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="37-pareto">3.7 Pareto<a class="headerlink" href="#37-pareto" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Cálculos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/Pareto/ParetoRank.php</code></td>
+<td>Ordenar + porcentaje acumulado + punto de corte 80/20.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Discusión</strong>: Pareto es 50/50. Es cálculo (ordenación + acumulado), no visualización. <strong>Propuesta: incluirlo.</strong> Si se excluye, 20 líneas de lógica acaban duplicadas en N dashboards.</p>
+<hr />
+<h2 id="4-lo-que-no-entra-queda-en-el-repo-del-dashboard">4. Lo que NO entra (queda en el repo del dashboard)<a class="headerlink" href="#4-lo-que-no-entra-queda-en-el-repo-del-dashboard" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OEE calculator</strong></td>
+<td><code>OEE = A × P × Q</code> es orquestación de 3 ratios con contexto de turnos. Dominio.</td>
+</tr>
+<tr>
+<td><strong>MTBF / MTTR labels</strong></td>
+<td>Son <code>mean(intervals)</code>. El cálculo ya existe en <code>ClassicStats::getMean()</code>.</td>
+</tr>
+<tr>
+<td><strong>CSV/Excel/NDJSON reader</strong></td>
+<td>I/O.</td>
+</tr>
+<tr>
+<td><strong>PSR-3 logger</strong></td>
+<td>Observabilidad.</td>
+</tr>
+<tr>
+<td><strong>Playground share URL</strong></td>
+<td>UI.</td>
+</tr>
+<tr>
+<td><strong>Health endpoint</strong></td>
+<td>Infra de demo.</td>
+</tr>
+<tr>
+<td><strong>Gauge R&amp;R</strong></td>
+<td>Diferido a v2.5.0. ANOVA de repetibilidad/reproducibilidad arrastra dominio de mediciones — frontera borrosa.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-estructura-propuesta-de-src">5. Estructura propuesta de <code>src/</code><a class="headerlink" href="#5-estructura-propuesta-de-src" title="Permanent link">&para;</a></h2>
+<pre><code>src/
+├── ClassicStats.php
+├── RobustStats.php
+├── StatsComparator.php
+├── QuantileEngine.php
+├── CentralTendencyEngine.php
+├── BootstrapEngine.php                 (nuevo — FEAT-02)
+├── Support/
+│   └── DataValidator.php               (ya existe post-QUA-01)
+├── Distribution/
+│   ├── NormalityTests.php              (Shapiro-Wilk, AD)
+│   ├── MomentStats.php                 (skewness, kurtosis)
+│   └── TwoSampleTests.php              (MW-U, KS, permutation)
+├── Online/
+│   ├── Welford.php
+│   ├── P2Quantile.php
+│   └── RollingWindow.php
+├── Changepoint/
+│   ├── CusumDetector.php
+│   ├── Pelt.php
+│   └── BinarySegmentation.php
+├── Spc/
+│   ├── ProcessCapability.php
+│   ├── ShewhartChart.php               (Xbar-R, Xbar-S, I-MR)
+│   ├── CusumChart.php
+│   └── EwmaChart.php
+├── Reliability/
+│   └── WeibullFit.php
+├── Pareto/
+│   └── ParetoRank.php
+├── Contracts/
+├── Exceptions/
+└── Traits/
+</code></pre>
+<hr />
+<h2 id="6-plan-de-versiones-reemplaza-6-del-audit-para-v220">6. Plan de versiones (reemplaza §6 del audit para v2.2.0+)<a class="headerlink" href="#6-plan-de-versiones-reemplaza-6-del-audit-para-v220" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Versión</th>
+<th>Alcance</th>
+<th>Esfuerzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v2.1.0</strong></td>
+<td>Ya en curso por el otro agente: QUA-01 ✅, PERF-01 ✅, PERF-02 parcial. Pendiente: MED-06, SEC-05, SEC-10, QUA-11/12/13, QW-11.</td>
+<td>~3-5 días</td>
+</tr>
+<tr>
+<td><strong>v2.2.0 "Stat infra"</strong></td>
+<td><code>BootstrapEngine</code> + <code>Online/{Welford,P2Quantile,RollingWindow}</code> + <code>Distribution/*</code> + <code>Changepoint/*</code>. Base reutilizable por el resto.</td>
+<td><strong>~2 sem</strong></td>
+</tr>
+<tr>
+<td><strong>v2.3.0 "SPC core"</strong></td>
+<td><code>Spc/ProcessCapability</code> (Cp/Cpk/Pp/Ppk + bootstrap CI) + <code>Spc/ShewhartChart</code> + <code>Reliability/WeibullFit</code>. Primer corte que habilita KPIs reales de mecanizado.</td>
+<td><strong>~2 sem</strong></td>
+</tr>
+<tr>
+<td><strong>v2.4.0 "SPC avanzado + Pareto"</strong></td>
+<td><code>Spc/CusumChart</code> + <code>Spc/EwmaChart</code> + <code>Pareto/ParetoRank</code>.</td>
+<td><strong>~1 sem</strong></td>
+</tr>
+<tr>
+<td><strong>v2.5.0 (reservado)</strong></td>
+<td>Gauge R&amp;R (ANOVA) — opcional, solo si el caso real lo demanda.</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>v3.0.0</strong></td>
+<td>Rename <code>robustDeviation</code> (QUA-02) + <code>exact</code>/<code>bcmath</code> mode (FEAT-08).</td>
+<td>TBD</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-contratos-y-patrones-recurrentes">7. Contratos y patrones recurrentes<a class="headerlink" href="#7-contratos-y-patrones-recurrentes" title="Permanent link">&para;</a></h2>
+<p>Para que el dashboard consuma StatGuard limpio, proponemos tres patrones consistentes:</p>
+<h3 id="71-resultado-con-ci-bootstrap-feat-02-habilita-todo">7.1 Resultado con CI bootstrap (FEAT-02 habilita todo)<a class="headerlink" href="#71-resultado-con-ci-bootstrap-feat-02-habilita-todo" title="Permanent link">&para;</a></h3>
+<p>Todo estadístico apto para bootstrap devuelve, opcionalmente, su CI:</p>
+<pre><code class="language-php">ProcessCapability::cpk($data, lsl: 9.95, usl: 10.05);
+// → 1.42
+
+ProcessCapability::cpkWithCi($data, lsl: 9.95, usl: 10.05, resamples: 2000, seed: 42);
+// → ['point' =&gt; 1.42, 'ci' =&gt; ['lower' =&gt; 1.18, 'upper' =&gt; 1.61], 'method' =&gt; 'bootstrap-bca']
+</code></pre>
+<h3 id="72-carta-de-control-como-valor-de-datos">7.2 Carta de control como valor de datos<a class="headerlink" href="#72-carta-de-control-como-valor-de-datos" title="Permanent link">&para;</a></h3>
+<p>Los control charts <strong>no renderizan</strong>. Devuelven la estructura numérica y el dashboard pinta.</p>
+<pre><code class="language-php">ShewhartChart::iMR($values, sigma: 3.0);
+// → [
+//     'individuals' =&gt; ['center' =&gt; 10.01, 'ucl' =&gt; 10.06, 'lcl' =&gt; 9.96, 'values' =&gt; [...], 'violations' =&gt; [12, 47]],
+//     'movingRange' =&gt; ['center' =&gt; 0.012, 'ucl' =&gt; 0.039, 'lcl' =&gt; 0.0, 'values' =&gt; [...], 'violations' =&gt; []]
+//   ]
+</code></pre>
+<h3 id="73-estado-online-serializable">7.3 Estado online serializable<a class="headerlink" href="#73-estado-online-serializable" title="Permanent link">&para;</a></h3>
+<p>Los estimadores <code>Online/*</code> deben ser <strong>serializables</strong> (JSON) para que el dashboard persista estado entre requests/turnos:</p>
+<pre><code class="language-php">$welford = new Welford();
+$welford-&gt;push(3.14);
+$state = $welford-&gt;toArray();                 // ['count' =&gt; 1, 'mean' =&gt; 3.14, 'm2' =&gt; 0.0]
+$restored = Welford::fromArray($state);       // continúa donde se quedó
+</code></pre>
+<p>Este contrato es <strong>obligatorio</strong> para que el dashboard no tenga que reprocesar millones de puntos en cada render.</p>
+<hr />
+<h2 id="8-superficie-publica-que-entra-en-statsinterface-exportableinterface">8. Superficie pública: qué entra en <code>StatsInterface</code> / <code>ExportableInterface</code><a class="headerlink" href="#8-superficie-publica-que-entra-en-statsinterface-exportableinterface" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>No</strong> se toca <code>StatsInterface</code> en v2.2.0. Los nuevos módulos son clases finales con métodos estáticos o constructores simples.</li>
+<li><strong>No</strong> se expone <code>toCsv</code> / <code>toJson</code> para cada nuevo módulo por defecto — sólo donde tiene sentido (p. ej. <code>ShewhartChart</code>).</li>
+<li>El rename de <code>robustDeviation</code> (QUA-02) se mantiene como único breaking en v3.0.0.</li>
+</ul>
+<hr />
+<h2 id="9-preguntas-abiertas-para-el-otro-agente">9. Preguntas abiertas para el otro agente<a class="headerlink" href="#9-preguntas-abiertas-para-el-otro-agente" title="Permanent link">&para;</a></h2>
+<p>Antes de entrar a v2.2.0 necesitamos alinear:</p>
+<ol>
+<li>
+<p><strong>¿Pareto dentro o fuera?</strong> Mi propuesta: dentro (<code>src/Pareto/ParetoRank.php</code>). Justificación: 80/20 es cálculo (ordenar + acumulado), no renderizado. Si queda fuera se duplicará en cada consumer. <strong>Tu criterio.</strong></p>
+</li>
+<li>
+<p><strong>¿Dependencias opcionales?</strong> El bootstrap no necesita nada. Shapiro-Wilk tiene implementaciones en PHP puro; Weibull MLE también (Newton-Raphson). <strong>Mi propuesta: cero deps nuevas en v2.2.0-v2.4.0.</strong> Mantener el "zero-dep" como diferenciador vs MathPHP.</p>
+</li>
+<li>
+<p><strong>¿Dónde vive el bootstrap?</strong> Dos opciones:</p>
+</li>
+<li><code>src/BootstrapEngine.php</code> expuesto público (el consumer puede hacer bootstrap sobre lo que quiera).</li>
+<li>Método interno, solo accesible vía <code>*WithCi</code> en cada clase.</li>
+</ol>
+<p><strong>Mi propuesta: público.</strong> Dashboard de KPIs querrá bootstrap sobre métricas propias (p. ej. OEE) que StatGuard no conoce.</p>
+<ol>
+<li>
+<p><strong>¿Estado online: <code>toArray</code>/<code>fromArray</code> o interfaz formal <code>Serializable</code>?</strong> PHP <code>Serializable</code> está deprecado desde 8.1. Array idiomático + static factory es más limpio. Confirmar patrón antes de escribir 3 clases con ello.</p>
+</li>
+<li>
+<p><strong>¿Nombre <code>Spc</code> vs <code>StatisticalProcessControl</code>?</strong> Abreviatura <code>Spc</code> es estándar en literatura industrial y en nombres de namespace de librerías Python/R (<code>scipy.stats</code>, <code>qualityTools</code>). <strong>Mi propuesta: <code>Spc</code>.</strong></p>
+</li>
+<li>
+<p><strong>¿Versiona semver cada bloque o agrupamos?</strong> Propuesta: agrupar por milestone (v2.2.0 Stat infra, v2.3.0 SPC core) para que cada release traiga valor coherente al dashboard. Tu criterio.</p>
+</li>
+<li>
+<p><strong>¿Tests R de referencia para SPC?</strong> Cpk, Xbar-R y Weibull tienen referencias fiables en <code>qcc</code> y <code>survival</code> de R. <strong>Propuesta</strong>: seguir patrón existente (<code>MatchesRReference</code> skippable), pero añadir también valores hardcoded generados una vez con R para CI sin R (mismo que FEAT <code>MED-06</code>).</p>
+</li>
+</ol>
+<hr />
+<h2 id="10-resumen-ejecutivo-para-el-otro-agente">10. Resumen ejecutivo para el otro agente<a class="headerlink" href="#10-resumen-ejecutivo-para-el-otro-agente" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Pivote de producto</strong>: StatGuard enfocado a motor de KPIs industriales, empezando por planta de mecanizado (15 máquinas). Dashboard vive aparte.</li>
+<li><strong>Principio</strong>: solo cálculo. Se descartan <strong>FEAT-05/06/07</strong> de la auditoría original.</li>
+<li><strong>Se mantienen</strong>: <strong>FEAT-01/02/03/04</strong> (encajan como primitivas estadísticas puras).</li>
+<li><strong>Se añaden</strong> (cálculo puro, cero deps de runtime):</li>
+<li><code>Distribution/</code> — normality tests, momentos, two-sample tests.</li>
+<li><code>Changepoint/</code> — CUSUM, PELT, binary segmentation.</li>
+<li><code>Spc/</code> — Cp/Cpk/Pp/Ppk + Shewhart + CUSUM + EWMA.</li>
+<li><code>Reliability/</code> — Weibull MLE.</li>
+<li><code>Pareto/</code> — ranking 80/20.</li>
+<li><code>BootstrapEngine</code> — público, habilita CI en todo lo demás.</li>
+<li><code>Online/</code> + <code>RollingWindow</code> — con contrato serializable.</li>
+<li><strong>v2.1.0</strong> la cerrás tú como veníamos. <strong>v2.2.0 → v2.4.0</strong> es la ejecución de este plan.</li>
+<li>Necesito respuesta a las <strong>7 preguntas abiertas del §9</strong> antes de escribir SDD proposal de v2.2.0.</li>
+</ul>
+<p>Propongo siguiente paso: abrir un SDD <code>sdd-new v2.2.0-stat-infra</code> una vez resueltas las preguntas, con <code>artifact_store=engram</code> y <code>execution=interactive</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

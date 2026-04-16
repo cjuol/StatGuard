@@ -1,0 +1,2352 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation for StatGuard">
+      
+      
+      
+        <link rel="canonical" href="https://cjuol.github.io/StatGuard/audits/2026-04-16-full-audit/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../es/audits/2026-04-16-full-audit/" hreflang="es">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>StatGuard — Full Audit · 2026-04-16 - StatGuard Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#statguard-full-audit-2026-04-16" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="StatGuard Documentation" class="md-header__button md-logo" aria-label="StatGuard Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            StatGuard Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              StatGuard — Full Audit · 2026-04-16
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../es/audits/2026-04-16-full-audit/" hreflang="es" class="md-select__link">
+              Espanol
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="StatGuard Documentation" class="md-nav__button md-logo" aria-label="StatGuard Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    StatGuard Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../math-basis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mathematical basis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-alcance-y-nota-previa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Alcance y nota previa
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-mapa-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Mapa del proyecto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Mapa del proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-inventario-de-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Inventario de código
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-endpoints-expuestos-solo-la-demo-no-la-libreria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Endpoints expuestos (sólo la demo, no la librería)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-workers-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Workers / consumers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-servicios-inyectables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Servicios inyectables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-dependencias-composer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Dependencias Composer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-cobertura-de-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Cobertura de tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-auditoria-de-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Auditoría de seguridad
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Auditoría de seguridad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-autenticacion-y-autorizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Autenticación y autorización
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-inyeccion-validacion-y-dos-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Inyección, validación y DoS de entrada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Inyección, validación y DoS de entrada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sec-01-alto-api-sin-limite-de-tamano-de-array" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-01 · ALTO — API sin límite de tamaño de array
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-02-medio-fuga-de-detalle-en-respuesta-500" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-02 · MEDIO — Fuga de detalle en respuesta 500
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-03-medio-inconsistencia-de-validacion-en-centraltendencyenginenormalizedata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-03 · MEDIO — Inconsistencia de validación en CentralTendencyEngine::normalizeData
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-04-bajo-validacion-de-parametros-en-apiphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-04 · BAJO — Validación de parámetros en api.php
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-configuracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Configuración
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Configuración">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sec-05-medio-cors-abierto-en-apiphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-05 · MEDIO — CORS abierto en api.php
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-06-bajo-cdn-externos-sin-subresource-integrity-sri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-06 · BAJO — CDN externos sin Subresource Integrity (SRI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-07-bajo-sin-cabeceras-de-seguridad-en-la-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-07 · BAJO — Sin cabeceras de seguridad en la demo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-08-bajo-app_secret-env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-08 · BAJO — APP_SECRET / .env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-09-bajo-puertos-docker-expuestos-al-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-09 · BAJO — Puertos Docker expuestos al host
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-10-medio-rate-limiting-en-apiphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-10 · MEDIO — Rate limiting en api.php
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-dependencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Dependencias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Dependencias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sec-11-info-composer-audit-limpio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-11 · INFO — composer audit limpio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-12-bajo-composerlock-gitignorado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-12 · BAJO — composer.lock gitignorado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-13-medio-docker-image-phpdocumentorphpdocumentor-sin-pin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SEC-13 · MEDIO — Docker image phpdocumentor/phpdocumentor sin pin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-auditoria-de-rendimiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Auditoría de rendimiento
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Auditoría de rendimiento">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-base-de-datos-indices-n1-migrations-jsonb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Base de datos, índices, N+1, migrations, JSONB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-asincronia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Asincronía
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-cpu-memoria-biblioteca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 CPU / memoria (biblioteca)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 CPU / memoria (biblioteca)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#perf-01-medio-varias-pasadas-redundantes-en-robuststatsgetsummary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERF-01 · MEDIO — Varias pasadas redundantes en RobustStats::getSummary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perf-02-medio-statscomparatoranalyze-sobre-datos-ya-procesados-reprocesa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERF-02 · MEDIO — StatsComparator::analyze sobre datos ya procesados, reprocesa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perf-03-bajo-calculatemean-usando-array_sum-no-es-numericamente-estable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERF-03 · BAJO — calculateMean usando array_sum no es numéricamente estable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perf-04-medio-calculaterobustdeviation-divide-iqr-por-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERF-04 · MEDIO — calculateRobustDeviation divide IQR por √n
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perf-05-info-benchmark-cierra-con-47x-51x-vs-mathphp-en-mediana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PERF-05 · INFO — Benchmark cierra con 4.7x-5.1x vs MathPHP en mediana
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-cache-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Cache / HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-observabilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Observabilidad
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-calidad-de-codigo-y-arquitectura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Calidad de código y arquitectura
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Calidad de código y arquitectura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-separacion-de-responsabilidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Separación de responsabilidades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-tests-multi-tenant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Tests multi-tenant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-codigo-muerto-inconsistencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Código muerto / inconsistencias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Código muerto / inconsistencias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qua-01-medio-tres-implementaciones-de-normalizedatavalidatedata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-01 · MEDIO — Tres implementaciones de normalizeData/validateData
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-02-medio-naming-ambiguo-robustdeviation-vs-robustvariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-02 · MEDIO — Naming ambiguo robustDeviation vs robustVariance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-03-bajo-statscomparator-usa-dataprocessortrait-pero-no-lo-aprovecha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-03 · BAJO — StatsComparator usa DataProcessorTrait pero no lo aprovecha
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-04-bajo-apiphp-acepta-valores-no-finitos-silenciosamente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-04 · BAJO — api.php acepta valores no-finitos silenciosamente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-05-bajo-quantileengine-es-una-clase-estatica-accidentada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-05 · BAJO — QuantileEngine es una clase estática accidentada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-06-bajo-dataprocessortraitpreparedata-sobrevalidando" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-06 · BAJO — DataProcessorTrait::prepareData sobrevalidando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-07-medio-shieldjson-tiene-typo-51h-faster-than-mathphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-07 · MEDIO — shield.json tiene typo "5.1h faster than MathPHP"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-08-bajo-statguard-perfjson-tracked-en-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-08 · BAJO — statguard-perf.json tracked en git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-09-bajo-changelog-en-ingles-y-espanol-bien-mantenidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-09 · BAJO — CHANGELOG en inglés y español bien mantenidos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-10-bajo-docsdecisions-no-existe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-10 · BAJO — docs/decisions/ no existe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-11-bajo-webdockerfile-no-limpia-apt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-11 · BAJO — web/Dockerfile no limpia apt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-12-bajo-webentrypointsh-mezcla-bilinguismo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-12 · BAJO — web/entrypoint.sh mezcla bilingüismo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-13-bajo-testsbenchmarkstatguardphp-con-globals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-13 · BAJO — tests/BenchmarkStatGuard.php con globals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-14-info-readme-gigante" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QUA-14 · INFO — README gigante
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-pruebas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Pruebas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-documentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Documentación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-funcionalidades-propuestas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Funcionalidades propuestas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Funcionalidades propuestas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-quick-wins-1-dia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Quick wins (&lt; 1 día)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-funcionalidades-de-valor-1-5-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Funcionalidades de valor (1-5 días)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Funcionalidades de valor (1-5 días)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feat-01-streaming-online-estimators-welford-p2-3-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-01 · Streaming / online estimators (Welford + P²) — 3 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-02-bootstrap-confidence-intervals-2-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-02 · Bootstrap confidence intervals — 2 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-03-skewness-kurtosis-test-de-normalidad-2-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-03 · Skewness + kurtosis + test de normalidad — 2 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-04-rolling-windowed-stats-3-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-04 · Rolling / windowed stats — 3 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-05-csvjsonndjson-reader-con-exportacion-a-stats-2-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-05 · CSV/JSON/NDJSON reader con exportación a Stats — 2 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-06-psr-3-logging-tracing-hook-1-dia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-06 · PSR-3 logging + tracing hook — 1 día
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-07-playground-export-a-png-svg-del-histograma-y-share-url-2-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-07 · Playground: export a PNG / SVG del histograma y "share URL" — 2 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feat-08-test-multiplataforma-tolerancias-por-precision-decimal-2-dias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT-08 · Test multiplataforma: tolerancias por precision decimal — 2 días
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-ideas-a-futuro-post-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Ideas a futuro (post-MVP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-plan-de-accion-priorizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Plan de acción priorizado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Plan de acción priorizado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-changelog-del-lote-aplicado-2026-04-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Changelog del lote aplicado (2026-04-16)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-resumen-ejecutivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Resumen ejecutivo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Resumen ejecutivo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instantanea-inicial-manana-2026-04-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instantánea inicial (mañana 2026-04-16)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-lote-tarde-2026-04-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-lote (tarde 2026-04-16)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pendientes-con-decision-de-producto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pendientes con decisión de producto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plan-recomendado-post-lote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plan recomendado (post-lote)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="statguard-full-audit-2026-04-16">StatGuard — Full Audit · 2026-04-16<a class="headerlink" href="#statguard-full-audit-2026-04-16" title="Permanent link">&para;</a></h1>
+<p>Auditor: Claude (Opus 4.7 · 1M context)
+Commit: <code>d17cb38</code> (tag v2.0.0)
+Scope: full repository in its state as of 2026-04-16.</p>
+<hr />
+<h2 id="0-alcance-y-nota-previa">0. Alcance y nota previa<a class="headerlink" href="#0-alcance-y-nota-previa" title="Permanent link">&para;</a></h2>
+<p>El repositorio <strong>no</strong> es la aplicación SaaS Symfony/Doctrine/RabbitMQ que presuponía la plantilla original de auditoría. StatGuard es:</p>
+<ol>
+<li><strong>Una librería PHP 8.1+</strong> publicada en Packagist (<code>cjuol/statguard</code>) con namespace <code>Cjuol\StatGuard\*</code> y sin dependencias de runtime distintas a PHP.</li>
+<li><strong>Una demo web ligera</strong> en <code>web/public/</code> (un único endpoint <code>api.php</code>, HTML estático con Alpine.js + Chart.js).</li>
+<li><strong>Un set de scripts</strong> de benchmark (<code>tests/BenchmarkStatGuard.php</code>), validación contra R (<code>scripts/validate_with_r.php</code>), y generación de badges (<code>scripts/coverage_shield.php</code>).</li>
+<li><strong>Documentación MkDocs + phpDocumentor</strong> publicada en GitHub Pages.</li>
+</ol>
+<p>Por tanto, secciones como "filtro Doctrine multi-tenant", "workers Messenger", "JWT", "voters Symfony", "CSV upload tenant scope", "RabbitMQ DLQ", "Doctrine query cache", "migrations" <strong>no aplican</strong> a este repositorio y se documentan aquí como <em>N/A</em> para dejar el checklist cerrado. Si en el futuro esto evoluciona hacia un SaaS con esas características, esa plantilla vuelve a ser relevante.</p>
+<p>La auditoría que sigue se adapta al producto real: una librería de estadística + demo web.</p>
+<hr />
+<h2 id="1-mapa-del-proyecto">1. Mapa del proyecto<a class="headerlink" href="#1-mapa-del-proyecto" title="Permanent link">&para;</a></h2>
+<h3 id="11-inventario-de-codigo">1.1 Inventario de código<a class="headerlink" href="#11-inventario-de-codigo" title="Permanent link">&para;</a></h3>
+<pre><code>src/
+├── ClassicStats.php                 (~150 LoC) estadística clásica
+├── RobustStats.php                  (~240 LoC) estadística robusta (fachada)
+├── StatsComparator.php              (~90  LoC) comparador clásico vs robusto
+├── QuantileEngine.php               (~165 LoC) cuantiles tipos 1-9 (Hyndman &amp; Fan)
+├── CentralTendencyEngine.php        (~210 LoC) trimmed / winsorized / Huber
+├── Contracts/
+│   ├── StatsInterface.php            contrato público de las clases Stats
+│   └── ExportableInterface.php       contrato de toJson/toCsv
+├── Exceptions/
+│   └── InvalidDataSetException.php   extends \InvalidArgumentException
+└── Traits/
+    ├── DataProcessorTrait.php        validateData + prepareData
+    └── ExportableTrait.php           toJson/toCsv genéricos
+</code></pre>
+<p>No hay entidades, migraciones ni capa HTTP/framework. Una dependencia "contractual" cruza el paquete: <code>StatsInterface::getVariance()</code> (añadido en v2.0.0 — breaking) y <code>ExportableInterface</code> (nuevo en v2.0.0).</p>
+<h3 id="12-endpoints-expuestos-solo-la-demo-no-la-libreria">1.2 Endpoints expuestos (sólo la demo, no la librería)<a class="headerlink" href="#12-endpoints-expuestos-solo-la-demo-no-la-libreria" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Ruta</th>
+<th>Método</th>
+<th>Auth</th>
+<th>Fichero</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /</code></td>
+<td>GET</td>
+<td>—</td>
+<td><code>web/public/index.html</code> (estático)</td>
+</tr>
+<tr>
+<td><code>POST /api.php</code></td>
+<td>POST+OPTIONS</td>
+<td>—</td>
+<td><code>web/public/api.php</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>api.php</code> acepta <code>{ "data": number[], "huberK": number?, "trimPercent": number? }</code>, responde <code>application/json</code> con el resumen combinado (<code>classic</code>, <code>robust</code>, <code>centralTendency</code>, <code>comparison</code>). Maneja <code>OPTIONS</code> (CORS preflight) y devuelve <code>405</code> fuera de POST/OPTIONS.</p>
+<h3 id="13-workers-consumers">1.3 Workers / consumers<a class="headerlink" href="#13-workers-consumers" title="Permanent link">&para;</a></h3>
+<p><strong>N/A</strong> — no hay Symfony Messenger ni colas. La librería es 100 % síncrona.</p>
+<h3 id="14-servicios-inyectables">1.4 Servicios inyectables<a class="headerlink" href="#14-servicios-inyectables" title="Permanent link">&para;</a></h3>
+<p><strong>N/A</strong> — no hay contenedor DI. <code>StatsComparator::__construct(?RobustStats, ?ClassicStats)</code> permite inyección manual y tiene defaults.</p>
+<h3 id="15-dependencias-composer">1.5 Dependencias Composer<a class="headerlink" href="#15-dependencias-composer" title="Permanent link">&para;</a></h3>
+<p>Runtime:
+- <code>php &gt;=8.1</code> (matrix CI: 8.1 → 8.5).
+- <strong>Ninguna dependencia de terceros</strong> en <code>require</code>. Para una librería matemática esto es un valor: cero superficie de ataque transitiva.</p>
+<p>Dev:
+- <code>phpunit/phpunit: ^10.5 || ^11 || ^12</code>
+- <code>phpstan/phpstan: ^2.1</code>
+- <code>markrogoyski/math-php: ^2.0</code> (sólo para el benchmark comparativo)</p>
+<p><code>composer audit</code> → <strong>sin advisories</strong>. (Confirmado ejecutando en contenedor <code>php:8.3-cli</code>.)</p>
+<h3 id="16-cobertura-de-tests">1.6 Cobertura de tests<a class="headerlink" href="#16-cobertura-de-tests" title="Permanent link">&para;</a></h3>
+<p>Ejecutado localmente con <code>vendor/bin/phpunit</code> (+ pcov) sobre PHP 8.3:</p>
+<pre><code>Tests: 85   Assertions: 132   Skipped: 3 (R no disponible en el contenedor)
+Lines:   74.49 %  (254/341)
+Methods: 68.33 %  (41/60)
+Classes:  0.00 %  (0/7)   ← ninguna clase tiene cobertura *completa*
+</code></pre>
+<p>Por clase:</p>
+<table>
+<thead>
+<tr>
+<th>Clase</th>
+<th style="text-align: right;">Líneas</th>
+<th style="text-align: right;">Métodos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClassicStats</td>
+<td style="text-align: right;">97.06 %</td>
+<td style="text-align: right;">91.67 %</td>
+</tr>
+<tr>
+<td>StatsComparator</td>
+<td style="text-align: right;">97.06 %</td>
+<td style="text-align: right;">66.67 %</td>
+</tr>
+<tr>
+<td>DataProcessorTrait</td>
+<td style="text-align: right;">90.00 %</td>
+<td style="text-align: right;">50.00 %</td>
+</tr>
+<tr>
+<td>ExportableTrait</td>
+<td style="text-align: right;">93.75 %</td>
+<td style="text-align: right;">50.00 %</td>
+</tr>
+<tr>
+<td>QuantileEngine</td>
+<td style="text-align: right;">87.84 %</td>
+<td style="text-align: right;">60.00 %</td>
+</tr>
+<tr>
+<td>RobustStats</td>
+<td style="text-align: right;">76.54 %</td>
+<td style="text-align: right;">83.33 %</td>
+</tr>
+<tr>
+<td><strong>CentralTendencyEngine</strong></td>
+<td style="text-align: right;"><strong>34.15 %</strong></td>
+<td style="text-align: right;"><strong>0.00 %</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Lectura: el hueco real es <code>CentralTendencyEngine</code>. Sus tests ejecutables (tamaño <code>[42]</code> y datasets vacíos) no entran al cuerpo de los algoritmos; los tests que sí ejercitan el cálculo (<code>*MatchesRReference</code>) están marcados <code>skipIfRUnavailable()</code> y se saltan en CI salvo en el workflow <code>main.yml</code> que instala R. Ver <code>MED-06</code>.</p>
+<p>El comando <code>make test</code> que la plantilla sugería <strong>no existe</strong> (no hay <code>Makefile</code>). El flujo real es <code>composer run test</code> (que prioriza el perfil <code>r-validation</code> de Docker, con fallback a Docker <code>web</code>), o directamente <code>./vendor/bin/phpunit</code>.</p>
+<hr />
+<h2 id="2-auditoria-de-seguridad">2. Auditoría de seguridad<a class="headerlink" href="#2-auditoria-de-seguridad" title="Permanent link">&para;</a></h2>
+<p>Severidades: <strong>CRÍTICO</strong> (explotable / fuga / integridad) · <strong>ALTO</strong> (riesgo claro, no trivial) · <strong>MEDIO</strong> (buena práctica, mitigación razonable) · <strong>BAJO</strong> (higiene).</p>
+<h3 id="21-autenticacion-y-autorizacion">2.1 Autenticación y autorización<a class="headerlink" href="#21-autenticacion-y-autorizacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Filtro multi-tenant Doctrine, voters, JWT: <strong>N/A</strong>.</li>
+<li>Los endpoints de la demo (<code>/</code> y <code>/api.php</code>) son <strong>públicos por diseño</strong> (es un playground). No hay datos persistidos.</li>
+</ul>
+<h3 id="22-inyeccion-validacion-y-dos-de-entrada">2.2 Inyección, validación y DoS de entrada<a class="headerlink" href="#22-inyeccion-validacion-y-dos-de-entrada" title="Permanent link">&para;</a></h3>
+<h4 id="sec-01-alto-api-sin-limite-de-tamano-de-array">SEC-01 · ALTO — API sin límite de tamaño de array<a class="headerlink" href="#sec-01-alto-api-sin-limite-de-tamano-de-array" title="Permanent link">&para;</a></h4>
+<p><code>web/public/api.php:38-42</code> acepta <code>payload['data']</code> sin cota superior. Un cliente puede mandar un JSON de p. ej. 10 M de floats y forzar:
+- <code>json_decode</code> de varios GB,
+- <code>sort()</code> O(n log n) en PHP,
+- tres cálculos de Huber (iterativos, hasta 50 iteraciones completas cada llamada).</p>
+<p>El <code>php -S</code> interno bloquea 1 worker por petición y colapsa la demo. No hay <code>post_max_size</code> explícito ni límite en el propio script.</p>
+<p><strong>Mitigación sugerida</strong>: rechazar con HTTP 413 si <code>count($data) &gt; N</code> (p. ej. 50 000, consistente con el benchmark <code>100 000</code> como techo absoluto). Configurable vía env.</p>
+<h4 id="sec-02-medio-fuga-de-detalle-en-respuesta-500">SEC-02 · MEDIO — Fuga de detalle en respuesta 500<a class="headerlink" href="#sec-02-medio-fuga-de-detalle-en-respuesta-500" title="Permanent link">&para;</a></h4>
+<p><code>web/public/api.php:80-82</code>:</p>
+<pre><code class="language-php">} catch (Throwable $e) {
+    http_response_code(500);
+    echo json_encode(['error' =&gt; 'Internal error: ' . $e-&gt;getMessage()]);
+}
+</code></pre>
+<p><code>getMessage()</code> puede incluir nombres de clase, paths o detalles internos si la excepción no es <code>InvalidDataSetException</code>. La demo vive en Internet (probablemente tras proxy), así que no conviene devolver la traza aunque sea parcial.</p>
+<p><strong>Mitigación</strong>: en prod, loggear y devolver un mensaje genérico (<code>"Internal error"</code>) sin <code>$e-&gt;getMessage()</code>.</p>
+<h4 id="sec-03-medio-inconsistencia-de-validacion-en-centraltendencyenginenormalizedata">SEC-03 · MEDIO — Inconsistencia de validación en <code>CentralTendencyEngine::normalizeData</code><a class="headerlink" href="#sec-03-medio-inconsistencia-de-validacion-en-centraltendencyenginenormalizedata" title="Permanent link">&para;</a></h4>
+<p><code>src/CentralTendencyEngine.php:168-196</code> valida <code>is_numeric</code> pero <strong>no</strong> rechaza <code>NaN</code>/<code>INF</code>, a diferencia de <code>QuantileEngine::normalizeData</code> (<code>src/QuantileEngine.php:68-74</code>) y <code>DataProcessorTrait::validateData</code> (<code>src/Traits/DataProcessorTrait.php:21-27</code>).</p>
+<p>Cuando se llama vía <code>RobustStats::getHuberMean()</code> el flujo pasa antes por <code>prepareData()</code> → validado. Pero si un consumidor externo llama directamente a <code>CentralTendencyEngine::huberMean($data)</code> con un <code>NaN</code> dentro, obtendrá <code>NaN</code> propagado silenciosamente. En v2.0.0 (CHANGELOG) se anunció explícitamente que <em>"NaN/Inf ahora lanzan InvalidDataSetException"</em> — esto es un hueco respecto a ese contrato.</p>
+<p><strong>Mitigación</strong>: añadir <code>if (!is_finite((float)$value))</code> en <code>CentralTendencyEngine::normalizeData</code>, alineando con <code>QuantileEngine</code>.</p>
+<h4 id="sec-04-bajo-validacion-de-parametros-en-apiphp">SEC-04 · BAJO — Validación de parámetros en <code>api.php</code><a class="headerlink" href="#sec-04-bajo-validacion-de-parametros-en-apiphp" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>trimPercent</code> se clampea a <code>[0.0, 0.45]</code> ✓</li>
+<li><code>huberK</code> sólo se asegura <code>&gt;= 0.1</code>, <strong>sin cota superior</strong>. Un <code>huberK</code> gigantesco (p. ej. <code>1e308</code>) no rompe nada (cutoff = k*scale, ya no clasifica outliers), pero un <code>huberK</code> negativo grande convertido a <code>0.1</code> por el <code>max</code> ya está cubierto. OK.</li>
+<li>No hay validación sobre <code>maxIterations</code> o <code>tolerance</code> del Huber: se usan siempre los defaults. OK (no expuestos).</li>
+</ul>
+<h3 id="23-configuracion">2.3 Configuración<a class="headerlink" href="#23-configuracion" title="Permanent link">&para;</a></h3>
+<h4 id="sec-05-medio-cors-abierto-en-apiphp">SEC-05 · MEDIO — CORS abierto en <code>api.php</code><a class="headerlink" href="#sec-05-medio-cors-abierto-en-apiphp" title="Permanent link">&para;</a></h4>
+<p><code>Access-Control-Allow-Origin: *</code> en <code>web/public/api.php:15</code>. Para una demo pública sin auth y sin estado es aceptable, pero conviene documentarlo explícitamente. Si algún día el endpoint sirve cálculos facturables o cuotados, este header hay que restringirlo.</p>
+<h4 id="sec-06-bajo-cdn-externos-sin-subresource-integrity-sri">SEC-06 · BAJO — CDN externos sin Subresource Integrity (SRI)<a class="headerlink" href="#sec-06-bajo-cdn-externos-sin-subresource-integrity-sri" title="Permanent link">&para;</a></h4>
+<p><code>web/public/index.html:10-12</code> carga desde jsDelivr:
+- <code>alpinejs@3.14.1/dist/cdn.min.js</code>
+- <code>chart.js@4.4.4/dist/chart.umd.min.js</code>
+- <code>chartjs-plugin-annotation@3.0.1/...</code></p>
+<p>Sin <code>integrity=</code> ni <code>crossorigin=</code>. Si jsDelivr o el paquete se comprometiesen, la demo queda expuesta a XSS/sup-chain. Es un playground, pero la mitigación es trivial (añadir hashes SHA-384) y sube la postura sin coste.</p>
+<h4 id="sec-07-bajo-sin-cabeceras-de-seguridad-en-la-demo">SEC-07 · BAJO — Sin cabeceras de seguridad en la demo<a class="headerlink" href="#sec-07-bajo-sin-cabeceras-de-seguridad-en-la-demo" title="Permanent link">&para;</a></h4>
+<p><code>api.php</code> no emite <code>X-Content-Type-Options: nosniff</code>, <code>Content-Security-Policy</code>, <code>Referrer-Policy</code>, <code>X-Frame-Options</code>. Para un JSON endpoint el único relevante es <code>X-Content-Type-Options: nosniff</code>. Para <code>index.html</code> una CSP mínima (self + jsdelivr + fonts.googleapis) cerraría el vector si mañana alguien inyecta markup.</p>
+<h4 id="sec-08-bajo-app_secret-env">SEC-08 · BAJO — APP_SECRET / .env<a class="headerlink" href="#sec-08-bajo-app_secret-env" title="Permanent link">&para;</a></h4>
+<p>No aplica: no hay <code>.env</code> ni Symfony. El entorno Docker sólo usa env declarativo (<code>CHOWN_USER</code>, <code>STATGUARD_DEMO_BIND</code>, <code>STATGUARD_DEMO_PORT</code>). No se commitean secretos.</p>
+<h4 id="sec-09-bajo-puertos-docker-expuestos-al-host">SEC-09 · BAJO — Puertos Docker expuestos al host<a class="headerlink" href="#sec-09-bajo-puertos-docker-expuestos-al-host" title="Permanent link">&para;</a></h4>
+<p><code>docker-compose.yml</code> sólo expone la demo (bind a <code>127.0.0.1:8080</code> por defecto, configurable a <code>0.0.0.0</code> vía env) y los perfiles opcionales <code>apache</code> (80), <code>docs</code> (8000). No hay Postgres/Redis/Rabbit que bindear. OK.</p>
+<h4 id="sec-10-medio-rate-limiting-en-apiphp">SEC-10 · MEDIO — Rate limiting en <code>api.php</code><a class="headerlink" href="#sec-10-medio-rate-limiting-en-apiphp" title="Permanent link">&para;</a></h4>
+<p><strong>Inexistente</strong>. Ver SEC-01 (mismo vector: cualquiera puede hacer <code>curl -XPOST … --data @huge.json</code> en bucle). Para la demo pública, un <code>nginx limit_req_zone</code> (1 req/s por IP) delante o un middleware sencillo en PHP cerraría el riesgo. No bloqueante mientras la demo no anuncie SLA.</p>
+<h3 id="24-dependencias">2.4 Dependencias<a class="headerlink" href="#24-dependencias" title="Permanent link">&para;</a></h3>
+<h4 id="sec-11-info-composer-audit-limpio">SEC-11 · INFO — <code>composer audit</code> limpio<a class="headerlink" href="#sec-11-info-composer-audit-limpio" title="Permanent link">&para;</a></h4>
+<p>Sin CVEs. La superficie es mínima por diseño (cero deps de runtime).</p>
+<h4 id="sec-12-bajo-composerlock-gitignorado">SEC-12 · BAJO — <code>composer.lock</code> gitignorado<a class="headerlink" href="#sec-12-bajo-composerlock-gitignorado" title="Permanent link">&para;</a></h4>
+<p><code>.gitignore:5</code> excluye <code>/composer.lock</code>. Para una <strong>librería</strong> publicable esto es correcto (los consumidores no deben heredar tus pins). Pero tiene consecuencias que conviene apuntar:
+- En CI, <code>composer update</code> regenera dependencias cada run. Hay riesgo de "test green hoy / rojo mañana" si una dep transitiva de dev rompe API.
+- <code>composer audit</code> en CI corre contra versiones recién resueltas, no contra una lock commiteada.</p>
+<p><strong>Mitigación opcional</strong>: conservar un <code>composer.lock</code> <strong>sólo para CI</strong> (ignorado del paquete pero commiteado). Requiere dos flujos separados (<code>install</code> en CI, <code>require</code> en consumer). Alternativa pragmática: dejarlo como está y aceptar el drift (no hay tantas deps de dev).</p>
+<h4 id="sec-13-medio-docker-image-phpdocumentorphpdocumentor-sin-pin">SEC-13 · MEDIO — Docker image <code>phpdocumentor/phpdocumentor</code> sin pin<a class="headerlink" href="#sec-13-medio-docker-image-phpdocumentorphpdocumentor-sin-pin" title="Permanent link">&para;</a></h4>
+<p><code>.github/workflows/docs.yml:34</code> usa <code>phpdoc/phpdoc:3.5</code> (pinned minor) ✓. <code>docker-compose.yml:61</code> usa <code>phpdocumentor/phpdocumentor</code> <strong>sin tag</strong> → <code>:latest</code> implícito. Mismo patrón en <code>squidfunk/mkdocs-material</code> (línea 69). Baja reproducibilidad en local.</p>
+<hr />
+<h2 id="3-auditoria-de-rendimiento">3. Auditoría de rendimiento<a class="headerlink" href="#3-auditoria-de-rendimiento" title="Permanent link">&para;</a></h2>
+<h3 id="31-base-de-datos-indices-n1-migrations-jsonb">3.1 Base de datos, índices, N+1, migrations, JSONB<a class="headerlink" href="#31-base-de-datos-indices-n1-migrations-jsonb" title="Permanent link">&para;</a></h3>
+<p><strong>N/A</strong> en bloque — no hay persistencia.</p>
+<h3 id="32-asincronia">3.2 Asincronía<a class="headerlink" href="#32-asincronia" title="Permanent link">&para;</a></h3>
+<p><strong>N/A</strong> — no hay Messenger. El dataset del benchmark llega a 100 k floats y corre síncronamente en PHP puro; el performance shield actual reporta <code>4.7x faster than MathPHP</code> (mediana). Todo in-memory.</p>
+<h3 id="33-cpu-memoria-biblioteca">3.3 CPU / memoria (biblioteca)<a class="headerlink" href="#33-cpu-memoria-biblioteca" title="Permanent link">&para;</a></h3>
+<h4 id="perf-01-medio-varias-pasadas-redundantes-en-robuststatsgetsummary">PERF-01 · MEDIO — Varias pasadas redundantes en <code>RobustStats::getSummary</code><a class="headerlink" href="#perf-01-medio-varias-pasadas-redundantes-en-robuststatsgetsummary" title="Permanent link">&para;</a></h4>
+<p><code>src/RobustStats.php:155-180</code> valida/ordena una vez (<code>prepareData($data, $sort)</code>), pero luego llama a <code>calculateIqr($prepared, TYPE_R_DEFAULT)</code> y por separado a <code>QuantileEngine::calculateSorted($prepared, 0.25, …)</code> y <code>$prepared, 0.75, …</code>. <code>calculateIqr</code> internamente también calcula Q1 y Q3 → efectivamente <strong>cuatro cálculos de cuantiles</strong> cuando bastan dos. Para n=100 k no domina (cuantiles son O(1) sobre dato ordenado) pero es simplificable.</p>
+<h4 id="perf-02-medio-statscomparatoranalyze-sobre-datos-ya-procesados-reprocesa">PERF-02 · MEDIO — <code>StatsComparator::analyze</code> sobre datos ya procesados, reprocesa<a class="headerlink" href="#perf-02-medio-statscomparatoranalyze-sobre-datos-ya-procesados-reprocesa" title="Permanent link">&para;</a></h4>
+<p><code>src/StatsComparator.php:31-38</code> llama a <code>prepareData()</code> con <code>$data</code>, pero luego pasa <code>$prepared</code> a métodos de <code>ClassicStats</code>/<code>RobustStats</code> que <strong>vuelven a llamar a <code>prepareData()</code> internamente</strong>. Se re-ordena varias veces. Misma crítica a <code>api.php:56-58</code> (<code>getSummary</code>, <code>getSummary</code>, <code>analyze</code> → triple validación+sort).</p>
+<p><strong>Mitigación</strong>: introducir un método interno <code>*FromPrepared(array $sortedValidated)</code> o una bandera <code>$alreadyProcessed</code> ya presente en el trait y aprovecharla en el comparator y en la ruta HTTP. Para n=100 k ahorra tres sorts completos.</p>
+<h4 id="perf-03-bajo-calculatemean-usando-array_sum-no-es-numericamente-estable">PERF-03 · BAJO — <code>calculateMean</code> usando <code>array_sum</code> no es numéricamente estable<a class="headerlink" href="#perf-03-bajo-calculatemean-usando-array_sum-no-es-numericamente-estable" title="Permanent link">&para;</a></h4>
+<p><code>ClassicStats::calculateMean</code> y equivalentes en los dos engines hacen <code>array_sum($data)/count($data)</code>. Para datasets muy grandes con escala mixta pierden precisión (acumulación float). No es un bug práctico para el caso de uso, pero limita la precisión declarada a ~15 dígitos. Kahan/Neumaier summation lo eleva a ~25. Baja prioridad.</p>
+<h4 id="perf-04-medio-calculaterobustdeviation-divide-iqr-por-n">PERF-04 · MEDIO — <code>calculateRobustDeviation</code> divide IQR por √n<a class="headerlink" href="#perf-04-medio-calculaterobustdeviation-divide-iqr-por-n" title="Permanent link">&para;</a></h4>
+<p><code>src/RobustStats.php:189-193</code>:</p>
+<pre><code class="language-php">return (1.25 / 1.35) * ($this-&gt;calculateIqr($data) / sqrt($n));
+</code></pre>
+<p>Esto calcula <strong>el error estándar</strong> de la mediana, no la "desviación robusta" entendida como estimador de σ. El nombre es ambiguo y el valor se compara con <code>stdDev</code> en <code>StatsComparator::dispersionComparison.noiseRatio</code> — probablemente introduce sesgo contra la librería (stdDev crece con σ; robustDeviation encoge con √n). Ver QUA-02.</p>
+<h4 id="perf-05-info-benchmark-cierra-con-47x-51x-vs-mathphp-en-mediana">PERF-05 · INFO — Benchmark cierra con 4.7x-5.1x vs MathPHP en mediana<a class="headerlink" href="#perf-05-info-benchmark-cierra-con-47x-51x-vs-mathphp-en-mediana" title="Permanent link">&para;</a></h4>
+<p>Repo benchmark json vs shield.json divergen (<code>4.7x</code> en <code>statguard-perf.json</code> vs <code>5.1h</code> en <code>shield.json</code>). Ver QUA-07 (typo).</p>
+<h3 id="34-cache-http">3.4 Cache / HTTP<a class="headerlink" href="#34-cache-http" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Doctrine metadata / query cache</strong>: N/A.</li>
+<li><strong>HTTP cache headers</strong>: <code>api.php</code> es POST puro → irrelevante. <code>index.html</code> servido por <code>php -S</code> → sin <code>Cache-Control</code>; correcto para demo.</li>
+</ul>
+<h3 id="35-observabilidad">3.5 Observabilidad<a class="headerlink" href="#35-observabilidad" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Logging</strong>: no hay logger. <code>api.php</code> no emite nada. Para una demo es aceptable, pero si pasa a producción con tráfico real conviene un PSR-3 + rotate.</li>
+<li><strong>Health check</strong>: no existe. <code>GET /healthz</code> devolviendo <code>{ok:true, deps:{php:"8.3.x"}}</code> es 10 líneas y le da monitoreo externo sin ambigüedad.</li>
+</ul>
+<hr />
+<h2 id="4-calidad-de-codigo-y-arquitectura">4. Calidad de código y arquitectura<a class="headerlink" href="#4-calidad-de-codigo-y-arquitectura" title="Permanent link">&para;</a></h2>
+<h3 id="41-separacion-de-responsabilidades">4.1 Separación de responsabilidades<a class="headerlink" href="#41-separacion-de-responsabilidades" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Controllers/services/entities: la librería no los tiene. La distinción interesante aquí es <strong>fachada vs engine</strong> y en general está bien: <code>ClassicStats</code>/<code>RobustStats</code> son fachadas, los cálculos duros viven en <code>QuantileEngine</code> y <code>CentralTendencyEngine</code>. El refactor v2.0.0 (<code>a4dc535</code>) unificó la mediana y eliminó duplicación. 👍</li>
+</ul>
+<h3 id="42-tests-multi-tenant">4.2 Tests multi-tenant<a class="headerlink" href="#42-tests-multi-tenant" title="Permanent link">&para;</a></h3>
+<p><strong>N/A</strong>.</p>
+<h3 id="43-codigo-muerto-inconsistencias">4.3 Código muerto / inconsistencias<a class="headerlink" href="#43-codigo-muerto-inconsistencias" title="Permanent link">&para;</a></h3>
+<h4 id="qua-01-medio-tres-implementaciones-de-normalizedatavalidatedata">QUA-01 · MEDIO — Tres implementaciones de <code>normalizeData</code>/<code>validateData</code><a class="headerlink" href="#qua-01-medio-tres-implementaciones-de-normalizedatavalidatedata" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>Traits/DataProcessorTrait::validateData</code> (usada por <code>ClassicStats</code>, <code>RobustStats</code>, <code>StatsComparator</code>)</li>
+<li><code>QuantileEngine::normalizeData</code> (validación interna)</li>
+<li><code>CentralTendencyEngine::normalizeData</code> (sin is_finite — SEC-03)</li>
+</ul>
+<p>Las tres hacen casi lo mismo pero con matices distintos (mínimo 1 vs mínimo 2 valores, rechaza o no NaN). Unificar en un helper único en <code>Traits/</code> o un <code>DataValidator</code> final class baja la superficie de inconsistencias y arregla SEC-03 de un solo golpe.</p>
+<h4 id="qua-02-medio-naming-ambiguo-robustdeviation-vs-robustvariance">QUA-02 · MEDIO — Naming ambiguo <code>robustDeviation</code> vs <code>robustVariance</code><a class="headerlink" href="#qua-02-medio-naming-ambiguo-robustdeviation-vs-robustvariance" title="Permanent link">&para;</a></h4>
+<p><code>RobustStats::getRobustDeviation</code> devuelve <code>(1.25/1.35) × IQR / √n</code> (error estándar de la mediana).
+<code>RobustStats::getDeviation</code> devuelve <code>MAD × 1.4826</code> (σ robusto escalado).
+<code>RobustStats::getSummary</code> usa <code>calculateRobustDeviation</code> (el primero).
+<code>StatsInterface::getDeviation</code> expone el segundo.</p>
+<p>En <code>getSummary</code> ambos valores son distintos y el nombre <code>robustDeviation</code> choca con el "deviation" del interface. Un lector del CSV/JSON exportado no sabe cuál es cuál. <strong>Fix</strong>: renombrar <code>calculateRobustDeviation</code> → <code>calculateMedianStandardError</code> y exponer <code>getRobustDeviation()</code> como MAD escalada (coherente con el interface). Breaking en la salida → 3.0.0.</p>
+<h4 id="qua-03-bajo-statscomparator-usa-dataprocessortrait-pero-no-lo-aprovecha">QUA-03 · BAJO — <code>StatsComparator</code> usa <code>DataProcessorTrait</code> pero no lo aprovecha<a class="headerlink" href="#qua-03-bajo-statscomparator-usa-dataprocessortrait-pero-no-lo-aprovecha" title="Permanent link">&para;</a></h4>
+<p><code>src/StatsComparator.php:15</code> importa el trait, llama a <code>prepareData</code> pero luego en el flujo de <code>analyze()</code> acaba re-entrando al validador 6 veces (vía <code>$classic-&gt;getMean</code>, <code>$classic-&gt;getStandardDeviation</code>, <code>$robust-&gt;getMedian</code>, <code>$robust-&gt;getDeviation</code>, y los dos <code>getOutliers</code>). Ver PERF-02.</p>
+<h4 id="qua-04-bajo-apiphp-acepta-valores-no-finitos-silenciosamente">QUA-04 · BAJO — <code>api.php</code> acepta valores no-finitos silenciosamente<a class="headerlink" href="#qua-04-bajo-apiphp-acepta-valores-no-finitos-silenciosamente" title="Permanent link">&para;</a></h4>
+<p><code>web/public/api.php:38-41</code> hace <code>array_filter(is_finite)</code> sobre los números <strong>antes</strong> de pasarlos a la librería. Eso significa que el endpoint <strong>tolera</strong> NaN/INF en la entrada (los descarta callado). Comportamiento distinto al de la librería (SEC-03). Decide una política y aplícala: o la API rechaza (422), o filtra <em>con aviso</em> en <code>inputCount</code> + <code>droppedCount</code>.</p>
+<h4 id="qua-05-bajo-quantileengine-es-una-clase-estatica-accidentada">QUA-05 · BAJO — <code>QuantileEngine</code> es una clase estática accidentada<a class="headerlink" href="#qua-05-bajo-quantileengine-es-una-clase-estatica-accidentada" title="Permanent link">&para;</a></h4>
+<p>Es <code>final class</code> con sólo métodos <code>public static</code>. <code>api-reference.md:48-52</code> lo muestra como si fuese instanciable:</p>
+<pre><code class="language-php">$engine = new QuantileEngine();
+$q7 = $engine-&gt;quantile($data, 0.75, 7);  // ← método inexistente
+</code></pre>
+<p><strong>El snippet de la docs no compila</strong>. Hay que corregir a <code>QuantileEngine::calculate($data, 0.75, 7)</code>. Fix docs.</p>
+<h4 id="qua-06-bajo-dataprocessortraitpreparedata-sobrevalidando">QUA-06 · BAJO — <code>DataProcessorTrait::prepareData</code> sobrevalidando<a class="headerlink" href="#qua-06-bajo-dataprocessortraitpreparedata-sobrevalidando" title="Permanent link">&para;</a></h4>
+<p><code>prepareData</code> se llama también cuando el consumidor ya está dentro de un método que acaba de validar. Ningún <em>caller</em> usa las flags <code>$alreadyProcessed</code>/<code>$alreadySorted</code>. Las flags existen pero se quedan en el interfaz — o se usan (ver PERF-02) o se borran.</p>
+<h4 id="qua-07-medio-shieldjson-tiene-typo-51h-faster-than-mathphp">QUA-07 · MEDIO — <code>shield.json</code> tiene typo "5.1h faster than MathPHP"<a class="headerlink" href="#qua-07-medio-shieldjson-tiene-typo-51h-faster-than-mathphp" title="Permanent link">&para;</a></h4>
+<p><code>shield.json:4</code> dice <code>"5.1h"</code> donde claramente debería ser <code>"5.1x"</code>. No lo usa el workflow <code>performance.yml</code> (regenera <code>statguard-perf.json</code> de verdad vía <code>php tests/BenchmarkStatGuard.php json</code>), pero el fichero está tracked. O se borra del repo (genera dinámico) o se corrige. Actualmente <code>statguard-perf.json</code> (también tracked) dice <code>4.7x</code> → contradicción con <code>shield.json</code>.</p>
+<h4 id="qua-08-bajo-statguard-perfjson-tracked-en-git">QUA-08 · BAJO — <code>statguard-perf.json</code> tracked en git<a class="headerlink" href="#qua-08-bajo-statguard-perfjson-tracked-en-git" title="Permanent link">&para;</a></h4>
+<p><code>git ls-tree HEAD</code> lo incluye. Pero se regenera en cada build via <code>BenchmarkStatGuard.php json</code> y se publica a Gist (<code>performance.yml</code>). Tener un artifact generado en el repo es drift permanente; conviene gitignorarlo igual que hace con <code>statguard-coverage.json</code>.</p>
+<h4 id="qua-09-bajo-changelog-en-ingles-y-espanol-bien-mantenidos">QUA-09 · BAJO — CHANGELOG en inglés y español bien mantenidos<a class="headerlink" href="#qua-09-bajo-changelog-en-ingles-y-espanol-bien-mantenidos" title="Permanent link">&para;</a></h4>
+<p>Ver <code>CHANGELOG.md</code> (v2.0.0 hoy 2026-04-16). Conventional Commits respetado en <code>git log</code> reciente (<code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>chore:</code>, <code>refactor:</code>, <code>ci:</code>). 👍</p>
+<h4 id="qua-10-bajo-docsdecisions-no-existe">QUA-10 · BAJO — <code>docs/decisions/</code> no existe<a class="headerlink" href="#qua-10-bajo-docsdecisions-no-existe" title="Permanent link">&para;</a></h4>
+<p>La plantilla lo daba por hecho. Si quieres llevar ADRs, se puede iniciar ahora con decisiones ya tomadas (política de NaN en v2.0.0, unificación de mediana, ExportableInterface…).</p>
+<h4 id="qua-11-bajo-webdockerfile-no-limpia-apt">QUA-11 · BAJO — <code>web/Dockerfile</code> no limpia <code>apt</code><a class="headerlink" href="#qua-11-bajo-webdockerfile-no-limpia-apt" title="Permanent link">&para;</a></h4>
+<p><code>RUN apt-get update &amp;&amp; apt-get install -y …</code> sin <code>&amp;&amp; rm -rf /var/lib/apt/lists/*</code>. Infla la imagen ~30-40 MB. También ausencia de <code>apt-get upgrade --no-install-recommends</code>. Higiene.</p>
+<h4 id="qua-12-bajo-webentrypointsh-mezcla-bilinguismo">QUA-12 · BAJO — <code>web/entrypoint.sh</code> mezcla bilingüismo<a class="headerlink" href="#qua-12-bajo-webentrypointsh-mezcla-bilinguismo" title="Permanent link">&para;</a></h4>
+<p>Mensajes <code>echo</code> en español embebidos en el shell script (<code>"🔧 Configurando Apache…"</code>), mientras el resto del proyecto alterna ES/EN. Cosmético.</p>
+<h4 id="qua-13-bajo-testsbenchmarkstatguardphp-con-globals">QUA-13 · BAJO — <code>tests/BenchmarkStatGuard.php</code> con globals<a class="headerlink" href="#qua-13-bajo-testsbenchmarkstatguardphp-con-globals" title="Permanent link">&para;</a></h4>
+<p>El benchmark genera <code>statguard-perf.json</code> como side-effect del formato <code>json</code> y reescribe <code>docs/benchmarks.md</code> / <code>.es.md</code> si se le pasa <code>report</code>. Cualquier contributor que ejecute <code>php tests/BenchmarkStatGuard.php json</code> local modifica tracked files. Encapsular el side-effect tras una flag <code>--write</code> ayuda.</p>
+<h4 id="qua-14-info-readme-gigante">QUA-14 · INFO — README gigante<a class="headerlink" href="#qua-14-info-readme-gigante" title="Permanent link">&para;</a></h4>
+<p><code>README.md:310 L</code>, duplica buena parte de <code>docs/getting-started.md</code> y <code>docs/api-reference.md</code>. Es política válida para Packagist (mostrar todo en el README), pero mantenerlos en sync manualmente se rompe (ver QUA-05 docs mismatch).</p>
+<h3 id="44-pruebas">4.4 Pruebas<a class="headerlink" href="#44-pruebas" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Política de validación negativa</strong>: <code>testDataValidation</code> en tests de Classic/Robust cubre <code>&lt;2</code>, no-numéricos, NaN, ±INF. ✓</li>
+<li><strong>Aislamiento multi-tenant</strong>: N/A.</li>
+<li><strong>Parity R/StatGuard</strong>: se corre sólo cuando hay R (<code>CentralTendencyEngine Test</code> marca skipped sin R). <code>QuantileEngine</code> tiene valores hardcoded para los 9 tipos (OK para no depender de R en CI ligero). Falta el equivalente hardcoded para Huber/Trimmed/Winsorized en el suite fast — ver MED-06.</li>
+<li><strong>Comparator</strong>: 4 tests, cubren ALERT/CAUTION/STABLE/estructura. Razonable pero no cubre edge case "mediana ≈ 0" en biasPercent branch.</li>
+</ul>
+<h3 id="45-ci">4.5 CI<a class="headerlink" href="#45-ci" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>php-tests.yml</code>: matriz PHP 8.1–8.5, coverage job aparte, shield publicado a Gist vía <code>GIST_TOKEN</code>. Correcto. <strong>Atención</strong>: <code>coverage</code> job no corre sobre la matrix entera; sólo PHP 8.3. Aceptable.</li>
+<li><code>main.yml</code> (nombre confuso: "Robust Means CI") instala R y corre el subset con R. Limpio.</li>
+<li><code>performance.yml</code>: publica shield con el número más bajo. Ver QUA-07.</li>
+<li><code>docs.yml</code>: phpDocumentor → docs/api/ → mkdocs gh-deploy. Bien.</li>
+<li><code>cleanup.yml</code>: borra deployments inactivos tras docs. OK.</li>
+</ul>
+<p>Uso de action de tercero <code>exuanbo/actions-deploy-gist@v1</code> (no pinned a SHA). <strong>CI-01 · BAJO</strong>: pinear a commit SHA en actions críticas que manejen el <code>GIST_TOKEN</code> es buena práctica.</p>
+<h3 id="46-documentacion">4.6 Documentación<a class="headerlink" href="#46-documentacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li>README y docs/*.md: al día excepto QUA-05 (snippet roto).</li>
+<li><code>docs/decisions/</code>: ausente (QUA-10).</li>
+<li><code>docs/audits/</code>: se crea con este informe.</li>
+<li><code>docs/api/</code>: generado en el workflow (gitignored). ✓</li>
+</ul>
+<hr />
+<h2 id="5-funcionalidades-propuestas">5. Funcionalidades propuestas<a class="headerlink" href="#5-funcionalidades-propuestas" title="Permanent link">&para;</a></h2>
+<p>Todas las propuestas <strong>encajan con el dominio real</strong>: una librería de estadística robusta para PHP + playground web.</p>
+<h3 id="51-quick-wins-1-dia">5.1 Quick wins (&lt; 1 día)<a class="headerlink" href="#51-quick-wins-1-dia" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Idea</th>
+<th>Por qué</th>
+<th style="text-align: right;">Esfuerzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QW-01</td>
+<td>Añadir <code>is_finite</code> en <code>CentralTendencyEngine::normalizeData</code> (fix SEC-03)</td>
+<td>Restaura el contrato v2.0.0 del CHANGELOG</td>
+<td style="text-align: right;">15 min</td>
+</tr>
+<tr>
+<td>QW-02</td>
+<td>Límite <code>count($data) &lt;= N</code> + 413 en <code>api.php</code> (fix SEC-01)</td>
+<td>Blindaje básico de la demo</td>
+<td style="text-align: right;">30 min</td>
+</tr>
+<tr>
+<td>QW-03</td>
+<td>Corregir <code>shield.json</code> "5.1h" → "5.1x" + <code>.gitignore</code> sobre <code>statguard-perf.json</code> (QUA-07/08)</td>
+<td>Higiene de artifacts regenerados</td>
+<td style="text-align: right;">10 min</td>
+</tr>
+<tr>
+<td>QW-04</td>
+<td>Corregir ejemplo roto en <code>docs/api-reference.md</code> (QUA-05)</td>
+<td>El snippet actual no compila</td>
+<td style="text-align: right;">15 min</td>
+</tr>
+<tr>
+<td>QW-05</td>
+<td>Añadir <code>X-Content-Type-Options: nosniff</code> y ocultar <code>$e-&gt;getMessage()</code> en 500 (SEC-02/07)</td>
+<td>Reduce fuga sin romper nada</td>
+<td style="text-align: right;">20 min</td>
+</tr>
+<tr>
+<td>QW-06</td>
+<td>SRI hashes para los 3 CDN en <code>index.html</code> (SEC-06)</td>
+<td>Sube la postura de la demo</td>
+<td style="text-align: right;">20 min</td>
+</tr>
+<tr>
+<td>QW-07</td>
+<td><code>/healthz</code> en <code>api.php</code> (o fichero aparte) devolviendo <code>{ok:true, version:"2.0.0"}</code></td>
+<td>Observabilidad externa trivial</td>
+<td style="text-align: right;">20 min</td>
+</tr>
+<tr>
+<td>QW-08</td>
+<td><code>Makefile</code> minimal con <code>test</code>/<code>analyse</code>/<code>coverage</code>/<code>bench</code> (la plantilla del user lo sugiere)</td>
+<td>Uniformiza <code>make test</code> que el user ya invoca mentalmente</td>
+<td style="text-align: right;">20 min</td>
+</tr>
+<tr>
+<td>QW-09</td>
+<td>Unificar las 3 <code>normalizeData</code>/<code>validateData</code> en un <code>DataValidator</code> final class (QUA-01)</td>
+<td>Cierra SEC-03 y simplifica</td>
+<td style="text-align: right;">2 h</td>
+</tr>
+<tr>
+<td>QW-10</td>
+<td>Desduplicar sort/validate en <code>StatsComparator::analyze</code> usando <code>alreadyProcessed</code> (PERF-02)</td>
+<td>Gana 3 sorts completos en datasets grandes</td>
+<td style="text-align: right;">2 h</td>
+</tr>
+<tr>
+<td>QW-11</td>
+<td><code>docs/decisions/0001-nan-handling.md</code> + <code>0002-v2-breaking-interfaces.md</code> (QUA-10)</td>
+<td>Arranca el repo de ADRs</td>
+<td style="text-align: right;">1 h</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-funcionalidades-de-valor-1-5-dias">5.2 Funcionalidades de valor (1-5 días)<a class="headerlink" href="#52-funcionalidades-de-valor-1-5-dias" title="Permanent link">&para;</a></h3>
+<h4 id="feat-01-streaming-online-estimators-welford-p2-3-dias">FEAT-01 · Streaming / online estimators (Welford + P²) — 3 días<a class="headerlink" href="#feat-01-streaming-online-estimators-welford-p2-3-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: caso "datos llegan de sensor/telemetría y no caben en RAM" mencionado en tu README. Hoy StatGuard es batch puro.
+API: <code>OnlineStats { push(float), mean, variance, count }</code> con Welford, y <code>OnlineQuantile { push, estimate(p) }</code> con P² (sin sort, O(1) por push).
+Dependencias: ninguna nueva.
+Diferenciación: MathPHP <strong>no tiene</strong> online estimators. Es una línea clara de separación.</p>
+<h4 id="feat-02-bootstrap-confidence-intervals-2-dias">FEAT-02 · Bootstrap confidence intervals — 2 días<a class="headerlink" href="#feat-02-bootstrap-confidence-intervals-2-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: hoy <code>getConfidenceIntervals</code> usa la aproximación normal (±1.96·s.e.). Para datos no-normales, el CI correcto es bootstrap percentil o BCa. Un parámetro de <code>resamples</code> (default 1000, seedable) da intervalos fiables sin asumir normalidad.
+API: <code>$robust-&gt;getConfidenceIntervals($data, method: 'bootstrap', resamples: 1000, seed: 42)</code>.
+Dependencias: ninguna.
+Diferenciación: justificable como "data integrity" (tu tagline), porque el CI normal infla la confianza cuando hay outliers.</p>
+<h4 id="feat-03-skewness-kurtosis-test-de-normalidad-2-dias">FEAT-03 · Skewness + kurtosis + test de normalidad — 2 días<a class="headerlink" href="#feat-03-skewness-kurtosis-test-de-normalidad-2-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: el comparator hoy sólo dice ALERT/CAUTION/STABLE. Con asimetría + kurtosis + Shapiro-Wilk (n≤5000) el veredicto queda cuantificado y no heurístico.
+API: extender <code>StatsComparator</code> con <code>distributionTest</code> y nuevas entradas en el JSON del playground.
+Dependencias: ninguna (Shapiro-Wilk tiene implementación en PHP puro conocida).</p>
+<h4 id="feat-04-rolling-windowed-stats-3-dias">FEAT-04 · Rolling / windowed stats — 3 días<a class="headerlink" href="#feat-04-rolling-windowed-stats-3-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: dashboards tipo "últimos 60 s / 5 min / 1 h" sobre series temporales. Hoy el usuario tiene que partir el array y pasar cada ventana.
+API: <code>RollingWindowStats(size: 60)::push($v) → snapshot</code>, con rebanado en O(1) amortizado.
+Dependencias: ninguna.
+Sinergia con FEAT-01 (mismas primitivas).</p>
+<h4 id="feat-05-csvjsonndjson-reader-con-exportacion-a-stats-2-dias">FEAT-05 · CSV/JSON/NDJSON reader con exportación a <code>Stats</code> — 2 días<a class="headerlink" href="#feat-05-csvjsonndjson-reader-con-exportacion-a-stats-2-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: hoy hay <code>toCsv</code>/<code>toJson</code> de salida, pero ninguna entrada. Los usuarios deben parsear manualmente. Un <code>DataSource::fromCsv('file.csv', column: 'latency_ms')</code> cierra el loop.
+Dependencias: ninguna (usar <code>fopen</code> + <code>fgetcsv</code>).</p>
+<h4 id="feat-06-psr-3-logging-tracing-hook-1-dia">FEAT-06 · PSR-3 logging + tracing hook — 1 día<a class="headerlink" href="#feat-06-psr-3-logging-tracing-hook-1-dia" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: permitir que una app grande vea cuántas iteraciones consumió Huber, cuándo se lanzó un <code>InvalidDataSetException</code>, tiempos de cada cálculo.
+API: <code>setLogger(LoggerInterface $logger)</code> en las fachadas.
+Dependencias: <code>psr/log:^3</code> (runtime).</p>
+<h4 id="feat-07-playground-export-a-png-svg-del-histograma-y-share-url-2-dias">FEAT-07 · Playground: export a PNG / SVG del histograma y "share URL" — 2 días<a class="headerlink" href="#feat-07-playground-export-a-png-svg-del-histograma-y-share-url-2-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: lo que hoy es efímero (subes datos → ves resultado) pasa a ser compartible (<code>?data=base64&amp;k=1.345</code>). Útil para enseñar. Además export PNG del chart.js con marcas de Huber/media.
+Dependencias: sólo front.</p>
+<h4 id="feat-08-test-multiplataforma-tolerancias-por-precision-decimal-2-dias">FEAT-08 · Test multiplataforma: tolerancias por precision <code>decimal</code> — 2 días<a class="headerlink" href="#feat-08-test-multiplataforma-tolerancias-por-precision-decimal-2-dias" title="Permanent link">&para;</a></h4>
+<p>Qué resuelve: hoy los ejemplos R usan 17 dígitos, los de PHP 6-8 (pasan por <code>round()</code> en summaries). Una flag <code>exact: bool</code> que devuelva valores sin redondeo en <code>getSummary</code> ayuda a casos científicos. Y un modo <code>precision: 'bcmath'</code> usando la extensión <code>bcmath</code> (ya listada en Dockerfile) para datasets con escala extrema.
+Dependencias: <code>ext-bcmath</code> opcional.</p>
+<h3 id="53-ideas-a-futuro-post-mvp">5.3 Ideas a futuro (post-MVP)<a class="headerlink" href="#53-ideas-a-futuro-post-mvp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Biblioteca hermana <code>StatGuardML</code></strong>: detectores de drift (Kolmogorov-Smirnov, Population Stability Index) para ML ops en PHP, que use StatGuard como base.</li>
+<li><strong>Integración con Laravel / Symfony</strong>: bundle/service provider que registre <code>RobustStats</code>/<code>ClassicStats</code> como singletons + facade. Tratar en dos repos separados (<code>cjuol/statguard-laravel</code>, <code>cjuol/statguard-symfony-bundle</code>) para no cargar deps en el core.</li>
+<li><strong>SIMD via FFI</strong>: para datasets enormes (&gt;1M) se puede invocar a GSL o BLAS vía FFI y caer 50×. Alto coste de mantenimiento; valorar sólo si aparece demanda real.</li>
+<li><strong>Vertical "observabilidad"</strong>: preset del playground con curvas de latencia P99/P99.9 y detector de regresión automática.</li>
+<li><strong>Vertical "finanzas"</strong>: detectores de outliers en series temporales con rolling Huber y máximos drawdown robustos.</li>
+<li><strong>Playground server-side con tenants</strong>: ya con auth (API key), cuotas, histórico de análisis. Aquí sí encaja Symfony + multi-tenant, y la plantilla de auditoría original volvería a ser pertinente.</li>
+<li><strong>Python / Rust bindings</strong>: FFI-ready engines portables (QuantileEngine en particular es puro matemático, recompilable).</li>
+<li><strong>Artefacto único "verdict engine"</strong>: dado un dataset, devuelve una puntuación 0-100 de "calidad", con umbrales configurables. Ya tienes el 80 % del trabajo en <code>StatsComparator</code>.</li>
+</ul>
+<hr />
+<h2 id="6-plan-de-accion-priorizado">6. Plan de acción priorizado<a class="headerlink" href="#6-plan-de-accion-priorizado" title="Permanent link">&para;</a></h2>
+<p>Orden: severidad desc, dentro de la misma severidad esfuerzo asc. Columna <code>Estado</code> actualizada el 2026-04-16 tras el primer lote de fixes.</p>
+<p>Leyenda de estado: ✅ resuelto (con commit asociado) · 🟡 parcial · ⏸ pausado pendiente de decisión · ⬜ pendiente.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Categoría</th>
+<th>Severidad</th>
+<th>Descripción corta</th>
+<th>Archivos</th>
+<th style="text-align: right;">Esfuerzo</th>
+<th>Fase sugerida</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEC-01</td>
+<td>seguridad</td>
+<td>ALTO</td>
+<td>Cap de tamaño de <code>data[]</code> en <code>api.php</code> + HTTP 413</td>
+<td><code>web/public/api.php</code></td>
+<td style="text-align: right;">30 min</td>
+<td>v2.0.1</td>
+<td>✅ <code>c2b7c71</code></td>
+</tr>
+<tr>
+<td>SEC-03</td>
+<td>seguridad</td>
+<td>ALTO</td>
+<td><code>CentralTendencyEngine::normalizeData</code> debe rechazar NaN/INF</td>
+<td><code>src/CentralTendencyEngine.php</code>, <code>tests/CentralTendencyEngineTest.php</code></td>
+<td style="text-align: right;">15 min</td>
+<td>v2.0.1</td>
+<td>✅ <code>8a96a4a</code></td>
+</tr>
+<tr>
+<td>QUA-01</td>
+<td>calidad</td>
+<td>MEDIO</td>
+<td>Unificar <code>normalizeData</code>/<code>validateData</code> en <code>DataValidator</code></td>
+<td><code>src/Support/DataValidator.php</code>, <code>src/Traits/DataProcessorTrait.php</code>, <code>src/QuantileEngine.php</code>, <code>src/CentralTendencyEngine.php</code></td>
+<td style="text-align: right;">2 h</td>
+<td>v2.1.0</td>
+<td>✅ <code>0536115</code></td>
+</tr>
+<tr>
+<td>QUA-02</td>
+<td>calidad</td>
+<td>MEDIO</td>
+<td>Renombrar <code>robustDeviation</code> para desambiguar MAD-σ vs SE(mediana)</td>
+<td><code>src/RobustStats.php</code>, docs, <code>web/public/index.html</code> labels</td>
+<td style="text-align: right;">3 h</td>
+<td>v3.0.0</td>
+<td>⏸ breaking, espera v3</td>
+</tr>
+<tr>
+<td>SEC-02</td>
+<td>seguridad</td>
+<td>MEDIO</td>
+<td>No exponer <code>$e-&gt;getMessage()</code> en 500</td>
+<td><code>web/public/api.php</code></td>
+<td style="text-align: right;">15 min</td>
+<td>v2.0.1</td>
+<td>✅ <code>28e1fc4</code></td>
+</tr>
+<tr>
+<td>SEC-05</td>
+<td>seguridad</td>
+<td>MEDIO</td>
+<td>Restringir CORS (o documentar decisión)</td>
+<td><code>web/public/api.php</code></td>
+<td style="text-align: right;">20 min</td>
+<td>v2.1.0</td>
+<td>⏸ pendiente decisión</td>
+</tr>
+<tr>
+<td>SEC-10</td>
+<td>seguridad</td>
+<td>MEDIO</td>
+<td>Rate limiting en <code>api.php</code> (o front nginx)</td>
+<td><code>web/public/api.php</code>, <code>docker-compose.yml</code></td>
+<td style="text-align: right;">3 h</td>
+<td>v2.2.0</td>
+<td>⏸ pendiente decisión (PHP vs proxy)</td>
+</tr>
+<tr>
+<td>SEC-13</td>
+<td>seguridad</td>
+<td>MEDIO</td>
+<td>Pinear <code>phpdocumentor/phpdocumentor</code> y <code>squidfunk/mkdocs-material</code> tag</td>
+<td><code>docker-compose.yml</code></td>
+<td style="text-align: right;">10 min</td>
+<td>v2.0.1</td>
+<td>✅ <code>f41733b</code></td>
+</tr>
+<tr>
+<td>PERF-01</td>
+<td>rendimiento</td>
+<td>MEDIO</td>
+<td>Evitar 4 cálculos de cuantil en <code>getSummary</code></td>
+<td><code>src/RobustStats.php</code></td>
+<td style="text-align: right;">1 h</td>
+<td>v2.1.0</td>
+<td>✅ <code>5d82fd4</code></td>
+</tr>
+<tr>
+<td>PERF-02</td>
+<td>rendimiento</td>
+<td>MEDIO</td>
+<td>Desduplicar sort/validate en <code>StatsComparator</code> y <code>api.php</code></td>
+<td><code>src/StatsComparator.php</code>, <code>web/public/api.php</code></td>
+<td style="text-align: right;">2 h</td>
+<td>v2.1.0</td>
+<td>🟡 <code>660c79d</code> (StatsComparator hecho; api.php pendiente de decisión sobre API pública)</td>
+</tr>
+<tr>
+<td>QUA-07</td>
+<td>calidad</td>
+<td>MEDIO</td>
+<td>Fix typo <code>"5.1h"</code> en <code>shield.json</code> o regenerarlo</td>
+<td><code>shield.json</code></td>
+<td style="text-align: right;">5 min</td>
+<td>v2.0.1</td>
+<td>✅ <code>b4fdadb</code></td>
+</tr>
+<tr>
+<td>QUA-04</td>
+<td>calidad</td>
+<td>MEDIO</td>
+<td>Política única NaN/INF entre librería y <code>api.php</code></td>
+<td><code>web/public/api.php</code></td>
+<td style="text-align: right;">30 min</td>
+<td>v2.0.1</td>
+<td>✅ <code>4eda9bf</code></td>
+</tr>
+<tr>
+<td>MED-06</td>
+<td>calidad</td>
+<td>MEDIO</td>
+<td>Test parity Huber/Trimmed/Winsorized con valores hardcoded (sin R)</td>
+<td><code>tests/CentralTendencyEngineTest.php</code></td>
+<td style="text-align: right;">2 h</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QW-07</td>
+<td>feature</td>
+<td>MEDIO</td>
+<td>Endpoint <code>/healthz</code></td>
+<td><code>web/public/api.php</code> (o nuevo fichero)</td>
+<td style="text-align: right;">20 min</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>SEC-06</td>
+<td>seguridad</td>
+<td>BAJO</td>
+<td>SRI hashes en los 3 CDN</td>
+<td><code>web/public/index.html</code></td>
+<td style="text-align: right;">20 min</td>
+<td>v2.0.1</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>SEC-07</td>
+<td>seguridad</td>
+<td>BAJO</td>
+<td><code>X-Content-Type-Options: nosniff</code> + CSP mínima</td>
+<td><code>web/public/api.php</code>, <code>index.html</code></td>
+<td style="text-align: right;">30 min</td>
+<td>v2.0.1</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>SEC-04</td>
+<td>seguridad</td>
+<td>BAJO</td>
+<td>Doc explícita de límites de <code>huberK</code>/<code>trimPercent</code></td>
+<td><code>docs/api-reference.md</code></td>
+<td style="text-align: right;">15 min</td>
+<td>v2.0.1</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>SEC-12</td>
+<td>seguridad</td>
+<td>BAJO</td>
+<td>Decidir política sobre <code>composer.lock</code> en CI</td>
+<td><code>.gitignore</code>, CI</td>
+<td style="text-align: right;">1 h</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>CI-01</td>
+<td>seguridad</td>
+<td>BAJO</td>
+<td>Pinear <code>exuanbo/actions-deploy-gist</code> a SHA</td>
+<td><code>.github/workflows/*.yml</code></td>
+<td style="text-align: right;">10 min</td>
+<td>v2.0.1</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QUA-05</td>
+<td>calidad</td>
+<td>BAJO</td>
+<td>Fix snippet roto en <code>docs/api-reference.md</code></td>
+<td><code>docs/api-reference.md</code></td>
+<td style="text-align: right;">15 min</td>
+<td>v2.0.1</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QUA-08</td>
+<td>calidad</td>
+<td>BAJO</td>
+<td><code>.gitignore</code> para <code>statguard-perf.json</code></td>
+<td><code>.gitignore</code></td>
+<td style="text-align: right;">5 min</td>
+<td>v2.0.1</td>
+<td>✅ incluido en <code>b4fdadb</code></td>
+</tr>
+<tr>
+<td>QUA-11</td>
+<td>calidad</td>
+<td>BAJO</td>
+<td>Limpiar <code>apt</code> lists en Dockerfile</td>
+<td><code>web/Dockerfile</code></td>
+<td style="text-align: right;">5 min</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QUA-12</td>
+<td>calidad</td>
+<td>BAJO</td>
+<td>Homogeneizar idioma en <code>web/entrypoint.sh</code></td>
+<td><code>web/entrypoint.sh</code></td>
+<td style="text-align: right;">10 min</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QUA-13</td>
+<td>calidad</td>
+<td>BAJO</td>
+<td>Encapsular side-effects del benchmark tras <code>--write</code></td>
+<td><code>tests/BenchmarkStatGuard.php</code></td>
+<td style="text-align: right;">30 min</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QW-08</td>
+<td>herramienta</td>
+<td>BAJO</td>
+<td><code>Makefile</code> minimal</td>
+<td><code>Makefile</code> (nuevo)</td>
+<td style="text-align: right;">20 min</td>
+<td>v2.0.1</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>QW-11</td>
+<td>docs</td>
+<td>BAJO</td>
+<td>Iniciar <code>docs/decisions/</code> con 2 ADRs retroactivos</td>
+<td><code>docs/decisions/</code></td>
+<td style="text-align: right;">1 h</td>
+<td>v2.1.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-01</td>
+<td>feature</td>
+<td>—</td>
+<td>Streaming estimators (Welford + P²)</td>
+<td>nuevo <code>src/Online/</code></td>
+<td style="text-align: right;">3 d</td>
+<td>v2.2.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-02</td>
+<td>feature</td>
+<td>—</td>
+<td>Bootstrap CIs</td>
+<td><code>src/RobustStats.php</code>, <code>src/BootstrapEngine.php</code> (nuevo)</td>
+<td style="text-align: right;">2 d</td>
+<td>v2.2.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-03</td>
+<td>feature</td>
+<td>—</td>
+<td>Skewness/kurtosis + Shapiro-Wilk</td>
+<td><code>src/ClassicStats.php</code>, <code>src/DistributionTests.php</code> (nuevo)</td>
+<td style="text-align: right;">2 d</td>
+<td>v2.2.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-04</td>
+<td>feature</td>
+<td>—</td>
+<td>Rolling windowed stats</td>
+<td>nuevo <code>src/Online/RollingWindow.php</code></td>
+<td style="text-align: right;">3 d</td>
+<td>v2.3.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-05</td>
+<td>feature</td>
+<td>—</td>
+<td>CSV/JSON/NDJSON reader</td>
+<td>nuevo <code>src/IO/</code></td>
+<td style="text-align: right;">2 d</td>
+<td>v2.3.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-06</td>
+<td>feature</td>
+<td>—</td>
+<td>PSR-3 logger hook</td>
+<td>fachadas + <code>composer.json</code></td>
+<td style="text-align: right;">1 d</td>
+<td>v2.3.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-07</td>
+<td>feature</td>
+<td>—</td>
+<td>Playground: share URL + export PNG</td>
+<td><code>web/public/index.html</code></td>
+<td style="text-align: right;">2 d</td>
+<td>v2.2.0</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>FEAT-08</td>
+<td>feature</td>
+<td>—</td>
+<td>Modo <code>exact</code>/<code>bcmath</code></td>
+<td>fachadas</td>
+<td style="text-align: right;">2 d</td>
+<td>v3.0.0</td>
+<td>⬜</td>
+</tr>
+</tbody>
+</table>
+<h3 id="61-changelog-del-lote-aplicado-2026-04-16">6.1 Changelog del lote aplicado (2026-04-16)<a class="headerlink" href="#61-changelog-del-lote-aplicado-2026-04-16" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Commit</th>
+<th>Ítem</th>
+<th>Resumen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>c2b7c71</code></td>
+<td>SEC-01</td>
+<td>Cap de 50 000 puntos en <code>api.php</code> + HTTP 413 con <code>limit</code>+<code>received</code>.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>8a96a4a</code></td>
+<td>SEC-03</td>
+<td><code>is_finite</code> en <code>CentralTendencyEngine::normalizeData</code> + tests dedicados.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>28e1fc4</code></td>
+<td>SEC-02</td>
+<td>Sustituye <code>$e-&gt;getMessage()</code> por <code>'Internal error.'</code> y loggea <code>error_log</code>.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>4eda9bf</code></td>
+<td>QUA-04</td>
+<td>Elimina el pre-filtro silencioso de NaN/INF; la librería rechaza con 422.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>f41733b</code></td>
+<td>SEC-13</td>
+<td>Pin <code>phpdocumentor/phpdocumentor:3.5</code> y <code>squidfunk/mkdocs-material:9.5.44</code>.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>b4fdadb</code></td>
+<td>QUA-07 + QUA-08</td>
+<td>Fix typo <code>5.1h→5.1x</code> en <code>shield.json</code>; untrack <code>statguard-perf.json</code>.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>0536115</code></td>
+<td>QUA-01</td>
+<td>Nuevo <code>src/Support/DataValidator.php</code>; trait + engines delegan ahí.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>5d82fd4</code></td>
+<td>PERF-01</td>
+<td><code>RobustStats::getSummary</code> reutiliza q1/q3/mediana (de 4 cuantiles a 2).</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>660c79d</code></td>
+<td>PERF-02 (parcial)</td>
+<td><code>StatsComparator::analyze</code> inline con <code>QuantileEngine</code>; constructor BC.</td>
+</tr>
+</tbody>
+</table>
+<p>Resultado post-lote (verificado):
+- <strong>Tests</strong>: <code>94 passed · 3 skipped (R) · 0 failed</code> (suite ampliada con 9 tests de non-finite para <code>CentralTendencyEngine</code>).
+- <strong>PHPStan</strong>: limpio en nivel 5.
+- <strong><code>composer audit</code></strong>: sin advisories.
+- <strong>Contrato v2.0.0 restaurado</strong>: cualquier entrada NaN/INF vía fachadas, engines o <code>api.php</code> termina en <code>InvalidDataSetException</code> (HTTP 422 en la demo).
+- <strong>Superficie de DoS</strong> acotada en la demo: payloads &gt; 50 k puntos devuelven 413 sin tocar la librería.</p>
+<hr />
+<h2 id="7-resumen-ejecutivo">7. Resumen ejecutivo<a class="headerlink" href="#7-resumen-ejecutivo" title="Permanent link">&para;</a></h2>
+<h3 id="instantanea-inicial-manana-2026-04-16">Instantánea inicial (mañana 2026-04-16)<a class="headerlink" href="#instantanea-inicial-manana-2026-04-16" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Estado global</strong>: saludable. Tests verdes, PHPStan L5 limpio, <code>composer audit</code> limpio, cobertura 74 % líneas.</li>
+<li><strong>Riesgos reales hoy</strong>: (a) <code>api.php</code> de la demo pública puede ser DoS-eado con un POST grande, (b) <code>CentralTendencyEngine</code> no rechaza NaN/INF y rompe el contrato anunciado en el CHANGELOG v2.0.0, (c) inconsistencia semántica en <code>robustDeviation</code> que puede confundir consumidores.</li>
+<li><strong>Deuda técnica acotada</strong>: duplicación de validación entre 3 sitios (QUA-01), sort/validate redundantes en el pipeline (PERF-01/02), doc-snippet roto (QUA-05), <code>shield.json</code> con typo (QUA-07).</li>
+<li><strong>Oportunidades de diferenciación claras</strong>: streaming estimators (FEAT-01) y bootstrap CIs (FEAT-02) son features que MathPHP no cubre y encajan con el tagline "data integrity".</li>
+<li><strong>Ningún hallazgo de severidad CRÍTICO</strong>. Dos ALTOS, corregibles en &lt; 1 h cada uno, ambos candidatos a v2.0.1 patch.</li>
+</ul>
+<h3 id="post-lote-tarde-2026-04-16">Post-lote (tarde 2026-04-16)<a class="headerlink" href="#post-lote-tarde-2026-04-16" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Ambos ítems ALTO resueltos: <code>c2b7c71</code> (SEC-01) y <code>8a96a4a</code> (SEC-03). La demo ya no se puede DoS-ear con un POST gigante, y la política NaN/INF es coherente en toda la librería.</li>
+<li>7 ítems MEDIO resueltos y 1 parcial (ver tabla §6).</li>
+<li><strong>Tests 94 pass · 3 skipped (R) · 0 failed</strong> · <strong>PHPStan L5 limpio</strong> · <strong>composer audit limpio</strong>.</li>
+<li>Preparado para etiquetar <strong>v2.0.1</strong>: todos los fixes de severidad ALTO + la mayor parte de los MEDIO del patch están commiteados.</li>
+</ul>
+<h3 id="pendientes-con-decision-de-producto">Pendientes con decisión de producto<a class="headerlink" href="#pendientes-con-decision-de-producto" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>SEC-05 CORS</strong>: abierto vs restringido. Sin decisión técnica en el código.</li>
+<li><strong>SEC-10 rate limit</strong>: PHP middleware vs proxy delante. 3 h en cualquier caso.</li>
+<li><strong>PERF-02 lado <code>api.php</code></strong>: requiere exponer <code>$alreadyProcessed</code> en las fachadas. Pequeña ampliación de API pública.</li>
+<li><strong>QUA-02 rename <code>robustDeviation</code></strong>: breaking → v3.0.0.</li>
+</ul>
+<h3 id="plan-recomendado-post-lote">Plan recomendado (post-lote)<a class="headerlink" href="#plan-recomendado-post-lote" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>v2.0.1 (listo para tag)</strong>: SEC-01, SEC-03, SEC-02, QUA-04, QUA-07/08, SEC-13 ✅. Opcional para cerrar patch: SEC-06, SEC-07, QUA-05, CI-01, QW-08 (todos ⬜, baja fricción).</li>
+<li><strong>v2.1.0 (en progreso)</strong>: QUA-01, PERF-01, PERF-02 parcial ✅. Queda: MED-06, SEC-05, SEC-10, QUA-11/12/13, QW-11, cierre de PERF-02 (<code>api.php</code>).</li>
+<li><strong>v2.2.0 (features)</strong>: FEAT-01, FEAT-02, FEAT-03, FEAT-07.</li>
+<li><strong>v3.0.0 (breaking sane)</strong>: QUA-02 (rename), FEAT-08.</li>
+</ol>
+<p>Si hubiera que priorizar una sola cosa esta semana, cerrar v2.0.1 con los ítems BAJO listados arriba y publicar el patch.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
