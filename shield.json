@@ -1,6 +1,6 @@
 {
     "schemaVersion": 1,
     "label": "performance",
-    "message": "5.1h faster than MathPHP",
+    "message": "5.1x faster than MathPHP",
     "color": "brightgreen"
 }

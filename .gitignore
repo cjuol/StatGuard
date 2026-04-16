@@ -5,6 +5,7 @@ vendor/
 /.tasks-log.csv
 /build/
 /statguard-coverage.json
+/statguard-perf.json
 site/
 docs/api/
 !docker-compose.yml
