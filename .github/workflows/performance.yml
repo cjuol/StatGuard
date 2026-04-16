@@ -24,7 +24,7 @@ jobs:
         run: php tests/BenchmarkStatGuard.php json
 
       - name: Publish shield.json to Gist
-        uses: exuanbo/actions-deploy-gist@v1
+        uses: exuanbo/actions-deploy-gist@47697fceaeea2006a90594ee24eb9cd0a1121ef8 # v1.1.4
         with:
           gist_id: 414f8bf15fbe9503c332a5c0a57a699f
           token: ${{ secrets.GIST_TOKEN }}
