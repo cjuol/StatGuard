@@ -36,7 +36,7 @@ for (t in quantile_types) {
 }
 
 huber_time <- system.time({
-  h <- MASS::huber(values)
+  h <- MASS::huber(values, k = 1.345, tol = 0.001)
   mu <- h$mu
 })["elapsed"] * 1000
 
